@@ -86,7 +86,6 @@ sType*% solve_generics(sType*% type, sType*% generics_type, sInfo* info)
         int pointer_num = type->mPointerNum;
         bool heap = type->mHeap;
         bool guard_ = type->mGuardValue;
-        bool deffer_right_value = type->mDefferRightValue;
         
         bool no_heap = type->mNoHeap;
         bool no_calling_destructor = type->mNoCallingDestructor;
@@ -99,9 +98,6 @@ sType*% solve_generics(sType*% type, sType*% generics_type, sInfo* info)
         }
         if(guard_) {
             result->mGuardValue = guard_;
-        }
-        if(deffer_right_value) {
-            result->mDefferRightValue = deffer_right_value || result->mDefferRightValue;
         }
         if(no_heap) {
             result->mNoHeap = true;
@@ -145,7 +141,6 @@ sType*% solve_generics(sType*% type, sType*% generics_type, sInfo* info)
             int pointer_num = type->mPointerNum;
             bool heap = type->mHeap;
             bool guard_ = type->mGuardValue;
-            bool deffer_right_value = type->mDefferRightValue;
             
             bool no_heap = type->mNoHeap;
             bool no_calling_destructor = type->mNoCallingDestructor;
@@ -157,9 +152,6 @@ sType*% solve_generics(sType*% type, sType*% generics_type, sInfo* info)
 
             if(heap) {
                 result->mHeap = result->mHeap || heap;
-            }
-            if(deffer_right_value) {
-                result->mDefferRightValue = deffer_right_value || result->mDefferRightValue;
             }
             if(guard_) {
                 result->mGuardValue = guard_;
@@ -231,7 +223,6 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         int pointer_num = type->mPointerNum;
         bool heap = type->mHeap;
         bool guard_ = type->mGuardValue;
-        bool deffer_right_value = type->mDefferRightValue;
         
         bool no_heap = type->mNoHeap;
         bool no_calling_destructor = type->mNoCallingDestructor;
@@ -241,9 +232,6 @@ sType*% solve_method_generics(sType* type, sInfo* info)
 
         if(heap) {
             result->mHeap = heap || result->mHeap;
-        }
-        if(deffer_right_value) {
-            result->mDefferRightValue = deffer_right_value || result->mDefferRightValue;
         }
         if(guard_) {
             result->mGuardValue = guard_ || result->mGuardValue;
@@ -508,9 +496,6 @@ comma = false;
     }
     if(info->no_output_come_code) {
         return ;
-    }
-    if(type->mDefferRightValue) {
-        on_drop_object(type, obj, info, comma);
     }
     var stack_saved = info.stack;
     list<sRightValueObject*%>* right_value_objects = info.right_value_objects;

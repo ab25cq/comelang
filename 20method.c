@@ -826,49 +826,15 @@ class sMethodCallNode extends sNodeBase
             
             string saved_obj_value = null
             sVar* saved_var = null;
-            if(result_type->mDefferRightValue) {
-                static int n = 0;
-                n++;
-                string var_name = s"deffer_right_value\{n}";
-                sType*% type = clone obj_type;
-                type->mDefferRightValue = true;
+            int j = 0;
+            foreach(it, come_params) {
+                buf.append_str(it.c_value);
                 
-                add_variable_to_table(var_name, type, info, false@function_param, false);
-                
-                sVar* var_ = get_variable_from_table(info->lv_table, var_name);
-                
-                add_come_code_at_function_head(info, "%s;\n", make_define_var(type, var_->mCValueName));
-                add_come_code(info, "%s=%s;\n", var_->mCValueName, obj_value.c_value);
-                saved_obj_value = var_->mCValueName;
-                saved_var = var_;
-                
-                int j = 0;
-                foreach(it, come_params) {
-                    if(j == 0) {
-                        buf.append_str(saved_obj_value);
-                    }
-                    else {
-                        buf.append_str(it.c_value);
-                    }
-                    
-                    if(j != come_params.length()-1) {
-                        buf.append_str(",");
-                    }
-                    
-                    j++;
+                if(j != come_params.length()-1) {
+                    buf.append_str(",");
                 }
-            }
-            else {
-                int j = 0;
-                foreach(it, come_params) {
-                    buf.append_str(it.c_value);
-                    
-                    if(j != come_params.length()-1) {
-                        buf.append_str(",");
-                    }
-                    
-                    j++;
-                }
+                
+                j++;
             }
             buf.append_str(")");
             

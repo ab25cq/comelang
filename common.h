@@ -155,7 +155,6 @@ uniq class sType
     sType*% mResultType;
     bool mVarArgs;
     
-    bool mDefferRightValue;
     sNode*% mTypeOfNode;
     
     new(string name, bool heap=false, sInfo* info=info)
@@ -597,7 +596,6 @@ struct sInfo
     bool gcc_compiler;
     bool in_method_block;
     
-    bool prohibits_output_last_code;
     bool in_offsetof;
     
     int right_value_num;

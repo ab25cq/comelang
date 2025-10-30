@@ -770,6 +770,330 @@ void cast_type(sType* left_type, sType* right_type, CVALUE* come_value, sInfo* i
 {
 }
 
+string,string parse_attribute(sInfo* info=info)
+{
+    buffer*% asm_fun_name = new buffer();
+    string attribute = s"";
+    
+    while(true) {
+        if(parsecmp("__attribute_pure__")) {
+            info->p += strlen("__attribute_pure__");
+            skip_spaces_and_lf();
+        }
+        else if(parsecmp("__malloc_like")) {
+            info->p += strlen("__malloc_like");
+            skip_spaces_and_lf();
+        }
+        else if(parsecmp("__result_use_check")) {
+            info->p += strlen("__result_use_check");
+            skip_spaces_and_lf();
+        }
+        else if(parsecmp("__alloc_size2")) {
+            info->p += strlen("__alloc_size2");
+            skip_spaces_and_lf();
+            
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
+                        break;
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+        }
+        else if(parsecmp("__alloc_size")) {
+            info->p += strlen("__alloc_size");
+            skip_spaces_and_lf();
+            
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
+                        break;
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+        }
+        else if(parsecmp("__nonnull")) {
+            info->p += strlen("__nonnull");
+            skip_spaces_and_lf();
+            
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
+                        break;
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+        }
+        else if(parsecmp("_Nonnull")) {
+            info->p += strlen("_Nonnull");
+            skip_spaces_and_lf();
+            
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
+                        break;
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+        }
+        else if(parsecmp("__alloc_align")) {
+            info->p += strlen("__alloc_align");
+            skip_spaces_and_lf();
+            
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
+                        break;
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+        }
+        else if(parsecmp("__attribute_malloc__")) {
+            info->p += strlen("__attribute_malloc__");
+            skip_spaces_and_lf();
+        }
+        else if(parsecmp("__attr_dealloc_fclose")) {
+            info->p += strlen("__attr_dealloc_fclose");
+            skip_spaces_and_lf();
+        }
+        else if(parsecmp("__wur")) {
+            info->p += strlen("__wur");
+            skip_spaces_and_lf();
+        }
+        else if(parsecmp("__pure2")) {
+            info->p += strlen("__pure2");
+            skip_spaces_and_lf();
+        }
+        else if(parsecmp("__pure")) {
+            info->p += strlen("__pure");
+            skip_spaces_and_lf();
+        }
+        else if(parsecmp("__noreturn")) {
+            info->p += strlen("__noreturn");
+            skip_spaces_and_lf();
+        }
+        else if(parsecmp("__attribute__")) {
+            attribute = parse_struct_attribute();
+        }
+        else if(parsecmp("__asm__")) {
+            info->p += strlen("__asm__");
+            skip_spaces_and_lf();
+            
+            if(memcmp(info->p, "__ASMNAME", strlen("__ASMNAME")) == 0) {
+                info->p += strlen("__ASMNAME");
+                skip_spaces_and_lf();
+            }
+
+            int len = 0;
+
+            if(*info->p == '(') {
+                bool in_dquort = false;
+                int brace_num = 0;
+                while(*info->p) {
+                    if(*info->p == '"') {
+                        info->p++;
+    
+                        in_dquort = !in_dquort;
+                    }
+                    else if(in_dquort) {
+                        asm_fun_name.append_char(*info->p);
+                        info->p++;
+                    }
+                    else if(*info->p == '(') {
+                        info->p++;
+                        brace_num++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++;
+                        brace_num--;
+    
+                        if(brace_num == 0) {
+                            break;
+                        }
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+
+            skip_spaces_and_lf();
+        }
+        else if(parsecmp("__asm")) {
+            info->p += strlen("__asm");
+            skip_spaces_and_lf();
+
+            if(*info->p == '(') {
+                int brace_num = 0;
+                while(*info->p) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        brace_num++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++;
+                        brace_num--;
+    
+                        if(brace_num == 0) {
+                            break;
+                        }
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+
+            skip_spaces_and_lf();
+        }
+        else {
+            break;
+        }
+    }
+
+    return (asm_fun_name.to_string(), attribute);
+}
+
+string parse_struct_attribute(sInfo* info=info)
+{
+    parse_sharp();
+    buffer*% result = new buffer();
+    while(1) {
+        if(xisalnum(*info->p) || *info->p == '_') {
+        }
+        else {
+            break;
+        }
+        
+        char* p = info.p;
+        int sline = info.sline;
+        
+        string buf = parse_word();
+        
+        info.p = p;
+        info.sline = sline;
+        
+        if(memcmp(info->p, "__attribute__", strlen("__attribute__")) == 0) {
+            char* head = info.p;
+            
+            info->p += strlen("__attribute__");
+            skip_spaces_and_lf();
+            skip_paren(info);
+            
+            char* tail = info->p;
+            
+            result.append(head, tail-head);
+        }
+        else if(buf === "asm") {
+            char* head = info.p;
+            
+            info->p += strlen("asm");
+            skip_spaces_and_lf();
+            skip_paren(info);
+            
+            char* tail = info->p;
+            
+            result.append(head, tail-head);
+        }
+        else {
+            break;
+        }
+    }
+    parse_sharp();
+    
+    return result.to_string();
+}
+
 sType*%, string parse_variable_name(sType*% base_type_name, bool first, sInfo* info)
 {
     sType*% result_type = clone base_type_name;
@@ -1771,7 +2095,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool channel = false;
     bool any_class = false;
     bool vtable = false;
-    bool deffer_ = false;
     while(1) {
         if(*info->p == '*') {
             info->p++;
@@ -1780,14 +2103,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             skip_pointer_attribute();
             
             pointer_num++;
-        }
-        else if(*info->p == '~') {
-            info->p++;
-            skip_spaces_and_lf();
-            
-            skip_pointer_attribute();
-            
-            deffer_ = true;
         }
         else if(*info->p == '%') {
             info->p++;
@@ -2141,7 +2456,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mPointerNum = pointer_num;
         result_type->mHeap = result_type->mHeap || heap;
         result_type->mChannel = result_type->mChannel || channel;
-        result_type->mDefferRightValue = result_type->mDefferRightValue || deffer_;
         
         var_name = parse_word();
         
@@ -2194,7 +2508,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type->mPointerNum += pointer_num;
         type->mHeap = type->mHeap || heap;
         type->mChannel = type->mChannel || channel;
-        type->mDefferRightValue = type->mDefferRightValue || deffer_;
         type->mTupleName = tuple_name;
         
 //    type = new sType(s"lambda");
@@ -2280,7 +2593,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mPointerNum += pointer_num;
         result_type->mHeap = result_type->mHeap || heap;
         result_type->mChannel = result_type->mChannel || channel;
-        result_type->mDefferRightValue = result_type->mDefferRightValue || deffer_;
         
         if(xisalnum(*info.p) || *info->p == '_') {
             var_name = parse_word();
@@ -2426,7 +2738,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mDefferRightValue = type->mDefferRightValue || deffer_;
             type->mTupleName = tuple_name;
         }
         else if(info.generics_type_names.contained(type_name)) {
@@ -2457,7 +2768,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mDefferRightValue = type->mDefferRightValue || deffer_;
             type->mTupleName = tuple_name;
         }
         else if(info.method_generics_type_names.contained(type_name)) {
@@ -2488,7 +2798,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mDefferRightValue = type->mDefferRightValue || deffer_;
             type->mTupleName = tuple_name;
         }
         else if(*info->p == '<') {
@@ -2560,7 +2869,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mDefferRightValue = type->mDefferRightValue || deffer_;
             type->mTupleName = tuple_name;
             
             type_name = type->mClass->mName;
@@ -2604,7 +2912,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mDefferRightValue = type->mDefferRightValue || deffer_;
             type->mTupleName = tuple_name;
         }
         
@@ -2629,17 +2936,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 type->mHeap = true;
                 if(type->mNoSolvedGenericsType) {
                     type->mNoSolvedGenericsType.mHeap = true;
-                }
-            }
-            else if(*info->p == '~') {
-                info->p++;
-                skip_spaces_and_lf();
-                
-                skip_pointer_attribute();
-                
-                type->mDefferRightValue = true;
-                if(type->mNoSolvedGenericsType) {
-                    type->mNoSolvedGenericsType.mDefferRightValue = true;
                 }
             }
             else if(*info->p == '&') {
@@ -2698,17 +2994,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 type->mHeap = true;
                 if(type->mNoSolvedGenericsType) {
                     type->mNoSolvedGenericsType.mHeap = true;
-                }
-            }
-            else if(*info->p == '~') {
-                info->p++;
-                skip_spaces_and_lf();
-                
-                skip_pointer_attribute();
-                
-                type->mDefferRightValue = true;
-                if(type->mNoSolvedGenericsType) {
-                    type->mNoSolvedGenericsType.mDefferRightValue = true;
                 }
             }
             else if(gComePthread && *info->p == '@') {

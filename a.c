@@ -1,9 +1,11 @@
-//#include <comelang.h>
+#include <comelang.h>
+
+static int fun() {
+    return 1;
+}
 
 int main(int argc, char** argv) {
-    int status = 8;
-    register long _a0 asm("a0") = (long)(status);
-    register long _a7 asm("a7") = 70;
+    var x = fun();
     
     return 0;
 }

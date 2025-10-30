@@ -1467,7 +1467,6 @@ struct sType
     struct list$1char$ph* mParamNames;
     struct sType* mResultType;
     _Bool mVarArgs;
-    _Bool mDefferRightValue;
     struct sNode* mTypeOfNode;
 };
 
@@ -1816,7 +1815,6 @@ struct sInfo
     _Bool emb_cpp;
     _Bool gcc_compiler;
     _Bool in_method_block;
-    _Bool prohibits_output_last_code;
     _Bool in_offsetof;
     int right_value_num;
     int right_value_max;
@@ -3734,9 +3732,6 @@ struct sType* __result_obj__29;
     }
     if(({    (_conditional_value_X0=(self!=((void*)0)));    _conditional_value_X0;    })) {
         result->mVarArgs=self->mVarArgs;
-    }
-    if(({    (_conditional_value_X0=(self!=((void*)0)));    _conditional_value_X0;    })) {
-        result->mDefferRightValue=self->mDefferRightValue;
     }
     if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mTypeOfNode!=((void*)0)));    _conditional_value_X0;    })) {
         __right_value0 = (void*)0;
@@ -7506,9 +7501,6 @@ void add_last_code_to_source(struct sInfo* info){
 _Bool _conditional_value_X0;
 char* __dec_obj45;
 char* __dec_obj46;
-    if(({    (_conditional_value_X0=(info->prohibits_output_last_code));    _conditional_value_X0;    })) {
-        return;
-    }
     if(({    (_conditional_value_X0=(info->no_output_come_code));    _conditional_value_X0;    })) {
         return;
     }
@@ -7530,9 +7522,6 @@ void add_last_code_to_source_with_comma(struct sInfo* info){
 _Bool _conditional_value_X0;
 char* __dec_obj47;
 char* __dec_obj48;
-    if(({    (_conditional_value_X0=(info->prohibits_output_last_code));    _conditional_value_X0;    })) {
-        return;
-    }
     if(({    (_conditional_value_X0=(info->no_output_come_code));    _conditional_value_X0;    })) {
         return;
     }

@@ -2,7 +2,7 @@
 
 class sStoreNode extends sNodeBase
 {
-    new(string name, list<string>*% multiple_assign, list<tup: sType*%, string, sNode*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info, string attribute=s"", bool comma=false, bool val_=false)
+    new(string name, list<string>*% multiple_assign, list<tup: sType*%, string, sNode*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info, string attribute=s"", bool comma=false)
     {
         self.super();
         
@@ -17,7 +17,6 @@ class sStoreNode extends sNodeBase
         self.multiple_declare = dupe multiple_declare;
         string self.attribute = attribute;
         bool self.comma = comma;
-        bool self.val_ = val_;
     }
     
     string kind()
@@ -55,7 +54,7 @@ class sStoreNode extends sNodeBase
                     info.lv_table.mVars.remove(string(var_name));
                 }
                 var type2 = solve_generics(type, info->generics_type, info);
-                add_variable_to_table(var_name, clone type2, info, false@function_param, comma:self.comma);
+                add_variable_to_table(var_name, type2, info, false@function_param, comma:self.comma);
                 
                 var_ = get_variable_from_table(info.lv_table, var_name);
                 
@@ -92,7 +91,6 @@ class sStoreNode extends sNodeBase
             CVALUE*% right_value = get_value_from_stack(-1, info);
             sType* right_type = right_value.type;
             
-            
             if(right_type->mNoSolvedGenericsType) {
                 right_type = right_type->mNoSolvedGenericsType;
             }
@@ -109,7 +107,8 @@ class sStoreNode extends sNodeBase
                         info.lv_table.mVars.remove(string(it));
                     }
             
-                    sType*% right_type2 = right_type.mGenericsTypes[i];
+                    sType*% right_type2 = clone right_type.mGenericsTypes[i];
+                    right_type2->mStatic = false;
                     add_variable_to_table(it, clone right_type2, info, false@function_param, comma:self.comma);
                 }
                 
@@ -120,13 +119,7 @@ class sStoreNode extends sNodeBase
             string multiple_var_name = xsprintf("multiple_assign_var%d", ++num_multiple_var);
             add_come_code_at_function_head(info, "%s = (void*)0;\n", make_define_var(right_value.type, multiple_var_name));
             
-            
-            if(info->prohibits_output_last_code) {
-                buf.append_format("%s=%s", multiple_var_name, right_value.c_value);
-            }
-            else {
-                add_come_code(info, "%s=%s;\n", multiple_var_name, right_value.c_value);
-            }
+            add_come_code(info, "%s=%s;\n", multiple_var_name, right_value.c_value);
             
             right_value.c_value = clone multiple_var_name;
             
@@ -137,15 +130,12 @@ class sStoreNode extends sNodeBase
                     
                     sVar* var_ = get_variable_from_table(info.lv_table, it);
                     
-                    sType*% var_type = clone var_->mType;
-                    var_type->mStatic = false;
-                    
                     sType*% left_type = clone var_->mType;
                     
                     CVALUE*% right_value2 = new CVALUE();
                     
                     right_value2.c_value = xsprintf("%s->v%d", right_value.c_value, i+1);
-                    right_value2.type = clone right_type2;
+                    right_value2.type = right_type2;
                     right_value2.var = null;
                     
                     CVALUE*% come_value = new CVALUE();
@@ -165,12 +155,7 @@ class sStoreNode extends sNodeBase
                     
                     add_come_code_at_function_head(info, "%s=0;\n", make_define_var(left_type, var_->mCValueName));
                     
-                    if(info->prohibits_output_last_code) {
-                        buf.append_format("%s,\n", come_value.c_value);
-                    }
-                    else {
-                        add_come_code(info, "%s;\n", come_value.c_value);
-                    }
+                    add_come_code(info, "%s;\n", come_value.c_value);
                 }
                 
                 i++;
@@ -311,46 +296,50 @@ class sStoreNode extends sNodeBase
             bool new_channel = self.right_value.kind() === "sNewChannel";
             
             CVALUE*% right_value = get_value_from_stack(-1, info);
-            sType* right_type = right_value.type;
+            sType*% right_type = clone right_value.type;
+            right_type->mStatic = false;
             
             if(self.type == null) {
-                if(self.val_) {
-                    right_type->mImmutable = true;
-                }
-                add_variable_to_table(self.name, clone right_type, info, false@function_param, comma:self.comma);
+                var type = solve_generics(right_type, info->generics_type, info);
+                add_variable_to_table(self.name, type, info, false@function_param, comma:self.comma);
             }
             else {
             }
             
             var_ = get_variable_from_table(info.lv_table, self.name);
             
-            sType*% var_type = clone var_->mType;
-            var_type->mStatic = false;
+            sType*% left_type = clone var_->mType;
             
-            if(!array_initializer && !struct_initializer && !string_initializer && !var_->mType->mStatic && !var_type->mConstant && var_type->mArrayNum.length() == 0 && !var_->mType->mRegister) {
-                if(var_type->mClass->mNumber) {
+            if(!array_initializer && !struct_initializer && !string_initializer && !left_type->mStatic && !left_type->mConstant && left_type->mArrayNum.length() == 0 && !left_type->mRegister) {
+                if(left_type->mClass->mNumber) {
                 }
-                else if((var_type->mClass->mStruct || var_type->mClass->mUnion || var_type->mClass->mEnum) || var_type->mPointerNum > 0) {
+                else if((left_type->mClass->mStruct || left_type->mClass->mUnion || left_type->mClass->mEnum) || left_type->mPointerNum > 0) {
                 }
                 else {
-                    if(info.come_fun.mName !== "memset" && !var_type->mNoCallingDestructor && info.funcs["memset"]) {
-                        add_come_code_at_function_head2(info, "memset(&%s, 0, sizeof(%s));\n", var_->mCValueName, make_type_name_string(var_type, no_static:true, no_alignas:true));
+                    if(info.come_fun.mName !== "memset" && !left_type->mNoCallingDestructor && info.funcs["memset"]) {
+                        add_come_code_at_function_head2(info, "memset(&%s, 0, sizeof(%s));\n", var_->mCValueName, make_type_name_string(left_type, no_static:true, no_alignas:true));
                     }
                 }
             }
             
-            sType*% left_type = clone var_->mType;
-            
-            if(array_initializer || string_initializer) {
+            if(left_type->mHeap && (left_type->mConstant || left_type->mStatic || left_type->mRegister)) {
+                err_msg(info, "don't append heap with constant, static, register");
+                return true;
+            }
+            else if(array_initializer || string_initializer || struct_initializer) {
                 sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
-                /*
-                if(var_->mType->mAttribute) {
-                    add_come_code(info, "%s %s=%s;\n", make_define_var(var_->mType, var_->mCValueName), var_->mType->mAttribute, right_value.c_value);
-                }
-                else {
-                */
-                    add_come_code(info, "%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
-                //}
+                add_come_code(info, "%s=%s;\n", make_define_var(left_type, var_->mCValueName), right_value.c_value);
+                
+                CVALUE*% come_value = new CVALUE();
+                come_value.c_value = string("");
+                info.stack.push_back(come_value);
+                
+                transpiler_clear_last_code(info);
+            }
+            else if(left_type->mStatic || left_type->mConstant) {
+                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
+                
+                add_come_code(info, "%s=%s;\n", make_define_var(left_type, var_->mCValueName), right_value.c_value);
                 
                 CVALUE*% come_value = new CVALUE();
                 come_value.c_value = string("");
@@ -361,87 +350,11 @@ class sStoreNode extends sNodeBase
             else if(left_type->mRegister) {
                 sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
                 
-                add_come_code(info, "%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
-                
-                CVALUE*% come_value = new CVALUE();
-                come_value.c_value = xsprintf("%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
-                info.stack.push_back(come_value);
-            }
-            else if(array_initializer || left_type->mRegister) {
-                sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
-                /*
-                if(var_->mType->mAttribute) {
-                    add_come_code(info, "%s %s=%s;\n", make_define_var(var_->mType, var_->mCValueName), var_->mType->mAttribute, right_value.c_value);
-                }
-                else {
-                */
-                    add_come_code(info, "%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
-                //}
-                
-                CVALUE*% come_value = new CVALUE();
-                come_value.c_value = string("");
-                info.stack.push_back(come_value);
-                
-                transpiler_clear_last_code(info);
-            }
-            else if(struct_initializer) {
-                sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
-                /*
-                if(var_->mType->mAttribute) {
-                    add_come_code(info, "%s %s=%s;\n", make_define_var(var_->mType, var_->mCValueName), var_->mType->mAttribute, right_value.c_value);
-                }
-                else {
-                */
-                    add_come_code(info, "%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
-                //}
-                
-                CVALUE*% come_value = new CVALUE();
-                come_value.c_value = string("");
-                info.stack.push_back(come_value);
-                
-                transpiler_clear_last_code(info);
-            }
-            else if(var_->mType->mStatic || var_->mType->mConstant) {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
-                
-                /*
-                if(left_type->mAttribute) {
-                    add_come_code(info, "%s %s=%s;\n", make_define_var(left_type, var_->mCValueName), left_type->mAttribute, right_value.c_value);
-                }
-                else {
-                */
                 add_come_code(info, "%s=%s;\n", make_define_var(left_type, var_->mCValueName), right_value.c_value);
-                //}
                 
                 CVALUE*% come_value = new CVALUE();
-                come_value.c_value = string("");
+                come_value.c_value = xsprintf("%s=%s;\n", make_define_var(left_type, var_->mCValueName), right_value.c_value);
                 info.stack.push_back(come_value);
-                
-                transpiler_clear_last_code(info);
-            }
-            else if(right_type->mHeap && left_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0)
-            {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
-                
-                std_move(left_type, right_type, right_value);
-                
-                /*
-                if(left_type->mAttribute) {
-                    add_come_code_at_function_head(info, "%s %s;\n", make_define_var(left_type, var_->mCValueName), left_type->mAttribute);
-                }
-                else {
-                */
-                    add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
-                //}
-                
-                CVALUE*% come_value = new CVALUE();
-                come_value.c_value = xsprintf("%s=%s", var_->mCValueName, right_value.c_value);
-                come_value.type = clone left_type;
-                come_value.var = var_;
-                
-                info.stack.push_back(come_value);
-                
-                add_come_last_code(info, "%s", come_value.c_value);
             }
             else if(left_type->mChannel && new_channel) {
                 add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
@@ -454,6 +367,23 @@ class sStoreNode extends sNodeBase
                 come_value.c_value = xsprintf("(pipe(%s), (void*)0)", var_->mCValueName);
                 come_value.type = new sType(s"void");
                 come_value.type.mPointerNum = 1;
+                come_value.var = var_;
+                
+                info.stack.push_back(come_value);
+                
+                add_come_last_code(info, "%s", come_value.c_value);
+            }
+            else if(right_type->mHeap && left_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0)
+            {
+                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
+                
+                std_move(left_type, right_type, right_value);
+                
+                add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
+                
+                CVALUE*% come_value = new CVALUE();
+                come_value.c_value = xsprintf("%s=%s", var_->mCValueName, right_value.c_value);
+                come_value.type = clone left_type;
                 come_value.var = var_;
                 
                 info.stack.push_back(come_value);
@@ -489,14 +419,7 @@ class sStoreNode extends sNodeBase
                     return true;
                 }
                 
-                /*
-                if(left_type->mAttribute) {
-                    add_come_code_at_function_head(info, "%s %s;\n", make_define_var(left_type, var_->mCValueName), left_type->mAttribute);
-                }
-                else {
-                */
-                    add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
-                //}
+                add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
                 
                 CVALUE*% come_value = new CVALUE();
                 
@@ -1335,11 +1258,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     sFun* fun = info.funcs[string(buf)]??;
 
     
-    if((!gComeC && (buf === "var" || buf === "val")) || buf === "auto" || buf === "__auto_type") {
-        bool val_ = false;
-        if(buf === "val") {
-            val_ = true;
-        }
+    if((!gComeC && buf === "var") || buf === "auto" || buf === "__auto_type") {
         parse_sharp();
         var buf2 = parse_word();
         parse_sharp();
@@ -1377,7 +1296,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             right_value = post_position_operator(right_value, info);
             parse_sharp();
             
-            sNode*% node = new sStoreNode(string(buf2)@name, multiple_assign, null@multiple_declare, null@type, true@alloc, right_value, info, val_:val_) implements sNode;
+            sNode*% node = new sStoreNode(string(buf2)@name, multiple_assign, null@multiple_declare, null@type, true@alloc, right_value, info) implements sNode;
             info.sline_real = sline_real;
             return node;
         }

@@ -1302,9 +1302,6 @@ void add_come_code_at_function_head2(sInfo* info, char* code, ...)
 
 void add_last_code_to_source(sInfo* info)
 {
-    if(info->prohibits_output_last_code) {
-        return;
-    }
     if(info->no_output_come_code) {
         return;
     }
@@ -1320,9 +1317,6 @@ void add_last_code_to_source(sInfo* info)
 
 void add_last_code_to_source_with_comma(sInfo* info)
 {
-    if(info->prohibits_output_last_code) {
-        return;
-    }
     if(info->no_output_come_code) {
         return;
     }

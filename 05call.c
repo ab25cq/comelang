@@ -578,6 +578,7 @@ class sFunCallNode extends sNodeBase
             come_value.c_value = buf.to_string();
             come_value.type = clone result_type;
             come_value.type->mStatic = false;
+            come_value.type->mImmutable = false;
             come_value.var = null;
             
             if(lambda_type->mResultType.mHeap) {
@@ -1082,6 +1083,7 @@ class sFunCallNode extends sNodeBase
             come_value.c_value = buf.to_string();
             come_value.type = result_type;
             come_value.var = null;
+            come_value.type.mStatic = false;
             
             add_come_last_code(info, "%s", come_value.c_value);
             
