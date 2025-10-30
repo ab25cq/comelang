@@ -12167,7 +12167,7 @@ uniq string wchar_t::to_string(wchar_t wc)
 //////////////////////////////
 /// base library(IO-FILE)
 //////////////////////////////
-#if !defined(__BARE_METAL__)
+#if !defined(__BARE_METAL__) && !defined(__MINUX__)
 uniq string FILE*::read(FILE* f)
 {
     if(f == null) {
@@ -12233,11 +12233,6 @@ uniq FILE* FILE*::fprintf(FILE* f, const char* msg, ...)
     }
     
     return f;
-}
-
-uniq void FILE*::on_drop(FILE* self)
-{
-    if(self) fclose(self);
 }
 
 uniq int char*::write(char* self, char* file_name, bool append=false) 

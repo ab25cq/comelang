@@ -567,7 +567,6 @@ struct sInfo
     bool constructor_;
     sClass* defining_class;
     bool array_initializer;
-    bool struct_initializer;
     
     bool va_arg;
     bool in_fun_param;

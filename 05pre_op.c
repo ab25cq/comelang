@@ -714,7 +714,7 @@ sNode*% pre_position_operator(sInfo* info=info)
     parse_sharp();
     
     if(*info->p == '{') {
-        if(info.array_initializer || info.struct_initializer) {
+        if(info.array_initializer) {
             buffer*% buf = new buffer();
             
             buf.append_char(*info->p);

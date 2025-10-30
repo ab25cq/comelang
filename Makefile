@@ -13,7 +13,7 @@ LIBS= -lutil -ldl -lm -lrt
 #########################################
 all: comelang-sh
 
-SOURCES := $(wildcard *.c)
+SOURCES := $(wildcard [01]*.c)
 SOURCES := $(filter-out %.c.c,$(SOURCES))
 
 comelang.c.c: comelang.c

@@ -1793,7 +1793,6 @@ struct sInfo
     _Bool constructor_;
     struct sClass* defining_class;
     _Bool array_initializer;
-    _Bool struct_initializer;
     _Bool va_arg;
     _Bool in_fun_param;
     _Bool inhibits_output_code;
@@ -2791,7 +2790,6 @@ char* FILE_read(struct __sFILE* f);
 int FILE_write(struct __sFILE* f, char* str);
 int FILE_fclose(struct __sFILE* f);
 struct __sFILE* FILE_fprintf(struct __sFILE* f, const char* msg, ...);
-void FILE_on_drop(struct __sFILE* self);
 int charp_write(char* self, char* file_name, _Bool append);
 char* charp_read(char* file_name);
 struct list$1char$ph* FILE_readlines(struct __sFILE* f);
@@ -6684,7 +6682,7 @@ node_55 = (void*)0;
     }
     parse_sharp_v5(info);
     if(({    (_conditional_value_X0=(*info->p==123));    _conditional_value_X0;    })) {
-        if(({        (_conditional_value_X1=(info->array_initializer||info->struct_initializer));        _conditional_value_X1;        })) {
+        if(({        (_conditional_value_X1=(info->array_initializer));        _conditional_value_X1;        })) {
             buf=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "05pre_op.c", 718, "struct buffer*"))));
             buffer_append_char(buf,*info->p);
             info->p++;

@@ -66,11 +66,6 @@ class sForNode extends sNodeBase
                 return false;
             }
             
-            bool normal_if = true;
-            if(existance_free_right_value_objects(info)) {
-                normal_if = false;
-            }
-            
             add_come_code(info, "({");
             
             CVALUE*% conditional_value = get_value_from_stack(-1, info);

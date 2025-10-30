@@ -1793,7 +1793,6 @@ struct sInfo
     _Bool constructor_;
     struct sClass* defining_class;
     _Bool array_initializer;
-    _Bool struct_initializer;
     _Bool va_arg;
     _Bool in_fun_param;
     _Bool inhibits_output_code;
@@ -2906,7 +2905,6 @@ char* FILE_read(struct __sFILE* f);
 int FILE_write(struct __sFILE* f, char* str);
 int FILE_fclose(struct __sFILE* f);
 struct __sFILE* FILE_fprintf(struct __sFILE* f, const char* msg, ...);
-void FILE_on_drop(struct __sFILE* self);
 int charp_write(char* self, char* file_name, _Bool append);
 char* charp_read(char* file_name);
 struct list$1char$ph* FILE_readlines(struct __sFILE* f);
@@ -9021,13 +9019,6 @@ struct __sFILE* __result_obj__294;
     return __result_obj__294;
 }
 
-void FILE_on_drop(struct __sFILE* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self));    _conditional_value_X0;    })) {
-        fclose(self);
-    }
-}
-
 int charp_write(char* self, char* file_name, _Bool append){
 _Bool _conditional_value_X0;
 struct __sFILE* f;
@@ -9086,7 +9077,7 @@ char* __result_obj__298;
         return __result_obj__296;
     }
     __right_value0 = (void*)0;
-    buf=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 12288, "struct buffer*"))));
+    buf=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 12283, "struct buffer*"))));
     while(({    (_conditional_value_X0=(1));    _conditional_value_X0;    })) {
         char buf2[1024];
         memset(&buf2, 0, sizeof(char)        *(1024)        );
@@ -9123,7 +9114,7 @@ _Bool _conditional_value_X0;
 struct list$1char$ph* __result_obj__299;
 _Bool _conditional_value_X1;
 struct list$1char$ph* __result_obj__300;
-    result=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "/usr/local/include/comelang.h", 12315, "struct list$1char$ph*"))));
+    result=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "/usr/local/include/comelang.h", 12310, "struct list$1char$ph*"))));
     if(({    (_conditional_value_X0=(f==((void*)0)));    _conditional_value_X0;    })) {
         __result_obj__299 = (struct list$1char$ph*)come_increment_ref_count(result);
         come_call_finalizer(list$1char$ph$p_finalize, result, (void*)0, (void*)0, 0, 0, 1, (void*)0);
@@ -11843,7 +11834,7 @@ _Bool __result_obj__390;
     info->current_stack_num++;
     class_name=(char*)come_increment_ref_count(xsprintf("__current_stack%d__",info->current_stack_num));
     __right_value0 = (void*)0;
-    current_stack=(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "./common.h", 666, "struct sClass*")),(char*)come_increment_ref_count(class_name),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info));
+    current_stack=(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "./common.h", 665, "struct sClass*")),(char*)come_increment_ref_count(class_name),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info));
     vtable=info->lv_table;
     while(({    (_conditional_value_X0=(vtable));    _conditional_value_X0;    })) {
         for(        ({        (_conditional_value_X1=(o2_saved=(struct map$2char$phsVar$ph*)come_increment_ref_count(vtable->mVars),it=map$2char$phsVar$ph_begin(o2_saved)));        _conditional_value_X1;        });        ({        (_conditional_value_X2=(!map$2char$phsVar$ph_end(o2_saved)));        _conditional_value_X2;        });        ({        (_conditional_value_X3=(it=map$2char$phsVar$ph_next(o2_saved)));        _conditional_value_X3;        })        ){
@@ -11860,7 +11851,7 @@ _Bool __result_obj__390;
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __right_value2 = (void*)0;
-            item=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "./common.h", 679, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string(value->mCValueName)),(struct sType*)come_increment_ref_count(type2)));
+            item=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "./common.h", 678, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string(value->mCValueName)),(struct sType*)come_increment_ref_count(type2)));
             if(({            (_conditional_value_X4=(value->mCValueName!=((void*)0)));            _conditional_value_X4;            })) {
                 if(({                (_conditional_value_X5=(strcmp(value->mCValueName,"__list_values")==0));                _conditional_value_X5;                })) {
                 }
@@ -11879,7 +11870,7 @@ _Bool __result_obj__390;
                     __right_value0 = (void*)0;
                     __right_value1 = (void*)0;
                     __right_value2 = (void*)0;
-                    item2=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "./common.h", 699, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string(value->mCValueName)),(struct sType*)come_increment_ref_count(type3)));
+                    item2=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "./common.h", 698, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string(value->mCValueName)),(struct sType*)come_increment_ref_count(type3)));
                     __right_value0 = (void*)0;
                     list$1tuple2$2char$phsType$ph$ph_push_back(current_stack->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_clone(item2)));
                     value->mType->mOriginIsArray=(_Bool)1;
@@ -11912,7 +11903,7 @@ _Bool __result_obj__390;
             type2_85=(struct sType*)come_increment_ref_count(sType_clone(value_84->mType));
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
-            item_86=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "./common.h", 728, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(value_84->mCValueName),(struct sType*)come_increment_ref_count(type2_85)));
+            item_86=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "./common.h", 727, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(value_84->mCValueName),(struct sType*)come_increment_ref_count(type2_85)));
             if(({            (_conditional_value_X4=(value_84->mCValueName!=((void*)0)));            _conditional_value_X4;            })) {
                 if(({                (_conditional_value_X5=(strcmp(value_84->mCValueName,"__list_values")==0));                _conditional_value_X5;                })) {
                 }
@@ -11949,7 +11940,7 @@ _Bool __result_obj__390;
     }
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
-    come_value=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "./common.h", 767, "struct CVALUE*"))));
+    come_value=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "./common.h", 766, "struct CVALUE*"))));
     __right_value0 = (void*)0;
     __dec_obj105=come_value->c_value,
     come_value->c_value=(char*)come_increment_ref_count(xsprintf("&__current_stack%d__",info->current_stack_num));
@@ -11957,7 +11948,7 @@ _Bool __result_obj__390;
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
     __dec_obj106=come_value->type,
-    come_value->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "./common.h", 770, "struct sType*")),(char*)come_increment_ref_count(class_name),(_Bool)0,info));
+    come_value->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "./common.h", 769, "struct sType*")),(char*)come_increment_ref_count(class_name),(_Bool)0,info));
     come_call_finalizer(sType_finalize, __dec_obj106,(void*)0, (void*)0, 0, 0, 0, (void*)0);
     come_value->var=((void*)0);
     add_come_last_code(info,"%s;\n",come_value->c_value);
