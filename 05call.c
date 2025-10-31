@@ -1085,11 +1085,13 @@ class sFunCallNode extends sNodeBase
             
             CVALUE*% come_value = new CVALUE();
             come_value.c_value = buf.to_string();
-            come_value.type = result_type;
+            come_value.type = new sType(s"int"); // result_type;
             come_value.var = null;
+/*
             if(come_value.type) {
                 come_value.type.mStatic = false;
             }
+*/
             
             add_come_last_code(info, "%s", come_value.c_value);
             

@@ -242,6 +242,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         }
     }
     
+pointer_massive = false;
     if(pointer_massive) {
         if(left_type2->mPointerNum > 0 && right_type->mPointerNum == 0) {
             if(left_type2->mClass->mName === "lambda") {
@@ -2040,6 +2041,12 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 
                 type->mHeap = true;
             }
+            else if(*info->p == '`') {
+                info->p++;
+                skip_spaces_and_lf();
+                
+                type->mNoCallingDestructor = true;
+            }
             else {
                 break;
             }
@@ -3005,6 +3012,15 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     type->mNoSolvedGenericsType.mChannel = true;
                 }
             }
+            else if(*info->p == '`') {
+                info->p++;
+                skip_spaces_and_lf();
+                
+                type->mNoCallingDestructor = true;
+                if(type->mNoSolvedGenericsType) {
+                    type->mNoSolvedGenericsType.mNoCallingDestructor = true;
+                }
+            }
             else {
                 break;
             }
@@ -3072,6 +3088,15 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     type->mChannel = true;
                     if(type->mNoSolvedGenericsType) {
                         type->mNoSolvedGenericsType.mChannel = true;
+                    }
+                }
+                else if(*info->p == '`') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    
+                    type->mNoCallingDestructor = true;
+                    if(type->mNoSolvedGenericsType) {
+                        type->mNoSolvedGenericsType.mNoCallingDestructor = true;
                     }
                 }
                 else {

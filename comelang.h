@@ -25,64 +25,37 @@ typedef char*% string;
 ///////////////////////////////////////////////////////////////////////////
 
 #ifdef __PICO__
-no_output {
-#include "stdint.h"
-}
-no_output {
-#include "ctype.h"
-}
-no_output {
-#include "stdarg.h"
-}
-no_output {
-#include "string.h"
-}
-no_output {
-#include "stdlib.h"
-}
-no_output {
-#include "stdio.h"
-}
-no_output {
-#include "wchar.h"
-}
-no_output {
-#include "pico/stdlib.h"
-}
-no_output {
-#include "pico/time.h"
-}
-no_output {
-#include "hardware/irq.h"
-}
-no_output {
-#include "hardware/timer.h"
-}
-no_output {
-#include "hardware/uart.h"
-}
 #undef _GNU_SOURCE
 output {#define _GNU_SOURCE}
 #define _GNU_SOURCE
-output {#include "stdint.h"}
-output {#include "stdarg.h"}
-output {#include "string.h"}
 output {#include "stdlib.h"}
+output {#include "stdint.h"}
+output {#include "string.h"}
 output {#include "stdio.h"}
 output {#include "ctype.h"}
 output {#include "wchar.h"}
 output {#include "pico/stdlib.h"}
+output {#include "pico/stdio.h"}
 output {#include "pico/time.h"}
 output {#include "hardware/irq.h"}
 output {#include "hardware/timer.h"}
 output {#include "hardware/uart.h"}
+output {#include <stdarg.h>}
 
-#include "pico/mutex.h"
+//#include "pico/mutex.h"
 output {#include "pico/mutex.h"}
-#include "pico/multicore.h"
+//#include "pico/multicore.h"
 output {#include "pico/multicore.h"}
 
 #define MUTEX_INITIALIZER (mutex_t){ .locked = false, .core = NULL }
+#define NULL ((void*)0)
+
+typedef int size_t;
+typedef int uint32_t;
+
+typedef __builtin_va_list va_list;
+
+using comelang;
 
 ///////////////////////////////////////////////////////////////////////////
 // BARE METAL 
@@ -5165,12 +5138,10 @@ uniq char* getenv(const char* str)
     return NULL;
 }
 
-#endif
-
 ///////////////////////////////////////////////////////////////////////////
 // UNIX
 ///////////////////////////////////////////////////////////////////////////
-#if !defined(__BARE_METAL__) && !defined(__MINUX__)
+#else
 
 #define COME_STACKFRAME_MAX 16
 #define COME_STACKFRAME_MAX_GLOBAL 128
@@ -5247,7 +5218,7 @@ uniq bool string::equals(char* self, char* right);
 ///////////////////////////////////////////////////////////////////////////
 // DEBUG FUNCTIONS
 ///////////////////////////////////////////////////////////////////////////
-#if defined(__MINUX__) || defined(__BARE_METAL__)
+#if defined(__MINUX__) || defined(__BARE_METAL__) || defined(__PICO__)
 uniq void come_push_stackframe(char* sname, int sline, int id)
 {
 }
@@ -5332,7 +5303,7 @@ uniq void xassert(char* msg, bool test)
     puts("ok");
 }
 
-#if !defined(__MINUX__) && !defined(__BARE_METAL__)
+#if !defined(__MINUX__) && !defined(__BARE_METAL__) && !defined(__PICO__)
 record uniq bool die(char* msg)
 {
     perror(msg);
@@ -5375,7 +5346,7 @@ struct sMemHeader
     struct sMemHeader* prev;
     struct sMemHeader* free_next;
     
-#if !defined(__MINUX__) && !defined(__BARE_METAL__)
+#if !defined(__MINUX__) && !defined(__BARE_METAL__) && !defined(__PICO__)
     char* sname[COME_STACKFRAME_MAX];
     int sline[COME_STACKFRAME_MAX];
     int id[COME_STACKFRAME_MAX];
@@ -5393,7 +5364,7 @@ uniq int gNumFree = 0;
 
 #define HEAP_POOL_PAGE_SIZE 4096
 
-#if !defined(__MINUX__) && !defined(__BARE_METAL__)
+#if !defined(__MINUX__) && !defined(__BARE_METAL__) && !defined(__PICO__)
 
 #define INIT_PAGE_PAGE_SIZE 4
 #define NEW_ALLOC_SIZE 2
@@ -9785,7 +9756,7 @@ uniq int int::printf(int self, char* msg)
 //////////////////////////////
 /// base library(assert)
 //////////////////////////////
-#if !defined(__MINUX__) && !defined(__BARE_METAL__)
+#if !defined(__MINUX__) && !defined(__BARE_METAL__) && !defined(__PICO__)
 #undef assert
 
 uniq record int assert(int exp) version 2
@@ -10939,7 +10910,7 @@ uniq string string::chomp(char* str)
     return result;
 }
 
-#if !defined(__BARE_METAL__)
+#if !defined(__BARE_METAL__) && !defined(__PICO__)
 uniq string xrealpath(char* path)
 {
     if(path == null) {
@@ -11455,7 +11426,7 @@ uniq string string::sub_block(char* self, char* reg, void* parent, string (*bloc
 ////////////////////////////////////////////////////////////////////////////////
 // wchar_t
 ////////////////////////////////////////////////////////////////////////////////
-#if !defined(__MINUX__) && !defined(__BARE_METAL__)
+#if !defined(__MINUX__) && !defined(__BARE_METAL__) && !defined(__PICO__)
 
 #include <wchar.h>
 #include <libgen.h>
@@ -11965,7 +11936,7 @@ uniq string wchar_t::to_string(wchar_t wc)
 //////////////////////////////
 /// base library(IO-FILE)
 //////////////////////////////
-#if !defined(__BARE_METAL__) && !defined(__MINUX__)
+#if !defined(__MINUX__) && !defined(__BARE_METAL__) && !defined(__PICO__)
 uniq string FILE*::read(FILE* f)
 {
     if(f == null) {
