@@ -9052,6 +9052,11 @@ uniq bool xisdigit(char c)
     return (c >= '0' && c <= '9');
 }
 
+uniq bool xisspace(char c)
+{
+    return c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == 28 || c == 11;
+}
+
 uniq bool xisalnum(char c)
 {
     return xisalpha(c) || xisdigit(c);
@@ -10618,15 +10623,15 @@ uniq const char* matchtoken(regex_t* token, const char* text, match_context* ctx
 
 uniq int matchdigit(char c)
 {
-  return isdigit((unsigned char)c);
+  return xisdigit((unsigned char)c);
 }
 uniq int matchalpha(char c)
 {
-  return isalpha((unsigned char)c);
+  return xisalpha((unsigned char)c);
 }
 uniq int matchwhitespace(char c)
 {
-  return isspace((unsigned char)c);
+  return xisspace((unsigned char)c);
 }
 uniq int matchalphanum(char c)
 {

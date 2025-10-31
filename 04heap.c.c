@@ -2391,6 +2391,7 @@ float float_clone(float self);
 _Bool xisalpha(char c);
 _Bool xisblank(char c);
 _Bool xisdigit(char c);
+_Bool xisspace(char c);
 _Bool xisalnum(char c);
 _Bool xisascii(char c);
 _Bool xispunct(char c);
