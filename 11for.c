@@ -62,16 +62,11 @@ class sForNode extends sNodeBase
         sNode* expression_node = self.mExpressionNode;
         
         if(expression_node) {
-            node_conditional_compile(expression_node).elif {
+            transpile_conditional_with_free_right_object_value(expression_node).elif {
                 return false;
             }
             
-            add_come_code(info, "({");
-            
-            CVALUE*% conditional_value = get_value_from_stack(-1, info);
-            transpile_conditional_with_free_right_object_value(conditional_value);
-            
-            add_come_code(info, "});");
+            add_come_code(info, ";");
         }
         else {
             add_come_code(info, ";");
@@ -81,15 +76,11 @@ class sForNode extends sNodeBase
         sNode* expression_node2 = self.mExpressionNode2;
     
         if(expression_node2) {
-            add_come_code(info,"({");
-            node_conditional_compile(expression_node2).elif {
+            transpile_conditional_with_free_right_object_value(expression_node2).elif {
                 return false;
             }
             
-            CVALUE*% conditional_value = get_value_from_stack(-1, info);
-            transpile_conditional_with_free_right_object_value(conditional_value);
-            
-            add_come_code(info, "});");
+            add_come_code(info, ";");
         }
         else {
             add_come_code(info, ";");
@@ -98,15 +89,9 @@ class sForNode extends sNodeBase
         sNode* expression_node3 = self.mExpressionNode3;
         
         if(expression_node3) {
-            add_come_code(info, "({");
-            
-            node_conditional_compile(expression_node3).elif {
+            transpile_conditional_with_free_right_object_value(expression_node3).elif {
                 return false;
             }
-            
-            CVALUE*% conditional_value = get_value_from_stack(-1, info);
-            transpile_conditional_with_free_right_object_value(conditional_value);
-            add_come_code(info, "})");
         }
         
         add_come_code(info, "){\n");

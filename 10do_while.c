@@ -36,18 +36,16 @@ class sDoWhileNode extends sNodeBase
         transpile_block(block, null, null, info, false, true);
         
         /// compile expression ///
+        
+        add_come_code(info, "} while(");
+        
         sNode* expression_node = self.mExpressionNode;
     
-        node_conditional_compile(expression_node).elif {
+        transpile_conditional_with_free_right_object_value(expression_node).elif {
             return false;
         }
         
-        add_come_code(info, "} while(({");
-        
-        CVALUE*% conditional_value = get_value_from_stack(-1, info);
-        transpile_conditional_with_free_right_object_value(conditional_value);
-        
-        add_come_code(info, "}));\n");
+        add_come_code(info, ");\n");
         
         transpiler_clear_last_code(info);
         

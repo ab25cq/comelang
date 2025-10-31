@@ -19,11 +19,75 @@
 #define nullptr ((void*)0)
 typedef char*% string;
 
+
+///////////////////////////////////////////////////////////////////////////
+// PICO
+///////////////////////////////////////////////////////////////////////////
+
+#ifdef __PICO__
+no_output {
+#include "stdint.h"
+}
+no_output {
+#include "ctype.h"
+}
+no_output {
+#include "stdarg.h"
+}
+no_output {
+#include "string.h"
+}
+no_output {
+#include "stdlib.h"
+}
+no_output {
+#include "stdio.h"
+}
+no_output {
+#include "wchar.h"
+}
+no_output {
+#include "pico/stdlib.h"
+}
+no_output {
+#include "pico/time.h"
+}
+no_output {
+#include "hardware/irq.h"
+}
+no_output {
+#include "hardware/timer.h"
+}
+no_output {
+#include "hardware/uart.h"
+}
+#undef _GNU_SOURCE
+output {#define _GNU_SOURCE}
+#define _GNU_SOURCE
+output {#include "stdint.h"}
+output {#include "stdarg.h"}
+output {#include "string.h"}
+output {#include "stdlib.h"}
+output {#include "stdio.h"}
+output {#include "ctype.h"}
+output {#include "wchar.h"}
+output {#include "pico/stdlib.h"}
+output {#include "pico/time.h"}
+output {#include "hardware/irq.h"}
+output {#include "hardware/timer.h"}
+output {#include "hardware/uart.h"}
+
+#include "pico/mutex.h"
+output {#include "pico/mutex.h"}
+#include "pico/multicore.h"
+output {#include "pico/multicore.h"}
+
+#define MUTEX_INITIALIZER (mutex_t){ .locked = false, .core = NULL }
+
 ///////////////////////////////////////////////////////////////////////////
 // BARE METAL 
 ///////////////////////////////////////////////////////////////////////////
-
-#if defined(__BARE_METAL__)
+#elif defined(__BARE_METAL__)
 
 #include <stdint.h>
 #include <stdarg.h>
@@ -81,6 +145,12 @@ typedef struct mem_block {
 } mem_block_t;
 
 uniq mem_block_t *free_list = NULL;
+
+extern size_t brk(size_t size);
+uniq void exit(int status)
+{
+    while(1);
+}
 
 // POSIX 風 sbrk: 成功で「旧プログラムブレーク」を返す。失敗で (void*)-1, errno=ENOMEM
 uniq void *sbrk(ptrdiff_t increment) {
@@ -899,13 +969,6 @@ uniq int isalnum(int c) {
 
 extern void putchar(char c);
 
-/*
-uniq void putchar(char c)
-{
-    write(1, &c, 1);
-}
-*/
-
 uniq void puts(const char *s) {
     while (*s) {
         putchar(*s++);
@@ -1555,282 +1618,12 @@ uniq int sscanf(const char *str, const char *fmt, ...) {
     return assigned;
 }
 
-//──────────────────────────────────────────
-// Minimal curses-like implementation for MINUX9
-//──────────────────────────────────────────
 
-#define MINUX_CURSES_DEFAULT_ROWS 24
-#define MINUX_CURSES_DEFAULT_COLS 80
-
-typedef struct minux_window {
-    int rows;
-    int cols;
-    int beg_y;
-    int beg_x;
-    int cur_y;
-    int cur_x;
-    struct minux_window* parent;
-    int is_subwin;
-    int is_static;
-} WINDOW;
-
-extern WINDOW* stdscr;
-
-uniq WINDOW __stdscr;
-uniq WINDOW* stdscr = NULL;
-
-uniq int __curses_initialized = 0;
-uniq int __curses_stdout_is_tty = -1;
-
-uniq int curses_stdout_is_tty(void) {
-    if (__curses_stdout_is_tty < 0) {
-        __curses_stdout_is_tty = 1;
-    }
-    return __curses_stdout_is_tty;
-}
-
-uniq void curses_emit(const char* seq) {
-    if (!seq) return;
-    if (!curses_stdout_is_tty()) return;
-    puts(seq);
-}
-
-uniq void curses_init_window(WINDOW* win, int rows, int cols, int beg_y, int beg_x) {
-    if (!win) return;
-    if (rows <= 0) rows = 1;
-    if (cols <= 0) cols = 1;
-    if (beg_y < 0) beg_y = 0;
-    if (beg_x < 0) beg_x = 0;
-    win->rows = rows;
-    win->cols = cols;
-    win->beg_y = beg_y;
-    win->beg_x = beg_x;
-    win->cur_y = 0;
-    win->cur_x = 0;
-}
-
-uniq void curses_reset_window(WINDOW* win) {
-    curses_init_window(win, MINUX_CURSES_DEFAULT_ROWS, MINUX_CURSES_DEFAULT_COLS, 0, 0);
-    win->parent = NULL;
-    win->is_subwin = 0;
-    win->is_static = 1;
-}
-
-uniq WINDOW* initscr(void) {
-    if (__curses_initialized) {
-        return stdscr;
-    }
-
-    curses_reset_window(&__stdscr);
-    stdscr = &__stdscr;
-    __curses_initialized = 1;
-    __stdscr.is_static = 1;
-
-    (void)curses_stdout_is_tty();
-    curses_emit("\033[2J");   // clear screen
-    curses_emit("\033[H");    // move cursor to home position
-
-    return stdscr;
-}
-
-uniq int endwin(void) {
-    if (!__curses_initialized) {
-        return 0;
-    }
-    curses_emit("\033[0m");   // reset attributes
-    curses_emit("\033[?25h"); // ensure cursor is shown
-
-    stdscr = NULL;
-    __curses_initialized = 0;
-    __curses_stdout_is_tty = -1;
-    return 0;
-}
-
-uniq int wrefresh(WINDOW* win) {
-    if (!win) {
-        return -1;
-    }
-    return 0;
-}
-
-uniq int refresh(void) {
-    if (!stdscr) {
-        return -1;
-    }
-    return wrefresh(stdscr);
-}
-
-uniq WINDOW* newwin(int nlines, int ncols, int begin_y, int begin_x) {
-    if (!__curses_initialized) {
-        if (!initscr()) {
-            return NULL;
-        }
-    }
-
-    WINDOW* win = (WINDOW*)malloc(sizeof(WINDOW));
-    if (!win) {
-        return NULL;
-    }
-
-    int rows = (nlines > 0) ? nlines : MINUX_CURSES_DEFAULT_ROWS;
-    int cols = (ncols > 0) ? ncols : MINUX_CURSES_DEFAULT_COLS;
-    curses_init_window(win, rows, cols, begin_y, begin_x);
-    win->parent = NULL;
-    win->is_subwin = 0;
-    win->is_static = 0;
-    return win;
-}
-
-uniq WINDOW* subwin(WINDOW* win, int nlines, int ncols, int begin_y, int begin_x) {
-    if (!win) {
-        return NULL;
-    }
-
-    if (!__curses_initialized) {
-        if (!initscr()) {
-            return NULL;
-        }
-    }
-
-    int parent_top = win->beg_y;
-    int parent_left = win->beg_x;
-    int parent_bottom = parent_top + win->rows;
-    int parent_right = parent_left + win->cols;
-
-    if (begin_y < parent_top || begin_x < parent_left) {
-        return NULL;
-    }
-
-    if (begin_y >= parent_bottom || begin_x >= parent_right) {
-        return NULL;
-    }
-
-    int rows = nlines;
-    int cols = ncols;
-    if (rows <= 0) rows = parent_bottom - begin_y;
-    if (cols <= 0) cols = parent_right - begin_x;
-
-    if (rows <= 0 || cols <= 0) {
-        return NULL;
-    }
-
-    if (begin_y + rows > parent_bottom || begin_x + cols > parent_right) {
-        return NULL;
-    }
-
-    WINDOW* sub = (WINDOW*)malloc(sizeof(WINDOW));
-    if (!sub) {
-        return NULL;
-    }
-
-    curses_init_window(sub, rows, cols, begin_y, begin_x);
-    sub->parent = win;
-    sub->is_subwin = 1;
-    sub->is_static = 0;
-    return sub;
-}
-
-uniq int delwin(WINDOW* win) {
-    if (!win) {
-        return -1;
-    }
-    if (win == stdscr || win->is_static) {
-        return -1;
-    }
-    free(win);
-    return 0;
-}
-
-uniq int wmove(WINDOW* win, int y, int x) {
-    if (!win) {
-        return -1;
-    }
-    if (y < 0 || x < 0) {
-        return -1;
-    }
-    if (y >= win->rows || x >= win->cols) {
-        return -1;
-    }
-
-    win->cur_y = y;
-    win->cur_x = x;
-
-    if (curses_stdout_is_tty()) {
-        printf("\033[%d;%dH", win->beg_y + y + 1, win->beg_x + x + 1);
-    }
-    return 0;
-}
-
-uniq int __mvwprintfv(WINDOW* win, int y, int x, const char* fmt, va_list ap) {
-    if (!win || !fmt) {
-        return -1;
-    }
-
-    if (wmove(win, y, x) != 0) {
-        return -1;
-    }
-
-    va_list aq;
-    va_copy(aq, ap);
-    int wrote = printf(fmt, aq);
-    va_end(aq);
-
-    if (wrote >= 0) {
-        // Track cursor position best-effort for simple cases.
-        int next_x = x + wrote;
-        win->cur_y = y;
-        win->cur_x = (next_x < win->cols) ? next_x : win->cols - 1;
-    }
-
-    return wrote;
-}
-
-uniq int mvwprintf(WINDOW* win, int y, int x, const char* fmt, ...) {
-    va_list ap;
-    va_start(ap, fmt);
-    int wrote = __mvwprintfv(win, y, x, fmt, ap);
-    va_end(ap);
-    return wrote;
-}
-
-uniq int mvprintw(int y, int x, const char* fmt, ...) {
-    if (!stdscr) {
-        return -1;
-    }
-    va_list ap;
-    va_start(ap, fmt);
-    int wrote = __mvwprintfv(stdscr, y, x, fmt, ap);
-    va_end(ap);
-    return wrote;
-}
-
-uniq void setlocale(int n, char* m)
-{
-}
-
-uniq void perror(char* msg)
-{
-    puts(msg);
-    while(1); //_exit(3);
-}
-
-uniq void exit(int status)
-{
-    while(1);
-//    _exit(status);
-}
-
-uniq void* _impure_ptr(void)
-{
-    return NULL;
-}
-
-#endif
 
 ///////////////////////////////////////////////////////////////////////////
 // MINUX
 ///////////////////////////////////////////////////////////////////////////
-#if defined(__MINUX__)
+#elif defined(__MINUX__)
 
 #include <stdarg.h>
 #include <stddef.h>

@@ -50,16 +50,13 @@ class sIfNode extends sNodeBase
         int sline = info.sline;
         char* sname = info.sname;
         
-        add_come_code(info, "if(({");
+        add_come_code(info, "if(");
         
-        node_conditional_compile(expression_node).elif {
+        transpile_conditional_with_free_right_object_value(expression_node).elif {
             return false;
         }
         
-        CVALUE*% conditional_value = get_value_from_stack(-1, info);
-        transpile_conditional_with_free_right_object_value(conditional_value);
-        
-        add_come_code(info, "})) {\n");
+        add_come_code(info, ") {\n");
     
         sBlock* if_block = self.mIfBlock;
     
@@ -72,16 +69,13 @@ class sIfNode extends sNodeBase
             for(int i=0; i<elif_num; i++) {
                 sNode* expression_node2 = self.mElifExpressionNodes[i];
     
-                add_come_code(info, "else if(({");
+                add_come_code(info, "else if(");
                 
-                node_conditional_compile(expression_node2).elif {
+                transpile_conditional_with_free_right_object_value(expression_node2).elif {
                     return false;
                 }
                 
-                CVALUE*% conditional_value = get_value_from_stack(-1, info);
-                transpile_conditional_with_free_right_object_value(conditional_value);
-                
-                add_come_code(info, "})) {\n");
+                add_come_code(info, ") {\n");
                 
                 sBlock* elif_node_block = self.mElifBlocks[i];
                 
@@ -223,16 +217,13 @@ class sOrStatmentNode extends sNodeBase
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
         
-        add_come_code(info, "if(!({");
+        add_come_code(info, "if(!(");
     
-        node_conditional_compile(expression_node).elif {
+        transpile_conditional_with_free_right_object_value(expression_node).elif {
             return false;
         }
-    
-        CVALUE*% conditional_value = get_value_from_stack(-1, info);
-        transpile_conditional_with_free_right_object_value(conditional_value);
         
-        add_come_code(info, "})) {\n");
+        add_come_code(info, ")) {\n");
         sBlock* if_block = self.mIfBlock;
         transpile_block(if_block, null, null, info);
         add_come_code(info, "}\n");
@@ -272,16 +263,13 @@ class sAndStatmentNode extends sNodeBase
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
         
-        add_come_code(info, "if(({");
+        add_come_code(info, "if(");
     
-        node_conditional_compile(expression_node).elif {
+        transpile_conditional_with_free_right_object_value(expression_node).elif {
             return false;
         }
         
-        CVALUE*% conditional_value = get_value_from_stack(-1, info);
-        transpile_conditional_with_free_right_object_value(conditional_value);
-        
-        add_come_code(info, "})) {\n");
+        add_come_code(info, ") {\n");
     
         sBlock* if_block = self.mIfBlock;
         transpile_block(if_block, null, null, info);

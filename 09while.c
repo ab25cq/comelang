@@ -32,18 +32,15 @@ class sWhileNode extends sNodeBase
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
         
-        add_come_code(info, "while(({");
+        add_come_code(info, "while(");
     
-        node_conditional_compile(expression_node).elif {
+        transpile_conditional_with_free_right_object_value(expression_node).elif {
             return false;
         }
+        
+        add_come_code(info, ") {\n");
     
         sBlock* block = self.mBlock;
-        
-        CVALUE*% conditional_value = get_value_from_stack(-1, info);
-        transpile_conditional_with_free_right_object_value(conditional_value);
-        
-        add_come_code(info, "})) {\n");
     
         transpile_block(block, null, null, info, false, true);
         

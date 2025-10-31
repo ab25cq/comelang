@@ -2696,6 +2696,7 @@ char* sCurrentNode_kind(struct sCurrentNode* self);
 _Bool sCurrentNode_compile(struct sCurrentNode* self, struct sInfo* info);
 int err_msg(struct sInfo* info, char* msg, ...);
 int expected_next_character(char c, struct sInfo* info);
+_Bool node_conditional_compile(struct sNode* node, struct sInfo* info);
 char* make_type_name_string(struct sType* type, _Bool in_header, _Bool array_cast_pointer, _Bool no_pointer, struct sInfo* info, _Bool no_static, _Bool cast_type, _Bool no_alignas);
 char* make_come_type_name_string(struct sType* type, struct sInfo* info, _Bool original_type_name, _Bool no_static);
 char* make_come_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool no_static);
@@ -2893,8 +2894,7 @@ struct sNode* new_sname_node(struct sInfo* info);
 struct sNode* new_func_node(struct sInfo* info);
 static void write_source_file_position_to_source(struct sInfo* info);
 _Bool node_compile(struct sNode* node, struct sInfo* info);
-_Bool node_conditional_compile(struct sNode* node, struct sInfo* info);
-void transpile_conditional_with_free_right_object_value(struct CVALUE* conditional_value, struct sInfo* info);
+_Bool transpile_conditional_with_free_right_object_value(struct sNode* node, struct sInfo* info);
 static void CVALUE_finalize(struct CVALUE* self);
 static void sType_finalize(struct sType* self);
 static void list$1sType$ph$p_finalize(struct list$1sType$ph* self);
@@ -2998,13 +2998,11 @@ static char* list$1char$ph_operator_load_element(struct list$1char$ph* self, int
 
 // body function
 static void write_source_file_position_to_source(struct sInfo* info){
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
 void* __right_value0 = (void*)0;
 void* __right_value1 = (void*)0;
 void* __right_value2 = (void*)0;
-    if(({    (_conditional_value_X0=(gComeOriginalSourcePosition));    _conditional_value_X0;    })) {
-        if(({        (_conditional_value_X1=(info->writing_source_file_position));        _conditional_value_X1;        })) {
+    if(    gComeOriginalSourcePosition    ) {
+        if(        info->writing_source_file_position        ) {
             add_come_code(info,((char*)(__right_value2=xsprintf("# \%s \"\%s\"\n",((char*)(__right_value0=int_to_string(info->sline))),((char*)(__right_value1=string_to_string(info->sname)))))));
             (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
             (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
@@ -3047,123 +3045,126 @@ _Bool __result_obj__1;
     return __result_obj__1;
 }
 
-_Bool node_conditional_compile(struct sNode* node, struct sInfo* info){
+_Bool transpile_conditional_with_free_right_object_value(struct sNode* node, struct sInfo* info){
 _Bool in_conditional;
 _Bool Value;
-_Bool _conditional_value_X0;
+_Bool existance_right_value_object;
+void* __right_value0 = (void*)0;
+struct CVALUE* conditional_value;
+_Bool already_defined;
+int num_conditional;
     in_conditional=info->in_conditional;
     info->in_conditional=(_Bool)1;
     Value=node_compile(node,info);
-    if(({    (_conditional_value_X0=(Value));    _conditional_value_X0;    })) {
+    if(    !Value    ) {
         info->in_conditional=in_conditional;
         return (_Bool)1;
     }
     else {
     }
     info->in_conditional=in_conditional;
-    return (_Bool)0;
-}
-
-void transpile_conditional_with_free_right_object_value(struct CVALUE* conditional_value, struct sInfo* info){
-_Bool already_defined;
-int num_conditional;
-_Bool _conditional_value_X0;
+    existance_right_value_object=existance_free_right_value_objects(info);
+    conditional_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     add_last_code_to_source(info);
     already_defined=info->num_conditional<info->max_conditional;
     num_conditional=info->num_conditional;
-    if(({    (_conditional_value_X0=(already_defined));    _conditional_value_X0;    })) {
+    if(    !existance_right_value_object    ) {
+    }
+    else if(    already_defined    ) {
         info->num_conditional++;
     }
     else {
         add_come_code_at_function_head(info,"_Bool _conditional_value_X%d;\n",info->num_conditional++);
     }
-    if(({    (_conditional_value_X0=(info->num_conditional>=info->max_conditional));    _conditional_value_X0;    })) {
+    if(    info->num_conditional>=info->max_conditional    ) {
         info->max_conditional=info->num_conditional;
     }
-    if(({    (_conditional_value_X0=(string_operator_not_equals(conditional_value->c_value,"")));    _conditional_value_X0;    })) {
-        add_come_code(info,"(_conditional_value_X%d=(%s));",num_conditional,conditional_value->c_value);
+    if(    existance_right_value_object    ) {
+        if(        string_operator_not_equals(conditional_value->c_value,"")        ) {
+            add_come_code(info,"({(_conditional_value_X%d=(%s));",num_conditional,conditional_value->c_value);
+        }
+        free_right_value_objects(info,(_Bool)0);
+        if(        string_operator_not_equals(conditional_value->c_value,"")        ) {
+            add_come_code(info,"_conditional_value_X%d;})",num_conditional);
+        }
     }
-    free_right_value_objects(info,(_Bool)0);
-    if(({    (_conditional_value_X0=(string_operator_not_equals(conditional_value->c_value,"")));    _conditional_value_X0;    })) {
-        add_come_code(info,"_conditional_value_X%d;",num_conditional);
+    else {
+        add_come_code(info,"%s",conditional_value->c_value);
     }
     come_call_finalizer(CVALUE_finalize, conditional_value, (void*)0, (void*)0, 0, 0, 0, (void*)0);
 }
 
 static void CVALUE_finalize(struct CVALUE* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->c_value!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->c_value!=((void*)0)    ) {
         (self->c_value = come_decrement_ref_count(self->c_value, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->type!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->type!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->type, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->c_value_without_right_value_objects!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->c_value_without_right_value_objects!=((void*)0)    ) {
         (self->c_value_without_right_value_objects = come_decrement_ref_count(self->c_value_without_right_value_objects, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->c_value_without_cast_object_value!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->c_value_without_cast_object_value!=((void*)0)    ) {
         (self->c_value_without_cast_object_value = come_decrement_ref_count(self->c_value_without_cast_object_value, (void*)0, (void*)0, 0, 0, (void*)0));
     }
 }
 
 static void sType_finalize(struct sType* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mOriginalLoadVarType!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mOriginalLoadVarType!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->mOriginalLoadVarType, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mChannelType!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mChannelType!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->mChannelType, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mGenericsTypes!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mGenericsTypes!=((void*)0)    ) {
         come_call_finalizer(list$1sType$ph$p_finalize, self->mGenericsTypes, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mNoSolvedGenericsType!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mNoSolvedGenericsType!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->mNoSolvedGenericsType, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mSizeNum!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mSizeNum!=((void*)0)    ) {
         ((self->mSizeNum) ? self->mSizeNum = come_decrement_ref_count(self->mSizeNum, ((struct sNode*)self->mSizeNum)->finalize, ((struct sNode*)self->mSizeNum)->_protocol_obj, 0, 0,(void*)0):(void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mAlignas!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mAlignas!=((void*)0)    ) {
         ((self->mAlignas) ? self->mAlignas = come_decrement_ref_count(self->mAlignas, ((struct sNode*)self->mAlignas)->finalize, ((struct sNode*)self->mAlignas)->_protocol_obj, 0, 0,(void*)0):(void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mTupleName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mTupleName!=((void*)0)    ) {
         (self->mTupleName = come_decrement_ref_count(self->mTupleName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mAttribute!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mAttribute!=((void*)0)    ) {
         (self->mAttribute = come_decrement_ref_count(self->mAttribute, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mVarAttribute!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mVarAttribute!=((void*)0)    ) {
         (self->mVarAttribute = come_decrement_ref_count(self->mVarAttribute, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mAsmName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mAsmName!=((void*)0)    ) {
         (self->mAsmName = come_decrement_ref_count(self->mAsmName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mArrayNum!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mArrayNum!=((void*)0)    ) {
         come_call_finalizer(list$1sNode$ph$p_finalize, self->mArrayNum, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mOriginalTypeName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mOriginalTypeName!=((void*)0)    ) {
         (self->mOriginalTypeName = come_decrement_ref_count(self->mOriginalTypeName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mParamTypes!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mParamTypes!=((void*)0)    ) {
         come_call_finalizer(list$1sType$ph$p_finalize, self->mParamTypes, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mParamNames!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mParamNames!=((void*)0)    ) {
         come_call_finalizer(list$1char$ph$p_finalize, self->mParamNames, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mResultType!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mResultType!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->mResultType, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mTypeOfNode!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mTypeOfNode!=((void*)0)    ) {
         ((self->mTypeOfNode) ? self->mTypeOfNode = come_decrement_ref_count(self->mTypeOfNode, ((struct sNode*)self->mTypeOfNode)->finalize, ((struct sNode*)self->mTypeOfNode)->_protocol_obj, 0, 0,(void*)0):(void*)0);
     }
 }
 
 static void list$1sType$ph$p_finalize(struct list$1sType$ph* self){
 struct list_item$1sType$ph* it;
-_Bool _conditional_value_X0;
 struct list_item$1sType$ph* prev_it;
     it=self->head;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
+    while(    it!=((void*)0)    ) {
         prev_it=it;
         it=it->next;
         come_call_finalizer(list_item$1sType$ph$p_finalize, prev_it, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -3171,18 +3172,16 @@ struct list_item$1sType$ph* prev_it;
 }
 
 static void list_item$1sType$ph$p_finalize(struct list_item$1sType$ph* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->item!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->item!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
 }
 
 static void list$1sNode$ph$p_finalize(struct list$1sNode$ph* self){
 struct list_item$1sNode$ph* it;
-_Bool _conditional_value_X0;
 struct list_item$1sNode$ph* prev_it;
     it=self->head;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
+    while(    it!=((void*)0)    ) {
         prev_it=it;
         it=it->next;
         come_call_finalizer(list_item$1sNode$ph$p_finalize, prev_it, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -3190,18 +3189,16 @@ struct list_item$1sNode$ph* prev_it;
 }
 
 static void list_item$1sNode$ph$p_finalize(struct list_item$1sNode$ph* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->item!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->item!=((void*)0)    ) {
         ((self->item) ? self->item = come_decrement_ref_count(self->item, ((struct sNode*)self->item)->finalize, ((struct sNode*)self->item)->_protocol_obj, 0, 0,(void*)0):(void*)0);
     }
 }
 
 static void list$1char$ph$p_finalize(struct list$1char$ph* self){
 struct list_item$1char$ph* it;
-_Bool _conditional_value_X0;
 struct list_item$1char$ph* prev_it;
     it=self->head;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
+    while(    it!=((void*)0)    ) {
         prev_it=it;
         it=it->next;
         come_call_finalizer(list_item$1char$ph$p_finalize, prev_it, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -3209,18 +3206,16 @@ struct list_item$1char$ph* prev_it;
 }
 
 static void list_item$1char$ph$p_finalize(struct list_item$1char$ph* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->item!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->item!=((void*)0)    ) {
         (self->item = come_decrement_ref_count(self->item, (void*)0, (void*)0, 0, 0, (void*)0));
     }
 }
 
 static void clear_tmp_file(struct sInfo* info){
 char* input_file_name;
-_Bool _conditional_value_X0;
 void* __right_value0 = (void*)0;
     input_file_name=(char*)come_increment_ref_count(info->sname);
-    if(({    (_conditional_value_X0=(input_file_name!=((void*)0)&&string_operator_not_equals(input_file_name,"")));    _conditional_value_X0;    })) {
+    if(    input_file_name!=((void*)0)&&string_operator_not_equals(input_file_name,"")    ) {
         (void)system(((char*)(__right_value0=xsprintf("%s %s.*",RM,input_file_name))));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
     }
@@ -3229,10 +3224,9 @@ void* __right_value0 = (void*)0;
 
 static void clear_tmp_file_without_object_file(struct sInfo* info){
 char* input_file_name;
-_Bool _conditional_value_X0;
 void* __right_value0 = (void*)0;
     input_file_name=(char*)come_increment_ref_count(info->sname);
-    if(({    (_conditional_value_X0=(input_file_name!=((void*)0)&&string_operator_not_equals(input_file_name,"")));    _conditional_value_X0;    })) {
+    if(    input_file_name!=((void*)0)&&string_operator_not_equals(input_file_name,"")    ) {
         (void)system(((char*)(__right_value0=xsprintf("%s %s.i* %s.c*",RM,input_file_name,input_file_name))));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
     }
@@ -3241,10 +3235,9 @@ void* __right_value0 = (void*)0;
 
 static void clear_tmp_file_without_object_file_and_ccfile(struct sInfo* info){
 char* input_file_name;
-_Bool _conditional_value_X0;
 void* __right_value0 = (void*)0;
     input_file_name=(char*)come_increment_ref_count(info->sname);
-    if(({    (_conditional_value_X0=(input_file_name!=((void*)0)&&string_operator_not_equals(input_file_name,"")));    _conditional_value_X0;    })) {
+    if(    input_file_name!=((void*)0)&&string_operator_not_equals(input_file_name,"")    ) {
         (void)system(((char*)(__right_value0=xsprintf("%s %s.i* %s.c.out",RM,input_file_name,input_file_name))));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
     }
@@ -3254,14 +3247,11 @@ void* __right_value0 = (void*)0;
 static _Bool cpp(struct sInfo* info){
 char* input_file_name;
 char* output_file_name;
-_Bool _conditional_value_X0;
 void* __right_value0 = (void*)0;
 char* __dec_obj3;
 char* __dec_obj4;
 _Bool exist_common_h;
 struct __sFILE* Value;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
 int is_mac;
 int is_android;
 int is_debian;
@@ -3278,78 +3268,41 @@ char* __dec_obj5;
 char* cmd3;
 int rc;
 char* command2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 char* cmd2;
-_Bool _conditional_value_X5;
 int rc_0;
 char* command2_1;
-_Bool _conditional_value_X6;
-_Bool _conditional_value_X7;
 char* command2_2;
-_Bool _conditional_value_X8;
-_Bool _conditional_value_X9;
 char* cmd2_3;
-_Bool _conditional_value_X10;
 char* command2_4;
-_Bool _conditional_value_X11;
 int rc_5;
-_Bool _conditional_value_X12;
 char* command2_6;
-_Bool _conditional_value_X13;
-_Bool _conditional_value_X14;
 char* cmd2_7;
-_Bool _conditional_value_X15;
 char* command2_8;
-_Bool _conditional_value_X16;
 int rc_9;
-_Bool _conditional_value_X17;
 char* command2_10;
-_Bool _conditional_value_X18;
-_Bool _conditional_value_X19;
 char* cmd3_11;
-_Bool _conditional_value_X20;
 int rc_12;
 char* command2_13;
-_Bool _conditional_value_X21;
-_Bool _conditional_value_X22;
 char* cmd4;
-_Bool _conditional_value_X23;
 char* __dec_obj6;
 char* command2_14;
-_Bool _conditional_value_X24;
-_Bool _conditional_value_X25;
-_Bool _conditional_value_X26;
 char* cmd3_15;
-_Bool _conditional_value_X27;
 int rc_16;
 char* command2_17;
-_Bool _conditional_value_X28;
-_Bool _conditional_value_X29;
 char* cmd4_18;
 char* command2_19;
-_Bool _conditional_value_X30;
-_Bool _conditional_value_X31;
-_Bool _conditional_value_X32;
 char* cmd3_20;
-_Bool _conditional_value_X33;
 char* __dec_obj7;
-_Bool _conditional_value_X34;
 int rc_21;
 char* command2_22;
-_Bool _conditional_value_X35;
-_Bool _conditional_value_X36;
 char* cmd4_23;
-_Bool _conditional_value_X37;
 char* __dec_obj8;
 char* command2_24;
-_Bool _conditional_value_X38;
-_Bool _conditional_value_X39;
 _Bool __result_obj__2;
 output_file_name = (void*)0;
 memset(&is_raspi, 0, sizeof(int));
     input_file_name=(char*)come_increment_ref_count(info->sname);
-    if(({    (_conditional_value_X0=(!info->output_header_file&&info->output_file_name));    _conditional_value_X0;    })) {
+    if(    !info->output_header_file&&info->output_file_name    ) {
         __dec_obj3=output_file_name,
         output_file_name=(char*)come_increment_ref_count(string_operator_add(info->output_file_name,".i"));
         __dec_obj3 = come_decrement_ref_count(__dec_obj3, (void*)0, (void*)0, 0,0, (void*)0);
@@ -3363,16 +3316,16 @@ memset(&is_raspi, 0, sizeof(int));
     exist_common_h=(_Bool)0;
     {
         Value=fopen("common.h","r");
-        if(({        (_conditional_value_X0=(Value));        _conditional_value_X0;        })) {
+        if(        Value        ) {
             exist_common_h=(_Bool)1;
             fclose(Value);
         }
         else {
         }
-        if(({        (_conditional_value_X1=(string_operator_equals(info->output_file_name,"common.h")));        _conditional_value_X1;        })) {
+        if(        string_operator_equals(info->output_file_name,"common.h")        ) {
             exist_common_h=(_Bool)0;
         }
-        if(({        (_conditional_value_X2=(!gCommonHeader));        _conditional_value_X2;        })) {
+        if(        !gCommonHeader        ) {
             exist_common_h=(_Bool)0;
         }
     }
@@ -3385,20 +3338,20 @@ memset(&is_raspi, 0, sizeof(int));
     is_emb=info->emb_cpp;
     _32bit=(_Bool)0;
     f=fopen("/proc/cpuinfo","r");
-    if(({    (_conditional_value_X0=(f));    _conditional_value_X0;    })) {
+    if(    f    ) {
         fclose(f);
         is_raspi=system("cat /proc/cpuinfo | grep 'Model' | grep 'Raspberry Pi' > /dev/null 2> /dev/null ")==0;
-        if(({        (_conditional_value_X1=(is_raspi));        _conditional_value_X1;        })) {
+        if(        is_raspi        ) {
             _32bit=system(" lscpu | grep armv7l > /dev/null 2> /dev/null ")==0;
         }
     }
     else {
         is_raspi=0;
     }
-    if(({    (_conditional_value_X0=(is_pico||is_m5stack));    _conditional_value_X0;    })) {
+    if(    is_pico||is_m5stack    ) {
         _32bit=(_Bool)1;
     }
-    if(({    (_conditional_value_X0=(_32bit));    _conditional_value_X0;    })) {
+    if(    _32bit    ) {
         __right_value0 = (void*)0;
         __dec_obj5=info->cpp_option,
         info->cpp_option=(char*)come_increment_ref_count(string_operator_add(info->cpp_option,((char*)(__right_value1=xsprintf(" -D__32BIT_CPU__ ")))));
@@ -3406,136 +3359,136 @@ memset(&is_raspi, 0, sizeof(int));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
         (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(is_android));    _conditional_value_X0;    })) {
+    if(    is_android    ) {
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         cmd3=(char*)come_increment_ref_count(xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -I/data/data/com.termux/files/usr/include/mariadb -D__ANDROID__ %s %s > %s 2> %s.cpp.out",(((info->remove_comment)?(""):(" -C"))),info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",((exist_common_h)?(((char*)(__right_value0=__builtin_string(" -include common.h ")))):("")),input_file_name,output_file_name,output_file_name));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
-        if(({        (_conditional_value_X1=(info->verbose));        _conditional_value_X1;        })) {
+        if(        info->verbose        ) {
             puts(cmd3);
         }
         rc=system(cmd3);
         __right_value0 = (void*)0;
         command2=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.cpp.out 2>/dev/null",output_file_name));
-        if(({        (_conditional_value_X2=(info->verbose));        _conditional_value_X2;        })) {
+        if(        info->verbose        ) {
             puts(command2);
         }
         (void)system(command2);
-        if(({        (_conditional_value_X3=(rc!=0));        _conditional_value_X3;        })) {
+        if(        rc!=0        ) {
             printf("cpp failed(%s)\n",command2);
             exit(2);
         }
         (cmd3 = come_decrement_ref_count(cmd3, (void*)0, (void*)0, 0, 0, (void*)0));
         (command2 = come_decrement_ref_count(command2, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    else if(({    (_conditional_value_X4=(is_m5stack));    _conditional_value_X4;    })) {
+    else if(    is_m5stack    ) {
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         cmd2=(char*)come_increment_ref_count(xsprintf("xtensa-esp-elf-cpp -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__M5STACK__ %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h)?(((char*)(__right_value0=__builtin_string(" -include common.h ")))):("")),input_file_name,output_file_name,output_file_name));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
-        if(({        (_conditional_value_X5=(info->verbose));        _conditional_value_X5;        })) {
+        if(        info->verbose        ) {
             puts(cmd2);
         }
         rc_0=system(cmd2);
         __right_value0 = (void*)0;
         command2_1=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.cpp.out 2>/dev/null",output_file_name));
-        if(({        (_conditional_value_X6=(info->verbose));        _conditional_value_X6;        })) {
+        if(        info->verbose        ) {
             puts(command2_1);
         }
         (void)system(command2_1);
-        if(({        (_conditional_value_X7=(rc_0!=0));        _conditional_value_X7;        })) {
+        if(        rc_0!=0        ) {
             printf("failed to cpp(2) (%s)\n",cmd2);
             exit(5);
         }
         (command2_1 = come_decrement_ref_count(command2_1, (void*)0, (void*)0, 0, 0, (void*)0));
         __right_value0 = (void*)0;
         command2_2=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.cpp.out 2>/dev/null",output_file_name));
-        if(({        (_conditional_value_X8=(info->verbose));        _conditional_value_X8;        })) {
+        if(        info->verbose        ) {
             puts(command2_2);
         }
         (void)system(command2_2);
         (cmd2 = come_decrement_ref_count(cmd2, (void*)0, (void*)0, 0, 0, (void*)0));
         (command2_2 = come_decrement_ref_count(command2_2, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    else if(({    (_conditional_value_X9=(is_pico));    _conditional_value_X9;    })) {
+    else if(    is_pico    ) {
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         cmd2_3=(char*)come_increment_ref_count(xsprintf("arm-none-eabi-gcc -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__PICO__ %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h)?(((char*)(__right_value0=__builtin_string(" -include common.h ")))):("")),input_file_name,output_file_name,output_file_name));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
-        if(({        (_conditional_value_X10=(info->verbose));        _conditional_value_X10;        })) {
+        if(        info->verbose        ) {
             puts(cmd2_3);
         }
         __right_value0 = (void*)0;
         command2_4=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.cpp.out 2>/dev/null",output_file_name));
-        if(({        (_conditional_value_X11=(info->verbose));        _conditional_value_X11;        })) {
+        if(        info->verbose        ) {
             puts(command2_4);
         }
         (void)system(command2_4);
         rc_5=system(cmd2_3);
-        if(({        (_conditional_value_X12=(rc_5!=0));        _conditional_value_X12;        })) {
+        if(        rc_5!=0        ) {
             printf("failed to cpp(2) (%s)\n",cmd2_3);
             exit(5);
         }
         (command2_4 = come_decrement_ref_count(command2_4, (void*)0, (void*)0, 0, 0, (void*)0));
         __right_value0 = (void*)0;
         command2_6=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.cpp.out 2>/dev/null",output_file_name));
-        if(({        (_conditional_value_X13=(info->verbose));        _conditional_value_X13;        })) {
+        if(        info->verbose        ) {
             puts(command2_6);
         }
         (void)system(command2_6);
         (cmd2_3 = come_decrement_ref_count(cmd2_3, (void*)0, (void*)0, 0, 0, (void*)0));
         (command2_6 = come_decrement_ref_count(command2_6, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    else if(({    (_conditional_value_X14=(is_mac));    _conditional_value_X14;    })) {
+    else if(    is_mac    ) {
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         cmd2_7=(char*)come_increment_ref_count(xsprintf("gcc -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h)?(((char*)(__right_value0=__builtin_string(" -include common.h ")))):("")),input_file_name,output_file_name,output_file_name));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
-        if(({        (_conditional_value_X15=(info->verbose));        _conditional_value_X15;        })) {
+        if(        info->verbose        ) {
             puts(cmd2_7);
         }
         __right_value0 = (void*)0;
         command2_8=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.cpp.out 2>/dev/null",output_file_name));
-        if(({        (_conditional_value_X16=(info->verbose));        _conditional_value_X16;        })) {
+        if(        info->verbose        ) {
             puts(command2_8);
         }
         (void)system(command2_8);
         rc_9=system(cmd2_7);
-        if(({        (_conditional_value_X17=(rc_9!=0));        _conditional_value_X17;        })) {
+        if(        rc_9!=0        ) {
             printf("failed to cpp(2) (%s)\n",cmd2_7);
             exit(5);
         }
         (command2_8 = come_decrement_ref_count(command2_8, (void*)0, (void*)0, 0, 0, (void*)0));
         __right_value0 = (void*)0;
         command2_10=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.cpp.out 2>/dev/null",output_file_name));
-        if(({        (_conditional_value_X18=(info->verbose));        _conditional_value_X18;        })) {
+        if(        info->verbose        ) {
             puts(command2_10);
         }
         (void)system(command2_10);
         (cmd2_7 = come_decrement_ref_count(cmd2_7, (void*)0, (void*)0, 0, 0, (void*)0));
         (command2_10 = come_decrement_ref_count(command2_10, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    else if(({    (_conditional_value_X19=(is_emb));    _conditional_value_X19;    })) {
+    else if(    is_emb    ) {
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         cmd3_11=(char*)come_increment_ref_count(xsprintf("clang -E %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out",(((info->remove_comment)?(""):(" -C"))),info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",((exist_common_h)?(((char*)(__right_value0=__builtin_string(" -include common.h ")))):("")),input_file_name,output_file_name,output_file_name));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
-        if(({        (_conditional_value_X20=(info->verbose));        _conditional_value_X20;        })) {
+        if(        info->verbose        ) {
             puts(cmd3_11);
         }
         rc_12=system(cmd3_11);
         __right_value0 = (void*)0;
         command2_13=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.cpp.out 2>/dev/null",output_file_name));
-        if(({        (_conditional_value_X21=(info->verbose));        _conditional_value_X21;        })) {
+        if(        info->verbose        ) {
             puts(command2_13);
         }
         (void)system(command2_13);
-        if(({        (_conditional_value_X22=(rc_12!=0));        _conditional_value_X22;        })) {
+        if(        rc_12!=0        ) {
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             cmd4=(char*)come_increment_ref_count(xsprintf("clang -E %s -I. %s -DPREFIX=%s -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h)?(((char*)(__right_value0=__builtin_string(" -include common.h ")))):("")),input_file_name,output_file_name,output_file_name));
             (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
-            if(({            (_conditional_value_X23=(is_debian));            _conditional_value_X23;            })) {
+            if(            is_debian            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 __dec_obj6=cmd4,
@@ -3545,11 +3498,11 @@ memset(&is_raspi, 0, sizeof(int));
             }
             __right_value0 = (void*)0;
             command2_14=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.cpp.out 2>/dev/null",output_file_name));
-            if(({            (_conditional_value_X24=(info->verbose));            _conditional_value_X24;            })) {
+            if(            info->verbose            ) {
                 puts(command2_14);
             }
             (void)system(command2_14);
-            if(({            (_conditional_value_X25=(rc_12!=0));            _conditional_value_X25;            })) {
+            if(            rc_12!=0            ) {
                 printf("failed to cpp(2) (%s)\n",cmd4);
                 exit(5);
             }
@@ -3559,33 +3512,33 @@ memset(&is_raspi, 0, sizeof(int));
         (cmd3_11 = come_decrement_ref_count(cmd3_11, (void*)0, (void*)0, 0, 0, (void*)0));
         (command2_13 = come_decrement_ref_count(command2_13, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    else if(({    (_conditional_value_X26=(is_raspi));    _conditional_value_X26;    })) {
+    else if(    is_raspi    ) {
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         cmd3_15=(char*)come_increment_ref_count(xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__RASPBERRY_PI__ %s %s > %s 2> %s.cpp.out",(((info->remove_comment)?(""):(" -C"))),info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",((exist_common_h)?(((char*)(__right_value0=__builtin_string(" -include common.h ")))):("")),input_file_name,output_file_name,output_file_name));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
-        if(({        (_conditional_value_X27=(info->verbose));        _conditional_value_X27;        })) {
+        if(        info->verbose        ) {
             puts(cmd3_15);
         }
         rc_16=system(cmd3_15);
         __right_value0 = (void*)0;
         command2_17=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.cpp.out 2>/dev/null",output_file_name));
-        if(({        (_conditional_value_X28=(info->verbose));        _conditional_value_X28;        })) {
+        if(        info->verbose        ) {
             puts(command2_17);
         }
         (void)system(command2_17);
-        if(({        (_conditional_value_X29=(rc_16!=0));        _conditional_value_X29;        })) {
+        if(        rc_16!=0        ) {
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             cmd4_18=(char*)come_increment_ref_count(xsprintf("cpp %s -I. %s -DPREFIX=%s -I%s/include -D__RASPBERRY_PI__ %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h)?(((char*)(__right_value0=__builtin_string(" -include common.h ")))):("")),input_file_name,output_file_name,output_file_name));
             (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
             __right_value0 = (void*)0;
             command2_19=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.cpp.out 2>/dev/null",output_file_name));
-            if(({            (_conditional_value_X30=(info->verbose));            _conditional_value_X30;            })) {
+            if(            info->verbose            ) {
                 puts(command2_19);
             }
             (void)system(command2_19);
-            if(({            (_conditional_value_X31=(rc_16!=0));            _conditional_value_X31;            })) {
+            if(            rc_16!=0            ) {
                 printf("failed to cpp(2) (%s)\n",cmd4_18);
                 exit(5);
             }
@@ -3595,12 +3548,12 @@ memset(&is_raspi, 0, sizeof(int));
         (cmd3_15 = come_decrement_ref_count(cmd3_15, (void*)0, (void*)0, 0, 0, (void*)0));
         (command2_17 = come_decrement_ref_count(command2_17, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    else if(({    (_conditional_value_X32=(is_linux));    _conditional_value_X32;    })) {
+    else if(    is_linux    ) {
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         cmd3_20=(char*)come_increment_ref_count(xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out",(((info->remove_comment)?(""):(" -C"))),info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",((exist_common_h)?(((char*)(__right_value0=__builtin_string(" -include common.h ")))):("")),input_file_name,output_file_name,output_file_name));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
-        if(({        (_conditional_value_X33=(is_debian));        _conditional_value_X33;        })) {
+        if(        is_debian        ) {
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj7=cmd3_20,
@@ -3608,22 +3561,22 @@ memset(&is_raspi, 0, sizeof(int));
             __dec_obj7 = come_decrement_ref_count(__dec_obj7, (void*)0, (void*)0, 0,0, (void*)0);
             (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
         }
-        if(({        (_conditional_value_X34=(info->verbose));        _conditional_value_X34;        })) {
+        if(        info->verbose        ) {
             puts(cmd3_20);
         }
         rc_21=system(cmd3_20);
         __right_value0 = (void*)0;
         command2_22=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.cpp.out 2>/dev/null",output_file_name));
-        if(({        (_conditional_value_X35=(info->verbose));        _conditional_value_X35;        })) {
+        if(        info->verbose        ) {
             puts(command2_22);
         }
         (void)system(command2_22);
-        if(({        (_conditional_value_X36=(rc_21!=0));        _conditional_value_X36;        })) {
+        if(        rc_21!=0        ) {
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             cmd4_23=(char*)come_increment_ref_count(xsprintf("cpp %s -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h)?(((char*)(__right_value0=__builtin_string(" -include common.h ")))):("")),input_file_name,output_file_name,output_file_name));
             (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
-            if(({            (_conditional_value_X37=(is_debian));            _conditional_value_X37;            })) {
+            if(            is_debian            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 __dec_obj8=cmd4_23,
@@ -3633,11 +3586,11 @@ memset(&is_raspi, 0, sizeof(int));
             }
             __right_value0 = (void*)0;
             command2_24=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.cpp.out 2>/dev/null",output_file_name));
-            if(({            (_conditional_value_X38=(info->verbose));            _conditional_value_X38;            })) {
+            if(            info->verbose            ) {
                 puts(command2_24);
             }
             (void)system(command2_24);
-            if(({            (_conditional_value_X39=(rc_21!=0));            _conditional_value_X39;            })) {
+            if(            rc_21!=0            ) {
                 printf("failed to cpp(2) (%s)\n",cmd4_23);
                 exit(5);
             }
@@ -3657,7 +3610,6 @@ static _Bool compile(struct sInfo* info, _Bool output_object_file, struct list$1
 void* __right_value0 = (void*)0;
 char* input_file_name;
 char* output_file_name;
-_Bool _conditional_value_X0;
 char* __dec_obj9;
 char* __dec_obj10;
 int is_mac;
@@ -3665,15 +3617,12 @@ char* __dec_obj11;
 char* command;
 int rc;
 char* __dec_obj12;
-_Bool _conditional_value_X1;
 int rc_25;
-_Bool _conditional_value_X2;
 char* command2;
-_Bool _conditional_value_X3;
 _Bool __result_obj__6;
 output_file_name = (void*)0;
     input_file_name=(char*)come_increment_ref_count(string_operator_add(info->sname,".c"));
-    if(({    (_conditional_value_X0=(info->output_file_name&&output_object_file));    _conditional_value_X0;    })) {
+    if(    info->output_file_name&&output_object_file    ) {
         __right_value0 = (void*)0;
         __dec_obj9=output_file_name,
         output_file_name=(char*)come_increment_ref_count(__builtin_string(info->output_file_name));
@@ -3686,7 +3635,7 @@ output_file_name = (void*)0;
         __dec_obj10 = come_decrement_ref_count(__dec_obj10, (void*)0, (void*)0, 0,0, (void*)0);
     }
     is_mac=system("uname -a | grep Darwin 1> /dev/null 2>/dev/null")==0;
-    if(({    (_conditional_value_X0=(is_mac));    _conditional_value_X0;    })) {
+    if(    is_mac    ) {
         __right_value0 = (void*)0;
         __dec_obj11=info->clang_option,
         info->clang_option=(char*)come_increment_ref_count(string_operator_add(info->clang_option," -std=gnu17 "));
@@ -3694,24 +3643,24 @@ output_file_name = (void*)0;
     }
     __right_value0 = (void*)0;
     command=(char*)come_increment_ref_count(xsprintf("%s -o %s -c %s %s >> %s.out 2>&1",CC,output_file_name,input_file_name,info->clang_option,input_file_name));
-    if(({    (_conditional_value_X0=(info->verbose));    _conditional_value_X0;    })) {
+    if(    info->verbose    ) {
         puts(command);
     }
     rc=system(command);
-    if(({    (_conditional_value_X0=(rc!=0));    _conditional_value_X0;    })) {
+    if(    rc!=0    ) {
         __right_value0 = (void*)0;
         __dec_obj12=command,
         command=(char*)come_increment_ref_count(xsprintf("%s -o %s -c %s %s >> %s.out 2>&1","gcc",output_file_name,input_file_name,info->clang_option,input_file_name));
         __dec_obj12 = come_decrement_ref_count(__dec_obj12, (void*)0, (void*)0, 0,0, (void*)0);
-        if(({        (_conditional_value_X1=(info->verbose));        _conditional_value_X1;        })) {
+        if(        info->verbose        ) {
             puts(command);
         }
         rc_25=system(command);
-        if(({        (_conditional_value_X2=(rc_25!=0));        _conditional_value_X2;        })) {
+        if(        rc_25!=0        ) {
             printf("%s is faild\n",CC);
             __right_value0 = (void*)0;
             command2=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.out 2>/dev/null",input_file_name));
-            if(({            (_conditional_value_X3=(info->verbose));            _conditional_value_X3;            })) {
+            if(            info->verbose            ) {
                 puts(command2);
             }
             (void)system(command2);
@@ -3719,7 +3668,7 @@ output_file_name = (void*)0;
             (command2 = come_decrement_ref_count(command2, (void*)0, (void*)0, 0, 0, (void*)0));
         }
     }
-    if(({    (_conditional_value_X0=(!output_object_file));    _conditional_value_X0;    })) {
+    if(    !output_object_file    ) {
         __right_value0 = (void*)0;
         list$1char$ph_insert(object_files,0,(char*)come_increment_ref_count(__builtin_string(output_file_name)));
     }
@@ -3731,12 +3680,8 @@ output_file_name = (void*)0;
 }
 
 static struct list$1char$ph* list$1char$ph_insert(struct list$1char$ph* self, int position, char* item){
-_Bool _conditional_value_X0;
 int len;
 int i;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
 char* default_value;
 struct list$1char$ph* __result_obj__4;
 void* __right_value0 = (void*)0;
@@ -3750,15 +3695,15 @@ struct list_item$1char$ph* litem_30;
 char* __dec_obj18;
 struct list$1char$ph* __result_obj__5;
 default_value = (void*)0;
-    if(({    (_conditional_value_X0=(position<0));    _conditional_value_X0;    })) {
+    if(    position<0    ) {
         position+=self->len+1;
     }
-    if(({    (_conditional_value_X0=(position<0));    _conditional_value_X0;    })) {
+    if(    position<0    ) {
         position=0;
     }
-    if(({    (_conditional_value_X0=(self->len==0||position>=self->len));    _conditional_value_X0;    })) {
+    if(    self->len==0||position>=self->len    ) {
         len=self->len;
-        for(        ({        (_conditional_value_X1=(i=0));        _conditional_value_X1;        });        ({        (_conditional_value_X2=(i<position-len));        _conditional_value_X2;        });        ({        (_conditional_value_X3=(i++));        _conditional_value_X3;        })        ){
+        for(        i=0        ;        i<position-len        ;        i++        ){
             memset(&default_value,0,sizeof(char*));
             list$1char$ph_push_back(self,(char*)come_increment_ref_count(default_value));
             (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0, 0, (void*)0));
@@ -3768,8 +3713,8 @@ default_value = (void*)0;
         (item = come_decrement_ref_count(item, (void*)0, (void*)0, 0, 0, (void*)0));
         return __result_obj__4;
     }
-    if(({    (_conditional_value_X0=(position==0));    _conditional_value_X0;    })) {
-        litem=(struct list_item$1char$ph*)come_increment_ref_count(((struct list_item$1char$ph*)(__right_value0=(struct list_item$1char$ph*)come_calloc_v2(1, sizeof(struct list_item$1char$ph)*(1), "/usr/local/include/comelang.h", 6621, "struct list_item$1char$ph*"))));
+    if(    position==0    ) {
+        litem=(struct list_item$1char$ph*)come_increment_ref_count(((struct list_item$1char$ph*)(__right_value0=(struct list_item$1char$ph*)come_calloc_v2(1, sizeof(struct list_item$1char$ph)*(1), "/usr/local/include/comelang.h", 6414, "struct list_item$1char$ph*"))));
         litem->prev=((void*)0);
         litem->next=self->head;
         __dec_obj16=litem->item,
@@ -3779,9 +3724,9 @@ default_value = (void*)0;
         self->head=litem;
         self->len++;
     }
-    else if(({    (_conditional_value_X1=(self->len==1));    _conditional_value_X1;    })) {
+    else if(    self->len==1    ) {
         __right_value0 = (void*)0;
-        litem_28=(struct list_item$1char$ph*)come_increment_ref_count(((struct list_item$1char$ph*)(__right_value0=(struct list_item$1char$ph*)come_calloc_v2(1, sizeof(struct list_item$1char$ph)*(1), "/usr/local/include/comelang.h", 6633, "struct list_item$1char$ph*"))));
+        litem_28=(struct list_item$1char$ph*)come_increment_ref_count(((struct list_item$1char$ph*)(__right_value0=(struct list_item$1char$ph*)come_calloc_v2(1, sizeof(struct list_item$1char$ph)*(1), "/usr/local/include/comelang.h", 6426, "struct list_item$1char$ph*"))));
         litem_28->prev=self->head;
         litem_28->next=self->tail;
         __dec_obj17=litem_28->item,
@@ -3794,10 +3739,10 @@ default_value = (void*)0;
     else {
         it=self->head;
         i_29=0;
-        while(({        (_conditional_value_X2=(it!=((void*)0)));        _conditional_value_X2;        })) {
-            if(({            (_conditional_value_X3=(position==i_29));            _conditional_value_X3;            })) {
+        while(        it!=((void*)0)        ) {
+            if(            position==i_29            ) {
                 __right_value0 = (void*)0;
-                litem_30=(struct list_item$1char$ph*)come_increment_ref_count(((struct list_item$1char$ph*)(__right_value0=(struct list_item$1char$ph*)come_calloc_v2(1, sizeof(struct list_item$1char$ph)*(1), "/usr/local/include/comelang.h", 6649, "struct list_item$1char$ph*"))));
+                litem_30=(struct list_item$1char$ph*)come_increment_ref_count(((struct list_item$1char$ph*)(__right_value0=(struct list_item$1char$ph*)come_calloc_v2(1, sizeof(struct list_item$1char$ph)*(1), "/usr/local/include/comelang.h", 6442, "struct list_item$1char$ph*"))));
                 litem_30->prev=it->prev;
                 litem_30->next=it;
                 __dec_obj18=litem_30->item,
@@ -3817,18 +3762,16 @@ default_value = (void*)0;
 }
 
 static struct list$1char$ph* list$1char$ph_push_back(struct list$1char$ph* self, char* item){
-_Bool _conditional_value_X0;
 void* __right_value0 = (void*)0;
 struct list_item$1char$ph* litem;
 char* __dec_obj13;
-_Bool _conditional_value_X1;
 struct list_item$1char$ph* litem_26;
 char* __dec_obj14;
 struct list_item$1char$ph* litem_27;
 char* __dec_obj15;
 struct list$1char$ph* __result_obj__3;
-    if(({    (_conditional_value_X0=(self->len==0));    _conditional_value_X0;    })) {
-        litem=(struct list_item$1char$ph*)come_increment_ref_count(((struct list_item$1char$ph*)(__right_value0=(struct list_item$1char$ph*)come_calloc_v2(1, sizeof(struct list_item$1char$ph)*(1), "/usr/local/include/comelang.h", 6461, "struct list_item$1char$ph*"))));
+    if(    self->len==0    ) {
+        litem=(struct list_item$1char$ph*)come_increment_ref_count(((struct list_item$1char$ph*)(__right_value0=(struct list_item$1char$ph*)come_calloc_v2(1, sizeof(struct list_item$1char$ph)*(1), "/usr/local/include/comelang.h", 6254, "struct list_item$1char$ph*"))));
         litem->prev=((void*)0);
         litem->next=((void*)0);
         __dec_obj13=litem->item,
@@ -3837,9 +3780,9 @@ struct list$1char$ph* __result_obj__3;
         self->tail=litem;
         self->head=litem;
     }
-    else if(({    (_conditional_value_X1=(self->len==1));    _conditional_value_X1;    })) {
+    else if(    self->len==1    ) {
         __right_value0 = (void*)0;
-        litem_26=(struct list_item$1char$ph*)come_increment_ref_count(((struct list_item$1char$ph*)(__right_value0=(struct list_item$1char$ph*)come_calloc_v2(1, sizeof(struct list_item$1char$ph)*(1), "/usr/local/include/comelang.h", 6471, "struct list_item$1char$ph*"))));
+        litem_26=(struct list_item$1char$ph*)come_increment_ref_count(((struct list_item$1char$ph*)(__right_value0=(struct list_item$1char$ph*)come_calloc_v2(1, sizeof(struct list_item$1char$ph)*(1), "/usr/local/include/comelang.h", 6264, "struct list_item$1char$ph*"))));
         litem_26->prev=self->head;
         litem_26->next=((void*)0);
         __dec_obj14=litem_26->item,
@@ -3850,7 +3793,7 @@ struct list$1char$ph* __result_obj__3;
     }
     else {
         __right_value0 = (void*)0;
-        litem_27=(struct list_item$1char$ph*)come_increment_ref_count(((struct list_item$1char$ph*)(__right_value0=(struct list_item$1char$ph*)come_calloc_v2(1, sizeof(struct list_item$1char$ph)*(1), "/usr/local/include/comelang.h", 6481, "struct list_item$1char$ph*"))));
+        litem_27=(struct list_item$1char$ph*)come_increment_ref_count(((struct list_item$1char$ph*)(__right_value0=(struct list_item$1char$ph*)come_calloc_v2(1, sizeof(struct list_item$1char$ph)*(1), "/usr/local/include/comelang.h", 6274, "struct list_item$1char$ph*"))));
         litem_27->prev=self->tail;
         litem_27->next=((void*)0);
         __dec_obj15=litem_27->item,
@@ -3867,7 +3810,6 @@ struct list$1char$ph* __result_obj__3;
 
 static _Bool linker(struct sInfo* info, struct list$1char$ph* object_files){
 char* output_file_name;
-_Bool _conditional_value_X0;
 void* __right_value0 = (void*)0;
 char* __dec_obj19;
 char* __dec_obj20;
@@ -3878,8 +3820,6 @@ void* __right_value2 = (void*)0;
 char* __dec_obj21;
 struct list$1char$ph* o2_saved;
 char* it;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
 int is_mac_33;
 char* cmd;
 int rc;
@@ -3890,8 +3830,8 @@ int rc_37;
 int is_apline;
 int is_debian;
 int is_android;
-_Bool _conditional_value_X3;
 int Value;
+_Bool _conditional_value_X0;
 void* __right_value3 = (void*)0;
 void* __right_value4 = (void*)0;
 void* __right_value5 = (void*)0;
@@ -3901,7 +3841,7 @@ int Value_38;
 _Bool __result_obj__13;
 _Bool __result_obj__14;
     output_file_name=((void*)0);
-    if(({    (_conditional_value_X0=(info->output_file_name));    _conditional_value_X0;    })) {
+    if(    info->output_file_name    ) {
         __dec_obj19=output_file_name,
         output_file_name=(char*)come_increment_ref_count(__builtin_string(info->output_file_name));
         __dec_obj19 = come_decrement_ref_count(__dec_obj19, (void*)0, (void*)0, 0,0, (void*)0);
@@ -3913,10 +3853,10 @@ _Bool __result_obj__14;
         __dec_obj20 = come_decrement_ref_count(__dec_obj20, (void*)0, (void*)0, 0,0, (void*)0);
     }
     __right_value0 = (void*)0;
-    command=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 426, "struct buffer*"))));
+    command=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 432, "struct buffer*"))));
     buffer_append_format(command,"%s -o %s ",CC,output_file_name);
     is_mac=system("uname -a | grep Darwin 1> /dev/null 2>/dev/null")==0;
-    if(({    (_conditional_value_X0=(is_mac));    _conditional_value_X0;    })) {
+    if(    is_mac    ) {
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj21=info->linker_option,
@@ -3932,69 +3872,69 @@ _Bool __result_obj__14;
     (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
     (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
     (__right_value2 = come_decrement_ref_count(__right_value2, (void*)0, (void*)0, 1, 0, (void*)0));
-    for(    ({    (_conditional_value_X0=(o2_saved=object_files,it=list$1char$ph_begin(o2_saved)));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(!list$1char$ph_end(o2_saved)));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(it=list$1char$ph_next(o2_saved)));    _conditional_value_X2;    })    ){
+    for(    o2_saved=object_files,it=list$1char$ph_begin(o2_saved)    ;    !list$1char$ph_end(o2_saved)    ;    it=list$1char$ph_next(o2_saved)    ){
         buffer_append_format(command,"%s ",it);
     }
     is_mac_33=system("uname -a | grep Darwin 1> /dev/null 2>/dev/null")==0;
-    if(({    (_conditional_value_X0=(is_mac_33));    _conditional_value_X0;    })) {
+    if(    is_mac_33    ) {
         buffer_append_str(command," -L/opt/homebrew/opt/pcre/lib -L/opt/homebrew/opt/openssl/lib -L/opt/homebrew/opt/boehmgc/lib -L/opt/homebrew/opt/mysql/lib -L/opt/homebrew/opt/zstd/lib ");
     }
     __right_value0 = (void*)0;
     cmd=(char*)come_increment_ref_count(xsprintf("ls /usr/local/lib 1> /dev/null 2>/dev/null"));
     rc=system(cmd);
-    if(({    (_conditional_value_X0=(rc==0));    _conditional_value_X0;    })) {
+    if(    rc==0    ) {
         buffer_append_str(command," -L. -L/usr/local/lib ");
     }
     (cmd = come_decrement_ref_count(cmd, (void*)0, (void*)0, 0, 0, (void*)0));
     __right_value0 = (void*)0;
     cmd_34=(char*)come_increment_ref_count(xsprintf("ls %s/lib 1> /dev/null 2>/dev/null",getenv("HOME")));
     rc_35=system(cmd_34);
-    if(({    (_conditional_value_X0=(rc_35==0));    _conditional_value_X0;    })) {
+    if(    rc_35==0    ) {
         buffer_append_format(command," -L%s/lib ",getenv("HOME"));
     }
     (cmd_34 = come_decrement_ref_count(cmd_34, (void*)0, (void*)0, 0, 0, (void*)0));
     __right_value0 = (void*)0;
     cmd_36=(char*)come_increment_ref_count(xsprintf("ls %s/lib 1> /dev/null 2>/dev/null","/usr/local/"));
     rc_37=system(cmd_36);
-    if(({    (_conditional_value_X0=(rc_37==0));    _conditional_value_X0;    })) {
+    if(    rc_37==0    ) {
         buffer_append_format(command," -L%s/lib ","/usr/local/");
     }
     buffer_append_format(command," %s ",info->clang_option);
-    if(({    (_conditional_value_X0=(gComeStr));    _conditional_value_X0;    })) {
+    if(    gComeStr    ) {
         buffer_append_format(command," -lpcre ");
     }
-    if(({    (_conditional_value_X0=(gComeGC));    _conditional_value_X0;    })) {
+    if(    gComeGC    ) {
         buffer_append_str(command," -lgc ");
     }
-    if(({    (_conditional_value_X0=(gComePthread));    _conditional_value_X0;    })) {
+    if(    gComePthread    ) {
         buffer_append_str(command," -lpthread ");
     }
-    if(({    (_conditional_value_X0=(gComeNet));    _conditional_value_X0;    })) {
+    if(    gComeNet    ) {
         is_apline=system("which apk 1> /dev/null 2>/dev/null")==0;
         is_debian=system("uname -a | grep Debian 1> /dev/null 2>/dev/null")==0;
         is_android=system("uname -a | grep Android 1>/dev/null 2>/dev/null")==0;
-        if(({        (_conditional_value_X1=(is_android));        _conditional_value_X1;        })) {
+        if(        is_android        ) {
             buffer_append_str(command," -lssl -I/data/data/com.termux/files/usr/include/mariadb -lmariadb");
         }
-        else if(({        (_conditional_value_X2=(is_apline||is_debian));        _conditional_value_X2;        })) {
+        else if(        is_apline||is_debian        ) {
             buffer_append_str(command," -lssl -I/usr/include/mariadb -L/usr/lib -lmariadb");
         }
-        else if(({        (_conditional_value_X3=(is_mac_33));        _conditional_value_X3;        })) {
+        else if(        is_mac_33        ) {
             buffer_append_format(command," -lssl `mysql_config --cflags --libs`");
         }
         else {
             buffer_append_str(command," -lssl `mysql_config --cflags --libs`");
         }
     }
-    if(({    (_conditional_value_X0=(info->verbose));    _conditional_value_X0;    })) {
+    if(    info->verbose    ) {
         __right_value0 = (void*)0;
         puts(((char*)(__right_value0=buffer_to_string(command))));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
     }
     __right_value0 = (void*)0;
     Value=system(((char*)(__right_value0=buffer_to_string(command))));
-    if(({    (_conditional_value_X0=(Value));    (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
-    _conditional_value_X0;    })) {
+    if(    ({(_conditional_value_X0=(Value));    (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+    _conditional_value_X0;})    ) {
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __right_value2 = (void*)0;
@@ -4006,7 +3946,7 @@ _Bool __result_obj__14;
         (__right_value4 = come_decrement_ref_count(__right_value4, (void*)0, (void*)0, 1, 0, (void*)0));
         (__right_value5 = come_decrement_ref_count(__right_value5, (void*)0, (void*)0, 1, 0, (void*)0));
         Value_38=system(str);
-        if(({        (_conditional_value_X1=(Value_38));        _conditional_value_X1;        })) {
+        if(        Value_38        ) {
             printf("%s is failed\n",CC);
             __result_obj__13 = (_Bool)0;
             (str = come_decrement_ref_count(str, (void*)0, (void*)0, 0, 0, (void*)0));
@@ -4029,7 +3969,6 @@ _Bool __result_obj__14;
 }
 
 static char* list$1char$ph_begin(struct list$1char$ph* self){
-_Bool _conditional_value_X0;
 char* result;
 char* __result_obj__7;
 char* __result_obj__8;
@@ -4037,13 +3976,13 @@ char* result_31;
 char* __result_obj__9;
 result = (void*)0;
 result_31 = (void*)0;
-    if(({    (_conditional_value_X0=(self==((void*)0)));    _conditional_value_X0;    })) {
+    if(    self==((void*)0)    ) {
         memset(&result,0,sizeof(char*));
         __result_obj__7 = result;
         return __result_obj__7;
     }
     self->it=self->head;
-    if(({    (_conditional_value_X0=(self->it));    _conditional_value_X0;    })) {
+    if(    self->it    ) {
         __result_obj__8 = self->it->item;
         return __result_obj__8;
     }
@@ -4057,7 +3996,6 @@ static _Bool list$1char$ph_end(struct list$1char$ph* self){
 }
 
 static char* list$1char$ph_next(struct list$1char$ph* self){
-_Bool _conditional_value_X0;
 char* result;
 char* __result_obj__10;
 char* __result_obj__11;
@@ -4065,13 +4003,13 @@ char* result_32;
 char* __result_obj__12;
 result = (void*)0;
 result_32 = (void*)0;
-    if(({    (_conditional_value_X0=(self==((void*)0)||self->it==((void*)0)));    _conditional_value_X0;    })) {
+    if(    self==((void*)0)||self->it==((void*)0)    ) {
         memset(&result,0,sizeof(char*));
         __result_obj__10 = result;
         return __result_obj__10;
     }
     self->it=self->it->next;
-    if(({    (_conditional_value_X0=(self->it));    _conditional_value_X0;    })) {
+    if(    self->it    ) {
         __result_obj__11 = self->it->item;
         return __result_obj__11;
     }
@@ -4146,10 +4084,10 @@ _Bool __result_obj__15;
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
     Value=system(((char*)(__right_value1=xsprintf("mkdir \%s",((char*)(__right_value0=string_to_string(project_name)))))));
-    if(({    (_conditional_value_X0=(Value<0));    (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+    if(    ({(_conditional_value_X0=(Value<0));    (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
     (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
-    _conditional_value_X0;    })) {
-        (come_push_stackframe("02transpile.c", 523, 0),__exception_result_var_b1=die("mkdir error"), come_pop_stackframe(), __exception_result_var_b1);
+    _conditional_value_X0;})    ) {
+        (come_push_stackframe("02transpile.c", 529, 0),__exception_result_var_b1=die("mkdir error"), come_pop_stackframe(), __exception_result_var_b1);
     }
     else {
     }
@@ -4202,35 +4140,33 @@ _Bool __result_obj__15;
 
 _Bool run_project(int argc, char** argv){
 struct __sFILE* Value;
-_Bool _conditional_value_X0;
 int Value_39;
-_Bool _conditional_value_X1;
 _Bool __exception_result_var_b2;
 int Value_40;
 _Bool __exception_result_var_b3;
 int Value_41;
 _Bool __exception_result_var_b4;
     Value=fopen("common.h","r");
-    if(({    (_conditional_value_X0=(Value));    _conditional_value_X0;    })) {
+    if(    Value    ) {
         fclose(Value);
     }
     else {
         Value_39=system("make header");
-        if(({        (_conditional_value_X1=(Value_39<0));        _conditional_value_X1;        })) {
-            (come_push_stackframe("02transpile.c", 629, 1),__exception_result_var_b2=die("system"), come_pop_stackframe(), __exception_result_var_b2);
+        if(        Value_39<0        ) {
+            (come_push_stackframe("02transpile.c", 635, 1),__exception_result_var_b2=die("system"), come_pop_stackframe(), __exception_result_var_b2);
         }
         else {
         }
     }
     Value_40=system("make compile -j$(sysctl -n hw.logicalcpu)");
-    if(({    (_conditional_value_X0=(Value_40<0));    _conditional_value_X0;    })) {
-        (come_push_stackframe("02transpile.c", 635, 2),__exception_result_var_b3=die("system"), come_pop_stackframe(), __exception_result_var_b3);
+    if(    Value_40<0    ) {
+        (come_push_stackframe("02transpile.c", 641, 2),__exception_result_var_b3=die("system"), come_pop_stackframe(), __exception_result_var_b3);
     }
     else {
     }
     Value_41=system("make run");
-    if(({    (_conditional_value_X0=(Value_41<0));    _conditional_value_X0;    })) {
-        (come_push_stackframe("02transpile.c", 644, 3),__exception_result_var_b4=die("system"), come_pop_stackframe(), __exception_result_var_b4);
+    if(    Value_41<0    ) {
+        (come_push_stackframe("02transpile.c", 650, 3),__exception_result_var_b4=die("system"), come_pop_stackframe(), __exception_result_var_b4);
     }
     else {
     }
@@ -4239,11 +4175,10 @@ _Bool __exception_result_var_b4;
 
 _Bool make_header_project(int argc, char** argv){
 int Value;
-_Bool _conditional_value_X0;
 _Bool __exception_result_var_b5;
     Value=system("make header");
-    if(({    (_conditional_value_X0=(Value<0));    _conditional_value_X0;    })) {
-        (come_push_stackframe("02transpile.c", 653, 4),__exception_result_var_b5=die("system"), come_pop_stackframe(), __exception_result_var_b5);
+    if(    Value<0    ) {
+        (come_push_stackframe("02transpile.c", 659, 4),__exception_result_var_b5=die("system"), come_pop_stackframe(), __exception_result_var_b5);
     }
     else {
     }
@@ -4252,27 +4187,25 @@ _Bool __exception_result_var_b5;
 
 _Bool compile_project(int argc, char** argv){
 struct __sFILE* Value;
-_Bool _conditional_value_X0;
 int Value_42;
-_Bool _conditional_value_X1;
 _Bool __exception_result_var_b6;
 int Value_43;
 _Bool __exception_result_var_b7;
     Value=fopen("common.h","r");
-    if(({    (_conditional_value_X0=(Value));    _conditional_value_X0;    })) {
+    if(    Value    ) {
         fclose(Value);
     }
     else {
         Value_42=system("make header");
-        if(({        (_conditional_value_X1=(Value_42<0));        _conditional_value_X1;        })) {
-            (come_push_stackframe("02transpile.c", 666, 5),__exception_result_var_b6=die("system"), come_pop_stackframe(), __exception_result_var_b6);
+        if(        Value_42<0        ) {
+            (come_push_stackframe("02transpile.c", 672, 5),__exception_result_var_b6=die("system"), come_pop_stackframe(), __exception_result_var_b6);
         }
         else {
         }
     }
     Value_43=system("make compile -j$(sysctl -n hw.logicalcpu)");
-    if(({    (_conditional_value_X0=(Value_43<0));    _conditional_value_X0;    })) {
-        (come_push_stackframe("02transpile.c", 672, 6),__exception_result_var_b7=die("system"), come_pop_stackframe(), __exception_result_var_b7);
+    if(    Value_43<0    ) {
+        (come_push_stackframe("02transpile.c", 678, 6),__exception_result_var_b7=die("system"), come_pop_stackframe(), __exception_result_var_b7);
     }
     else {
     }
@@ -4281,27 +4214,25 @@ _Bool __exception_result_var_b7;
 
 _Bool debug_run_project(int argc, char** argv){
 struct __sFILE* Value;
-_Bool _conditional_value_X0;
 int Value_44;
-_Bool _conditional_value_X1;
 _Bool __exception_result_var_b8;
 int Value_45;
 _Bool __exception_result_var_b9;
     Value=fopen("common.h","r");
-    if(({    (_conditional_value_X0=(Value));    _conditional_value_X0;    })) {
+    if(    Value    ) {
         fclose(Value);
     }
     else {
         Value_44=system("make header");
-        if(({        (_conditional_value_X1=(Value_44<0));        _conditional_value_X1;        })) {
-            (come_push_stackframe("02transpile.c", 690, 7),__exception_result_var_b8=die("system"), come_pop_stackframe(), __exception_result_var_b8);
+        if(        Value_44<0        ) {
+            (come_push_stackframe("02transpile.c", 696, 7),__exception_result_var_b8=die("system"), come_pop_stackframe(), __exception_result_var_b8);
         }
         else {
         }
     }
     Value_45=system("make debug -j$(sysctl -n hw.logicalcpu)");
-    if(({    (_conditional_value_X0=(Value_45<0));    _conditional_value_X0;    })) {
-        (come_push_stackframe("02transpile.c", 696, 8),__exception_result_var_b9=die("system"), come_pop_stackframe(), __exception_result_var_b9);
+    if(    Value_45<0    ) {
+        (come_push_stackframe("02transpile.c", 702, 8),__exception_result_var_b9=die("system"), come_pop_stackframe(), __exception_result_var_b9);
     }
     else {
     }
@@ -4310,11 +4241,10 @@ _Bool __exception_result_var_b9;
 
 _Bool clean_project(int argc, char** argv){
 int Value;
-_Bool _conditional_value_X0;
 _Bool __exception_result_var_b10;
     Value=system("make clean");
-    if(({    (_conditional_value_X0=(Value<0));    _conditional_value_X0;    })) {
-        (come_push_stackframe("02transpile.c", 710, 9),__exception_result_var_b10=die("system"), come_pop_stackframe(), __exception_result_var_b10);
+    if(    Value<0    ) {
+        (come_push_stackframe("02transpile.c", 716, 9),__exception_result_var_b10=die("system"), come_pop_stackframe(), __exception_result_var_b10);
     }
     else {
     }
@@ -4328,10 +4258,10 @@ int Value;
 _Bool _conditional_value_X0;
 _Bool __exception_result_var_b11;
     Value=system(((char*)(__right_value1=xsprintf("make install DESTDIR=\%s",((char*)(__right_value0=charp_to_string(prefix)))))));
-    if(({    (_conditional_value_X0=(Value<0));    (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+    if(    ({(_conditional_value_X0=(Value<0));    (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
     (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
-    _conditional_value_X0;    })) {
-        (come_push_stackframe("02transpile.c", 719, 10),__exception_result_var_b11=die("system"), come_pop_stackframe(), __exception_result_var_b11);
+    _conditional_value_X0;})    ) {
+        (come_push_stackframe("02transpile.c", 725, 10),__exception_result_var_b11=die("system"), come_pop_stackframe(), __exception_result_var_b11);
     }
     else {
     }
@@ -4344,9 +4274,6 @@ void* __right_value1 = (void*)0;
 void* __right_value2 = (void*)0;
 void* __right_value3 = (void*)0;
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
 char* generics_type;
 int i_55;
 char* generics_type_56;
@@ -4357,96 +4284,96 @@ char* __dec_obj22;
 struct sClass* klass;
 void* __right_value4 = (void*)0;
 void* __right_value5 = (void*)0;
-    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("int")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 728, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("int")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
+    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("int")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 734, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("int")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
     __right_value2 = (void*)0;
     __right_value3 = (void*)0;
-    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("short")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 729, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("short")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
+    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("short")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 735, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("short")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
     __right_value2 = (void*)0;
     __right_value3 = (void*)0;
-    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("long")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 730, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("long")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
+    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("long")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 736, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("long")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
     __right_value2 = (void*)0;
     __right_value3 = (void*)0;
-    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("char")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 731, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("char")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
+    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("char")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 737, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("char")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
     __right_value2 = (void*)0;
     __right_value3 = (void*)0;
-    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("bool")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 732, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("bool")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
+    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("bool")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 738, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("bool")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
     __right_value2 = (void*)0;
     __right_value3 = (void*)0;
-    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("_Bool")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 733, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("_Bool")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
+    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("_Bool")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 739, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("_Bool")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
     __right_value2 = (void*)0;
     __right_value3 = (void*)0;
-    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("void")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 734, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("void")),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
+    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("void")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 740, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("void")),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
     __right_value2 = (void*)0;
     __right_value3 = (void*)0;
-    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("float")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 735, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("float")),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,-1,-1,(_Bool)0,(_Bool)0,info)));
+    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("float")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 741, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("float")),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,-1,-1,(_Bool)0,(_Bool)0,info)));
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
     __right_value2 = (void*)0;
     __right_value3 = (void*)0;
-    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("double")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 736, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("double")),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,-1,-1,(_Bool)0,(_Bool)0,info)));
+    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("double")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 742, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("double")),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,-1,-1,(_Bool)0,(_Bool)0,info)));
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
     __right_value2 = (void*)0;
     __right_value3 = (void*)0;
-    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("_Float16")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 737, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("_Float16")),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,-1,-1,(_Bool)0,(_Bool)0,info)));
+    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("_Float16")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 743, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("_Float16")),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,-1,-1,(_Bool)0,(_Bool)0,info)));
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
     __right_value2 = (void*)0;
     __right_value3 = (void*)0;
-    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("lambda")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 738, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("lambda")),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
+    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("lambda")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 744, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("lambda")),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
     __right_value2 = (void*)0;
     __right_value3 = (void*)0;
-    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("__uint128_t")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 739, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("__uint128_t")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
+    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("__uint128_t")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 745, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("__uint128_t")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
     __right_value0 = (void*)0;
     __right_value1 = (void*)0;
     __right_value2 = (void*)0;
     __right_value3 = (void*)0;
-    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("__int128")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 740, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("__int128")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<12));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
+    map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("__int128")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 746, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("__int128")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
+    for(    i=0    ;    i<12    ;    i++    ){
         __right_value0 = (void*)0;
         generics_type=(char*)come_increment_ref_count(xsprintf("__generics_type%d",i));
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
-        map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(generics_type),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 743, "struct sClass*")),(char*)come_increment_ref_count(generics_type),(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,i,-1,(_Bool)0,(_Bool)0,info)));
+        map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(generics_type),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 749, "struct sClass*")),(char*)come_increment_ref_count(generics_type),(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,i,-1,(_Bool)0,(_Bool)0,info)));
         (generics_type = come_decrement_ref_count(generics_type, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    for(    ({    (_conditional_value_X0=(i_55=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_55<7));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_55++));    _conditional_value_X2;    })    ){
+    for(    i_55=0    ;    i_55<7    ;    i_55++    ){
         __right_value0 = (void*)0;
         generics_type_56=(char*)come_increment_ref_count(xsprintf("__mgenerics_type%d",i_55));
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
-        map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(generics_type_56),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 747, "struct sClass*")),(char*)come_increment_ref_count(generics_type_56),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,-1,i_55,(_Bool)0,(_Bool)0,info)));
+        map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(generics_type_56),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 753, "struct sClass*")),(char*)come_increment_ref_count(generics_type_56),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,-1,i_55,(_Bool)0,(_Bool)0,info)));
         (generics_type_56 = come_decrement_ref_count(generics_type_56, (void*)0, (void*)0, 0, 0, (void*)0));
     }
     is_mac=system("uname -a | grep Darwin 1> /dev/null 2>/dev/null")==0;
-    if(({    (_conditional_value_X0=(is_mac));    _conditional_value_X0;    })) {
+    if(    is_mac    ) {
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __right_value2 = (void*)0;
         __right_value3 = (void*)0;
-        map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("__builtin_va_list")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 753, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("__builtin_va_list")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
+        map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("__builtin_va_list")),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 759, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("__builtin_va_list")),(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info)));
         __right_value0 = (void*)0;
         type_name=(char*)come_increment_ref_count(__builtin_string("__builtin_va_list"));
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __right_value2 = (void*)0;
-        type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "02transpile.c", 757, "struct sType*")),(char*)come_increment_ref_count(xsprintf("__builtin_va_list")),(_Bool)0,info));
+        type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "02transpile.c", 763, "struct sType*")),(char*)come_increment_ref_count(xsprintf("__builtin_va_list")),(_Bool)0,info));
         __right_value0 = (void*)0;
         __dec_obj22=type->mOriginalTypeName,
         type->mOriginalTypeName=(char*)come_increment_ref_count(__builtin_string("__builtin_va_list"));
@@ -4460,40 +4387,40 @@ void* __right_value5 = (void*)0;
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __right_value2 = (void*)0;
-        klass=(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 763, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("__builtin_va_list")),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info));
+        klass=(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "02transpile.c", 769, "struct sClass*")),(char*)come_increment_ref_count(xsprintf("__builtin_va_list")),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info));
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __right_value2 = (void*)0;
         __right_value3 = (void*)0;
-        list$1tuple2$2char$phsType$ph$ph_push_back(klass->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "02transpile.c", 765, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string("v1")),(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "02transpile.c", 765, "struct sType*")),(char*)come_increment_ref_count(xsprintf("char*")),(_Bool)0,info)))));
-        __right_value0 = (void*)0;
-        __right_value1 = (void*)0;
-        __right_value2 = (void*)0;
-        __right_value3 = (void*)0;
-        __right_value4 = (void*)0;
-        __right_value5 = (void*)0;
-        list$1tuple2$2char$phsType$ph$ph_push_back(klass->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "02transpile.c", 766, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string("v2")),(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "02transpile.c", 766, "struct sType*")),(char*)come_increment_ref_count(xsprintf("char*")),(_Bool)0,info)))));
+        list$1tuple2$2char$phsType$ph$ph_push_back(klass->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "02transpile.c", 771, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string("v1")),(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "02transpile.c", 771, "struct sType*")),(char*)come_increment_ref_count(xsprintf("char*")),(_Bool)0,info)))));
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __right_value2 = (void*)0;
         __right_value3 = (void*)0;
         __right_value4 = (void*)0;
         __right_value5 = (void*)0;
-        list$1tuple2$2char$phsType$ph$ph_push_back(klass->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "02transpile.c", 767, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string("v3")),(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "02transpile.c", 767, "struct sType*")),(char*)come_increment_ref_count(xsprintf("char*")),(_Bool)0,info)))));
+        list$1tuple2$2char$phsType$ph$ph_push_back(klass->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "02transpile.c", 772, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string("v2")),(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "02transpile.c", 772, "struct sType*")),(char*)come_increment_ref_count(xsprintf("char*")),(_Bool)0,info)))));
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __right_value2 = (void*)0;
         __right_value3 = (void*)0;
         __right_value4 = (void*)0;
         __right_value5 = (void*)0;
-        list$1tuple2$2char$phsType$ph$ph_push_back(klass->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "02transpile.c", 768, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string("v4")),(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "02transpile.c", 768, "struct sType*")),(char*)come_increment_ref_count(xsprintf("int")),(_Bool)0,info)))));
+        list$1tuple2$2char$phsType$ph$ph_push_back(klass->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "02transpile.c", 773, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string("v3")),(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "02transpile.c", 773, "struct sType*")),(char*)come_increment_ref_count(xsprintf("char*")),(_Bool)0,info)))));
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __right_value2 = (void*)0;
         __right_value3 = (void*)0;
         __right_value4 = (void*)0;
         __right_value5 = (void*)0;
-        list$1tuple2$2char$phsType$ph$ph_push_back(klass->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "02transpile.c", 769, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string("v5")),(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "02transpile.c", 769, "struct sType*")),(char*)come_increment_ref_count(xsprintf("int")),(_Bool)0,info)))));
+        list$1tuple2$2char$phsType$ph$ph_push_back(klass->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "02transpile.c", 774, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string("v4")),(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "02transpile.c", 774, "struct sType*")),(char*)come_increment_ref_count(xsprintf("int")),(_Bool)0,info)))));
+        __right_value0 = (void*)0;
+        __right_value1 = (void*)0;
+        __right_value2 = (void*)0;
+        __right_value3 = (void*)0;
+        __right_value4 = (void*)0;
+        __right_value5 = (void*)0;
+        list$1tuple2$2char$phsType$ph$ph_push_back(klass->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "02transpile.c", 775, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string("v5")),(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "02transpile.c", 775, "struct sType*")),(char*)come_increment_ref_count(xsprintf("int")),(_Bool)0,info)))));
         __right_value0 = (void*)0;
         map$2char$phsClass$ph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string("__builtin_va_list")),(struct sClass*)come_increment_ref_count(klass));
         come_call_finalizer(sClass_finalize, klass, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -4501,29 +4428,20 @@ void* __right_value5 = (void*)0;
 }
 
 static struct map$2char$phsClass$ph* map$2char$phsClass$ph_insert(struct map$2char$phsClass$ph* self, char* key, struct sClass* item){
-_Bool _conditional_value_X0;
 unsigned int hash;
 unsigned int it;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
-_Bool _conditional_value_X5;
-_Bool _conditional_value_X6;
-_Bool _conditional_value_X7;
-_Bool _conditional_value_X8;
 _Bool same_key_exist;
 char* it2;
 struct map$2char$phsClass$ph* __result_obj__30;
-    if(({    (_conditional_value_X0=(self->len*10>=self->size));    _conditional_value_X0;    })) {
+    if(    self->len*10>=self->size    ) {
         map$2char$phsClass$ph_rehash(self);
     }
     hash=string_get_hash_key(((char*)key))%self->size;
     it=hash;
-    while(({    (_conditional_value_X0=((_Bool)1));    _conditional_value_X0;    })) {
-        if(({        (_conditional_value_X1=(self->item_existance[it]));        _conditional_value_X1;        })) {
-            if(({            (_conditional_value_X2=(string_equals(self->keys[it],key)));            _conditional_value_X2;            })) {
-                if(({                (_conditional_value_X3=(1));                _conditional_value_X3;                })) {
+    while(    (_Bool)1    ) {
+        if(        self->item_existance[it]        ) {
+            if(            string_equals(self->keys[it],key)            ) {
+                if(                1                ) {
                     list$1char$ph_remove(self->key_list,self->keys[it]);
                     (self->keys[it] = come_decrement_ref_count(self->keys[it], (void*)0, (void*)0, 0, 0, (void*)0));
                     self->keys[it]=(char*)come_increment_ref_count(key);
@@ -4532,7 +4450,7 @@ struct map$2char$phsClass$ph* __result_obj__30;
                     list$1char$ph_remove(self->key_list,self->keys[it]);
                     self->keys[it]=key;
                 }
-                if(({                (_conditional_value_X4=(1));                _conditional_value_X4;                })) {
+                if(                1                ) {
                     come_call_finalizer(sClass_finalize, self->items[it], (void*)0, (void*)0, 0, 0, 0, (void*)0);
                     self->items[it]=(struct sClass*)come_increment_ref_count(item);
                 }
@@ -4542,10 +4460,10 @@ struct map$2char$phsClass$ph* __result_obj__30;
                 break;
             }
             it++;
-            if(({            (_conditional_value_X5=(it>=self->size));            _conditional_value_X5;            })) {
+            if(            it>=self->size            ) {
                 it=0;
             }
-            else if(({            (_conditional_value_X6=(it==hash));            _conditional_value_X6;            })) {
+            else if(            it==hash            ) {
                 printf("unexpected error in map.insert\n");
                 stackframe_v2();
                 exit(2);
@@ -4553,13 +4471,13 @@ struct map$2char$phsClass$ph* __result_obj__30;
         }
         else {
             self->item_existance[it]=(_Bool)1;
-            if(({            (_conditional_value_X7=(1));            _conditional_value_X7;            })) {
+            if(            1            ) {
                 self->keys[it]=(char*)come_increment_ref_count(key);
             }
             else {
                 self->keys[it]=key;
             }
-            if(({            (_conditional_value_X8=(1));            _conditional_value_X8;            })) {
+            if(            1            ) {
                 self->items[it]=(struct sClass*)come_increment_ref_count(item);
             }
             else {
@@ -4570,12 +4488,12 @@ struct map$2char$phsClass$ph* __result_obj__30;
         }
     }
     same_key_exist=(_Bool)0;
-    for(    ({    (_conditional_value_X0=(it2=list$1char$ph_begin(self->key_list)));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(!list$1char$ph_end(self->key_list)));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(it2=list$1char$ph_next(self->key_list)));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(string_equals(it2,key)));        _conditional_value_X3;        })) {
+    for(    it2=list$1char$ph_begin(self->key_list)    ;    !list$1char$ph_end(self->key_list)    ;    it2=list$1char$ph_next(self->key_list)    ){
+        if(        string_equals(it2,key)        ) {
             same_key_exist=(_Bool)1;
         }
     }
-    if(({    (_conditional_value_X0=(!same_key_exist));    _conditional_value_X0;    })) {
+    if(    !same_key_exist    ) {
         list$1char$ph_push_back(self->key_list,(char*)come_increment_ref_count(key));
     }
     __result_obj__30 = self;
@@ -4592,41 +4510,34 @@ struct sClass** items;
 _Bool* item_existance;
 int len;
 char* it;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
 struct sClass* default_value;
 struct sClass* it2;
 unsigned int hash;
 int n;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
-_Bool _conditional_value_X5;
-_Bool _conditional_value_X6;
 struct sClass* default_value_48;
 default_value = (void*)0;
 default_value_48 = (void*)0;
     size=self->size*10;
-    keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size)), "/usr/local/include/comelang.h", 7568, "char**"))));
+    keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size)), "/usr/local/include/comelang.h", 7361, "char**"))));
     __right_value0 = (void*)0;
-    items=(struct sClass**)come_increment_ref_count(((struct sClass**)(__right_value0=(struct sClass**)come_calloc_v2(1, sizeof(struct sClass*)*(1*(size)), "/usr/local/include/comelang.h", 7569, "struct sClass**"))));
+    items=(struct sClass**)come_increment_ref_count(((struct sClass**)(__right_value0=(struct sClass**)come_calloc_v2(1, sizeof(struct sClass*)*(1*(size)), "/usr/local/include/comelang.h", 7362, "struct sClass**"))));
     __right_value0 = (void*)0;
-    item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size)), "/usr/local/include/comelang.h", 7570, "_Bool*"))));
+    item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size)), "/usr/local/include/comelang.h", 7363, "_Bool*"))));
     len=0;
-    for(    ({    (_conditional_value_X0=(it=map$2char$phsClass$ph_begin(self)));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(!map$2char$phsClass$ph_end(self)));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(it=map$2char$phsClass$ph_next(self)));    _conditional_value_X2;    })    ){
+    for(    it=map$2char$phsClass$ph_begin(self)    ;    !map$2char$phsClass$ph_end(self)    ;    it=map$2char$phsClass$ph_next(self)    ){
         memset(&default_value,0,sizeof(struct sClass*));
         __right_value0 = (void*)0;
         it2=((struct sClass*)(__right_value0=map$2char$phsClass$ph_at(self,it,(struct sClass*)come_increment_ref_count(default_value))));
         come_call_finalizer(sClass_finalize, __right_value0, (void*)0, (void*)0, 0, 1, 0, (void*)0);
         hash=string_get_hash_key(((char*)it))%size;
         n=hash;
-        while(({        (_conditional_value_X3=((_Bool)1));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(item_existance[n]));            _conditional_value_X4;            })) {
+        while(        (_Bool)1        ) {
+            if(            item_existance[n]            ) {
                 n++;
-                if(({                (_conditional_value_X5=(n>=size));                _conditional_value_X5;                })) {
+                if(                n>=size                ) {
                     n=0;
                 }
-                else if(({                (_conditional_value_X6=(n==hash));                _conditional_value_X6;                })) {
+                else if(                n==hash                ) {
                     printf("unexpected error in map.rehash(1)\n");
                     stackframe_v2();
                     exit(2);
@@ -4657,7 +4568,6 @@ default_value_48 = (void*)0;
 }
 
 static char* map$2char$phsClass$ph_begin(struct map$2char$phsClass$ph* self){
-_Bool _conditional_value_X0;
 char* result;
 char* __result_obj__16;
 char* __result_obj__17;
@@ -4665,13 +4575,13 @@ char* result_46;
 char* __result_obj__18;
 result = (void*)0;
 result_46 = (void*)0;
-    if(({    (_conditional_value_X0=(self==((void*)0)));    _conditional_value_X0;    })) {
+    if(    self==((void*)0)    ) {
         memset(&result,0,sizeof(char*));
         __result_obj__16 = result;
         return __result_obj__16;
     }
     self->key_list->it=self->key_list->head;
-    if(({    (_conditional_value_X0=(self->key_list->it));    _conditional_value_X0;    })) {
+    if(    self->key_list->it    ) {
         __result_obj__17 = self->key_list->it->item;
         return __result_obj__17;
     }
@@ -4685,7 +4595,6 @@ static _Bool map$2char$phsClass$ph_end(struct map$2char$phsClass$ph* self){
 }
 
 static char* map$2char$phsClass$ph_next(struct map$2char$phsClass$ph* self){
-_Bool _conditional_value_X0;
 char* result;
 char* __result_obj__19;
 char* __result_obj__20;
@@ -4693,13 +4602,13 @@ char* result_47;
 char* __result_obj__21;
 result = (void*)0;
 result_47 = (void*)0;
-    if(({    (_conditional_value_X0=(self==((void*)0)||self->key_list->it==((void*)0)));    _conditional_value_X0;    })) {
+    if(    self==((void*)0)||self->key_list->it==((void*)0)    ) {
         memset(&result,0,sizeof(char*));
         __result_obj__19 = result;
         return __result_obj__19;
     }
     self->key_list->it=self->key_list->it->next;
-    if(({    (_conditional_value_X0=(self->key_list->it));    _conditional_value_X0;    })) {
+    if(    self->key_list->it    ) {
         __result_obj__20 = self->key_list->it->item;
         return __result_obj__20;
     }
@@ -4711,30 +4620,25 @@ result_47 = (void*)0;
 static struct sClass* map$2char$phsClass$ph_at(struct map$2char$phsClass$ph* self, char* key, struct sClass* default_value){
 unsigned int hash;
 unsigned int it;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
 struct sClass* __result_obj__22;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 struct sClass* __result_obj__23;
 struct sClass* __result_obj__24;
 struct sClass* __result_obj__25;
     hash=string_get_hash_key(((char*)key))%self->size;
     it=hash;
-    while(({    (_conditional_value_X0=((_Bool)1));    _conditional_value_X0;    })) {
-        if(({        (_conditional_value_X1=(self->item_existance[it]));        _conditional_value_X1;        })) {
-            if(({            (_conditional_value_X2=(string_equals(self->keys[it],key)));            _conditional_value_X2;            })) {
+    while(    (_Bool)1    ) {
+        if(        self->item_existance[it]        ) {
+            if(            string_equals(self->keys[it],key)            ) {
                 __result_obj__22 = (struct sClass*)come_increment_ref_count(self->items[it]);
                 come_call_finalizer(sClass_finalize, default_value, (void*)0, (void*)0, 0, 0, 0, (void*)0);
                 come_call_finalizer(sClass_finalize, __result_obj__22, (void*)0, (void*)0, 0, 0, 1, (void*)0);
                 return __result_obj__22;
             }
             it++;
-            if(({            (_conditional_value_X3=(it>=self->size));            _conditional_value_X3;            })) {
+            if(            it>=self->size            ) {
                 it=0;
             }
-            else if(({            (_conditional_value_X4=(it==hash));            _conditional_value_X4;            })) {
+            else if(            it==hash            ) {
                 __result_obj__23 = (struct sClass*)come_increment_ref_count(default_value);
                 come_call_finalizer(sClass_finalize, default_value, (void*)0, (void*)0, 0, 0, 1, (void*)0);
                 come_call_finalizer(sClass_finalize, __result_obj__23, (void*)0, (void*)0, 0, 0, 1, (void*)0);
@@ -4755,27 +4659,25 @@ struct sClass* __result_obj__25;
 }
 
 static void sClass_finalize(struct sClass* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mName!=((void*)0)    ) {
         (self->mName = come_decrement_ref_count(self->mName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mFields!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mFields!=((void*)0)    ) {
         come_call_finalizer(list$1tuple2$2char$phsType$ph$ph$p_finalize, self->mFields, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mParentClassName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mParentClassName!=((void*)0)    ) {
         (self->mParentClassName = come_decrement_ref_count(self->mParentClassName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mAttribute!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mAttribute!=((void*)0)    ) {
         (self->mAttribute = come_decrement_ref_count(self->mAttribute, (void*)0, (void*)0, 0, 0, (void*)0));
     }
 }
 
 static void list$1tuple2$2char$phsType$ph$ph$p_finalize(struct list$1tuple2$2char$phsType$ph$ph* self){
 struct list_item$1tuple2$2char$phsType$ph$ph* it;
-_Bool _conditional_value_X0;
 struct list_item$1tuple2$2char$phsType$ph$ph* prev_it;
     it=self->head;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
+    while(    it!=((void*)0)    ) {
         prev_it=it;
         it=it->next;
         come_call_finalizer(list_item$1tuple2$2char$phsType$ph$ph$p_finalize, prev_it, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -4783,18 +4685,16 @@ struct list_item$1tuple2$2char$phsType$ph$ph* prev_it;
 }
 
 static void list_item$1tuple2$2char$phsType$ph$ph$p_finalize(struct list_item$1tuple2$2char$phsType$ph$ph* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->item!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->item!=((void*)0)    ) {
         come_call_finalizer(tuple2$2char$phsType$ph$p_finalize, self->item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
 }
 
 static void tuple2$2char$phsType$ph$p_finalize(struct tuple2$2char$phsType$ph* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->v1!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->v1!=((void*)0)    ) {
         (self->v1 = come_decrement_ref_count(self->v1, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->v2!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->v2!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->v2, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
 }
@@ -4802,13 +4702,11 @@ _Bool _conditional_value_X0;
 static struct list$1char$ph* list$1char$ph_remove(struct list$1char$ph* self, char* item){
 int it2;
 struct list_item$1char$ph* it;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
 struct list$1char$ph* __result_obj__29;
     it2=0;
     it=self->head;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
-        if(({        (_conditional_value_X1=(string_equals(it->item,item)));        _conditional_value_X1;        })) {
+    while(    it!=((void*)0)    ) {
+        if(        string_equals(it->item,item)        ) {
             list$1char$ph_delete(self,it2,it2+1);
             break;
         }
@@ -4820,71 +4718,56 @@ struct list$1char$ph* __result_obj__29;
 }
 
 static struct list$1char$ph* list$1char$ph_delete(struct list$1char$ph* self, int head, int tail){
-_Bool _conditional_value_X0;
 int tmp;
 struct list$1char$ph* __result_obj__26;
-_Bool _conditional_value_X1;
 struct list_item$1char$ph* it;
 int i;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
 struct list_item$1char$ph* prev_it;
-_Bool _conditional_value_X4;
-_Bool _conditional_value_X5;
 struct list_item$1char$ph* it_49;
 int i_50;
-_Bool _conditional_value_X6;
-_Bool _conditional_value_X7;
-_Bool _conditional_value_X8;
 struct list_item$1char$ph* prev_it_51;
 struct list_item$1char$ph* it_52;
 struct list_item$1char$ph* head_prev_it;
 struct list_item$1char$ph* tail_it;
 int i_53;
-_Bool _conditional_value_X9;
-_Bool _conditional_value_X10;
-_Bool _conditional_value_X11;
-_Bool _conditional_value_X12;
 struct list_item$1char$ph* prev_it_54;
-_Bool _conditional_value_X13;
-_Bool _conditional_value_X14;
 struct list$1char$ph* __result_obj__28;
-    if(({    (_conditional_value_X0=(head<0));    _conditional_value_X0;    })) {
+    if(    head<0    ) {
         head+=self->len;
     }
-    if(({    (_conditional_value_X0=(tail<0));    _conditional_value_X0;    })) {
+    if(    tail<0    ) {
         tail+=self->len+1;
     }
-    if(({    (_conditional_value_X0=(head>tail));    _conditional_value_X0;    })) {
+    if(    head>tail    ) {
         tmp=tail;
         tail=head;
         head=tmp;
     }
-    if(({    (_conditional_value_X0=(head<0));    _conditional_value_X0;    })) {
+    if(    head<0    ) {
         head=0;
     }
-    if(({    (_conditional_value_X0=(tail>self->len));    _conditional_value_X0;    })) {
+    if(    tail>self->len    ) {
         tail=self->len;
     }
-    if(({    (_conditional_value_X0=(head==tail));    _conditional_value_X0;    })) {
+    if(    head==tail    ) {
         __result_obj__26 = self;
         return __result_obj__26;
     }
-    if(({    (_conditional_value_X0=(head==0&&tail==self->len));    _conditional_value_X0;    })) {
+    if(    head==0&&tail==self->len    ) {
         list$1char$ph_reset(self);
     }
-    else if(({    (_conditional_value_X1=(head==0));    _conditional_value_X1;    })) {
+    else if(    head==0    ) {
         it=self->head;
         i=0;
-        while(({        (_conditional_value_X2=(it!=((void*)0)));        _conditional_value_X2;        })) {
-            if(({            (_conditional_value_X3=(i<tail));            _conditional_value_X3;            })) {
+        while(        it!=((void*)0)        ) {
+            if(            i<tail            ) {
                 prev_it=it;
                 it=it->next;
                 i++;
                 come_call_finalizer(list_item$1char$ph$p_finalize, prev_it, (void*)0, (void*)0, 0, 0, 0, (void*)0);
                 self->len--;
             }
-            else if(({            (_conditional_value_X4=(i==tail));            _conditional_value_X4;            })) {
+            else if(            i==tail            ) {
                 self->head=it;
                 self->head->prev=((void*)0);
                 break;
@@ -4895,15 +4778,15 @@ struct list$1char$ph* __result_obj__28;
             }
         }
     }
-    else if(({    (_conditional_value_X5=(tail==self->len));    _conditional_value_X5;    })) {
+    else if(    tail==self->len    ) {
         it_49=self->head;
         i_50=0;
-        while(({        (_conditional_value_X6=(it_49!=((void*)0)));        _conditional_value_X6;        })) {
-            if(({            (_conditional_value_X7=(i_50==head));            _conditional_value_X7;            })) {
+        while(        it_49!=((void*)0)        ) {
+            if(            i_50==head            ) {
                 self->tail=it_49->prev;
                 self->tail->next=((void*)0);
             }
-            if(({            (_conditional_value_X8=(i_50>=head));            _conditional_value_X8;            })) {
+            if(            i_50>=head            ) {
                 prev_it_51=it_49;
                 it_49=it_49->next;
                 i_50++;
@@ -4921,14 +4804,14 @@ struct list$1char$ph* __result_obj__28;
         head_prev_it=((void*)0);
         tail_it=((void*)0);
         i_53=0;
-        while(({        (_conditional_value_X9=(it_52!=((void*)0)));        _conditional_value_X9;        })) {
-            if(({            (_conditional_value_X10=(i_53==head));            _conditional_value_X10;            })) {
+        while(        it_52!=((void*)0)        ) {
+            if(            i_53==head            ) {
                 head_prev_it=it_52->prev;
             }
-            if(({            (_conditional_value_X11=(i_53==tail));            _conditional_value_X11;            })) {
+            if(            i_53==tail            ) {
                 tail_it=it_52;
             }
-            if(({            (_conditional_value_X12=(i_53>=head&&i_53<tail));            _conditional_value_X12;            })) {
+            if(            i_53>=head&&i_53<tail            ) {
                 prev_it_54=it_52;
                 it_52=it_52->next;
                 i_53++;
@@ -4940,10 +4823,10 @@ struct list$1char$ph* __result_obj__28;
                 i_53++;
             }
         }
-        if(({        (_conditional_value_X13=(head_prev_it!=((void*)0)));        _conditional_value_X13;        })) {
+        if(        head_prev_it!=((void*)0)        ) {
             head_prev_it->next=tail_it;
         }
-        if(({        (_conditional_value_X14=(tail_it!=((void*)0)));        _conditional_value_X14;        })) {
+        if(        tail_it!=((void*)0)        ) {
             tail_it->prev=head_prev_it;
         }
     }
@@ -4953,11 +4836,10 @@ struct list$1char$ph* __result_obj__28;
 
 static struct list$1char$ph* list$1char$ph_reset(struct list$1char$ph* self){
 struct list_item$1char$ph* it;
-_Bool _conditional_value_X0;
 struct list_item$1char$ph* prev_it;
 struct list$1char$ph* __result_obj__27;
     it=self->head;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
+    while(    it!=((void*)0)    ) {
         prev_it=it;
         it=it->next;
         come_call_finalizer(list_item$1char$ph$p_finalize, prev_it, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -4970,29 +4852,20 @@ struct list$1char$ph* __result_obj__27;
 }
 
 static struct map$2char$phsType$ph* map$2char$phsType$ph_insert(struct map$2char$phsType$ph* self, char* key, struct sType* item){
-_Bool _conditional_value_X0;
 unsigned int hash;
 unsigned int it;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
-_Bool _conditional_value_X5;
-_Bool _conditional_value_X6;
-_Bool _conditional_value_X7;
-_Bool _conditional_value_X8;
 _Bool same_key_exist;
 char* it2;
 struct map$2char$phsType$ph* __result_obj__41;
-    if(({    (_conditional_value_X0=(self->len*10>=self->size));    _conditional_value_X0;    })) {
+    if(    self->len*10>=self->size    ) {
         map$2char$phsType$ph_rehash(self);
     }
     hash=string_get_hash_key(((char*)key))%self->size;
     it=hash;
-    while(({    (_conditional_value_X0=((_Bool)1));    _conditional_value_X0;    })) {
-        if(({        (_conditional_value_X1=(self->item_existance[it]));        _conditional_value_X1;        })) {
-            if(({            (_conditional_value_X2=(string_equals(self->keys[it],key)));            _conditional_value_X2;            })) {
-                if(({                (_conditional_value_X3=(1));                _conditional_value_X3;                })) {
+    while(    (_Bool)1    ) {
+        if(        self->item_existance[it]        ) {
+            if(            string_equals(self->keys[it],key)            ) {
+                if(                1                ) {
                     list$1char$ph_remove(self->key_list,self->keys[it]);
                     (self->keys[it] = come_decrement_ref_count(self->keys[it], (void*)0, (void*)0, 0, 0, (void*)0));
                     self->keys[it]=(char*)come_increment_ref_count(key);
@@ -5001,7 +4874,7 @@ struct map$2char$phsType$ph* __result_obj__41;
                     list$1char$ph_remove(self->key_list,self->keys[it]);
                     self->keys[it]=key;
                 }
-                if(({                (_conditional_value_X4=(1));                _conditional_value_X4;                })) {
+                if(                1                ) {
                     come_call_finalizer(sType_finalize, self->items[it], (void*)0, (void*)0, 0, 0, 0, (void*)0);
                     self->items[it]=(struct sType*)come_increment_ref_count(item);
                 }
@@ -5011,10 +4884,10 @@ struct map$2char$phsType$ph* __result_obj__41;
                 break;
             }
             it++;
-            if(({            (_conditional_value_X5=(it>=self->size));            _conditional_value_X5;            })) {
+            if(            it>=self->size            ) {
                 it=0;
             }
-            else if(({            (_conditional_value_X6=(it==hash));            _conditional_value_X6;            })) {
+            else if(            it==hash            ) {
                 printf("unexpected error in map.insert\n");
                 stackframe_v2();
                 exit(2);
@@ -5022,13 +4895,13 @@ struct map$2char$phsType$ph* __result_obj__41;
         }
         else {
             self->item_existance[it]=(_Bool)1;
-            if(({            (_conditional_value_X7=(1));            _conditional_value_X7;            })) {
+            if(            1            ) {
                 self->keys[it]=(char*)come_increment_ref_count(key);
             }
             else {
                 self->keys[it]=key;
             }
-            if(({            (_conditional_value_X8=(1));            _conditional_value_X8;            })) {
+            if(            1            ) {
                 self->items[it]=(struct sType*)come_increment_ref_count(item);
             }
             else {
@@ -5039,12 +4912,12 @@ struct map$2char$phsType$ph* __result_obj__41;
         }
     }
     same_key_exist=(_Bool)0;
-    for(    ({    (_conditional_value_X0=(it2=list$1char$ph_begin(self->key_list)));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(!list$1char$ph_end(self->key_list)));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(it2=list$1char$ph_next(self->key_list)));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(string_equals(it2,key)));        _conditional_value_X3;        })) {
+    for(    it2=list$1char$ph_begin(self->key_list)    ;    !list$1char$ph_end(self->key_list)    ;    it2=list$1char$ph_next(self->key_list)    ){
+        if(        string_equals(it2,key)        ) {
             same_key_exist=(_Bool)1;
         }
     }
-    if(({    (_conditional_value_X0=(!same_key_exist));    _conditional_value_X0;    })) {
+    if(    !same_key_exist    ) {
         list$1char$ph_push_back(self->key_list,(char*)come_increment_ref_count(key));
     }
     __result_obj__41 = self;
@@ -5061,41 +4934,34 @@ struct sType** items;
 _Bool* item_existance;
 int len;
 char* it;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
 struct sType* default_value;
 struct sType* it2;
 unsigned int hash;
 int n;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
-_Bool _conditional_value_X5;
-_Bool _conditional_value_X6;
 struct sType* default_value_59;
 default_value = (void*)0;
 default_value_59 = (void*)0;
     size=self->size*10;
-    keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size)), "/usr/local/include/comelang.h", 7568, "char**"))));
+    keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size)), "/usr/local/include/comelang.h", 7361, "char**"))));
     __right_value0 = (void*)0;
-    items=(struct sType**)come_increment_ref_count(((struct sType**)(__right_value0=(struct sType**)come_calloc_v2(1, sizeof(struct sType*)*(1*(size)), "/usr/local/include/comelang.h", 7569, "struct sType**"))));
+    items=(struct sType**)come_increment_ref_count(((struct sType**)(__right_value0=(struct sType**)come_calloc_v2(1, sizeof(struct sType*)*(1*(size)), "/usr/local/include/comelang.h", 7362, "struct sType**"))));
     __right_value0 = (void*)0;
-    item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size)), "/usr/local/include/comelang.h", 7570, "_Bool*"))));
+    item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size)), "/usr/local/include/comelang.h", 7363, "_Bool*"))));
     len=0;
-    for(    ({    (_conditional_value_X0=(it=map$2char$phsType$ph_begin(self)));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(!map$2char$phsType$ph_end(self)));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(it=map$2char$phsType$ph_next(self)));    _conditional_value_X2;    })    ){
+    for(    it=map$2char$phsType$ph_begin(self)    ;    !map$2char$phsType$ph_end(self)    ;    it=map$2char$phsType$ph_next(self)    ){
         memset(&default_value,0,sizeof(struct sType*));
         __right_value0 = (void*)0;
         it2=((struct sType*)(__right_value0=map$2char$phsType$ph_at(self,it,(struct sType*)come_increment_ref_count(default_value))));
         come_call_finalizer(sType_finalize, __right_value0, (void*)0, (void*)0, 0, 1, 0, (void*)0);
         hash=string_get_hash_key(((char*)it))%size;
         n=hash;
-        while(({        (_conditional_value_X3=((_Bool)1));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(item_existance[n]));            _conditional_value_X4;            })) {
+        while(        (_Bool)1        ) {
+            if(            item_existance[n]            ) {
                 n++;
-                if(({                (_conditional_value_X5=(n>=size));                _conditional_value_X5;                })) {
+                if(                n>=size                ) {
                     n=0;
                 }
-                else if(({                (_conditional_value_X6=(n==hash));                _conditional_value_X6;                })) {
+                else if(                n==hash                ) {
                     printf("unexpected error in map.rehash(1)\n");
                     stackframe_v2();
                     exit(2);
@@ -5126,7 +4992,6 @@ default_value_59 = (void*)0;
 }
 
 static char* map$2char$phsType$ph_begin(struct map$2char$phsType$ph* self){
-_Bool _conditional_value_X0;
 char* result;
 char* __result_obj__31;
 char* __result_obj__32;
@@ -5134,13 +4999,13 @@ char* result_57;
 char* __result_obj__33;
 result = (void*)0;
 result_57 = (void*)0;
-    if(({    (_conditional_value_X0=(self==((void*)0)));    _conditional_value_X0;    })) {
+    if(    self==((void*)0)    ) {
         memset(&result,0,sizeof(char*));
         __result_obj__31 = result;
         return __result_obj__31;
     }
     self->key_list->it=self->key_list->head;
-    if(({    (_conditional_value_X0=(self->key_list->it));    _conditional_value_X0;    })) {
+    if(    self->key_list->it    ) {
         __result_obj__32 = self->key_list->it->item;
         return __result_obj__32;
     }
@@ -5154,7 +5019,6 @@ static _Bool map$2char$phsType$ph_end(struct map$2char$phsType$ph* self){
 }
 
 static char* map$2char$phsType$ph_next(struct map$2char$phsType$ph* self){
-_Bool _conditional_value_X0;
 char* result;
 char* __result_obj__34;
 char* __result_obj__35;
@@ -5162,13 +5026,13 @@ char* result_58;
 char* __result_obj__36;
 result = (void*)0;
 result_58 = (void*)0;
-    if(({    (_conditional_value_X0=(self==((void*)0)||self->key_list->it==((void*)0)));    _conditional_value_X0;    })) {
+    if(    self==((void*)0)||self->key_list->it==((void*)0)    ) {
         memset(&result,0,sizeof(char*));
         __result_obj__34 = result;
         return __result_obj__34;
     }
     self->key_list->it=self->key_list->it->next;
-    if(({    (_conditional_value_X0=(self->key_list->it));    _conditional_value_X0;    })) {
+    if(    self->key_list->it    ) {
         __result_obj__35 = self->key_list->it->item;
         return __result_obj__35;
     }
@@ -5180,30 +5044,25 @@ result_58 = (void*)0;
 static struct sType* map$2char$phsType$ph_at(struct map$2char$phsType$ph* self, char* key, struct sType* default_value){
 unsigned int hash;
 unsigned int it;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
 struct sType* __result_obj__37;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 struct sType* __result_obj__38;
 struct sType* __result_obj__39;
 struct sType* __result_obj__40;
     hash=string_get_hash_key(((char*)key))%self->size;
     it=hash;
-    while(({    (_conditional_value_X0=((_Bool)1));    _conditional_value_X0;    })) {
-        if(({        (_conditional_value_X1=(self->item_existance[it]));        _conditional_value_X1;        })) {
-            if(({            (_conditional_value_X2=(string_equals(self->keys[it],key)));            _conditional_value_X2;            })) {
+    while(    (_Bool)1    ) {
+        if(        self->item_existance[it]        ) {
+            if(            string_equals(self->keys[it],key)            ) {
                 __result_obj__37 = (struct sType*)come_increment_ref_count(self->items[it]);
                 come_call_finalizer(sType_finalize, default_value, (void*)0, (void*)0, 0, 0, 0, (void*)0);
                 come_call_finalizer(sType_finalize, __result_obj__37, (void*)0, (void*)0, 0, 0, 1, (void*)0);
                 return __result_obj__37;
             }
             it++;
-            if(({            (_conditional_value_X3=(it>=self->size));            _conditional_value_X3;            })) {
+            if(            it>=self->size            ) {
                 it=0;
             }
-            else if(({            (_conditional_value_X4=(it==hash));            _conditional_value_X4;            })) {
+            else if(            it==hash            ) {
                 __result_obj__38 = (struct sType*)come_increment_ref_count(default_value);
                 come_call_finalizer(sType_finalize, default_value, (void*)0, (void*)0, 0, 0, 1, (void*)0);
                 come_call_finalizer(sType_finalize, __result_obj__38, (void*)0, (void*)0, 0, 0, 1, (void*)0);
@@ -5224,18 +5083,16 @@ struct sType* __result_obj__40;
 }
 
 static struct list$1tuple2$2char$phsType$ph$ph* list$1tuple2$2char$phsType$ph$ph_push_back(struct list$1tuple2$2char$phsType$ph$ph* self, struct tuple2$2char$phsType$ph* item){
-_Bool _conditional_value_X0;
 void* __right_value0 = (void*)0;
 struct list_item$1tuple2$2char$phsType$ph$ph* litem;
 struct tuple2$2char$phsType$ph* __dec_obj23;
-_Bool _conditional_value_X1;
 struct list_item$1tuple2$2char$phsType$ph$ph* litem_60;
 struct tuple2$2char$phsType$ph* __dec_obj24;
 struct list_item$1tuple2$2char$phsType$ph$ph* litem_61;
 struct tuple2$2char$phsType$ph* __dec_obj25;
 struct list$1tuple2$2char$phsType$ph$ph* __result_obj__42;
-    if(({    (_conditional_value_X0=(self->len==0));    _conditional_value_X0;    })) {
-        litem=(struct list_item$1tuple2$2char$phsType$ph$ph*)come_increment_ref_count(((struct list_item$1tuple2$2char$phsType$ph$ph*)(__right_value0=(struct list_item$1tuple2$2char$phsType$ph$ph*)come_calloc_v2(1, sizeof(struct list_item$1tuple2$2char$phsType$ph$ph)*(1), "/usr/local/include/comelang.h", 6461, "struct list_item$1tuple2$2char$phsType$ph$ph*"))));
+    if(    self->len==0    ) {
+        litem=(struct list_item$1tuple2$2char$phsType$ph$ph*)come_increment_ref_count(((struct list_item$1tuple2$2char$phsType$ph$ph*)(__right_value0=(struct list_item$1tuple2$2char$phsType$ph$ph*)come_calloc_v2(1, sizeof(struct list_item$1tuple2$2char$phsType$ph$ph)*(1), "/usr/local/include/comelang.h", 6254, "struct list_item$1tuple2$2char$phsType$ph$ph*"))));
         litem->prev=((void*)0);
         litem->next=((void*)0);
         __dec_obj23=litem->item,
@@ -5244,9 +5101,9 @@ struct list$1tuple2$2char$phsType$ph$ph* __result_obj__42;
         self->tail=litem;
         self->head=litem;
     }
-    else if(({    (_conditional_value_X1=(self->len==1));    _conditional_value_X1;    })) {
+    else if(    self->len==1    ) {
         __right_value0 = (void*)0;
-        litem_60=(struct list_item$1tuple2$2char$phsType$ph$ph*)come_increment_ref_count(((struct list_item$1tuple2$2char$phsType$ph$ph*)(__right_value0=(struct list_item$1tuple2$2char$phsType$ph$ph*)come_calloc_v2(1, sizeof(struct list_item$1tuple2$2char$phsType$ph$ph)*(1), "/usr/local/include/comelang.h", 6471, "struct list_item$1tuple2$2char$phsType$ph$ph*"))));
+        litem_60=(struct list_item$1tuple2$2char$phsType$ph$ph*)come_increment_ref_count(((struct list_item$1tuple2$2char$phsType$ph$ph*)(__right_value0=(struct list_item$1tuple2$2char$phsType$ph$ph*)come_calloc_v2(1, sizeof(struct list_item$1tuple2$2char$phsType$ph$ph)*(1), "/usr/local/include/comelang.h", 6264, "struct list_item$1tuple2$2char$phsType$ph$ph*"))));
         litem_60->prev=self->head;
         litem_60->next=((void*)0);
         __dec_obj24=litem_60->item,
@@ -5257,7 +5114,7 @@ struct list$1tuple2$2char$phsType$ph$ph* __result_obj__42;
     }
     else {
         __right_value0 = (void*)0;
-        litem_61=(struct list_item$1tuple2$2char$phsType$ph$ph*)come_increment_ref_count(((struct list_item$1tuple2$2char$phsType$ph$ph*)(__right_value0=(struct list_item$1tuple2$2char$phsType$ph$ph*)come_calloc_v2(1, sizeof(struct list_item$1tuple2$2char$phsType$ph$ph)*(1), "/usr/local/include/comelang.h", 6481, "struct list_item$1tuple2$2char$phsType$ph$ph*"))));
+        litem_61=(struct list_item$1tuple2$2char$phsType$ph$ph*)come_increment_ref_count(((struct list_item$1tuple2$2char$phsType$ph$ph*)(__right_value0=(struct list_item$1tuple2$2char$phsType$ph$ph*)come_calloc_v2(1, sizeof(struct list_item$1tuple2$2char$phsType$ph$ph)*(1), "/usr/local/include/comelang.h", 6274, "struct list_item$1tuple2$2char$phsType$ph$ph*"))));
         litem_61->prev=self->tail;
         litem_61->next=((void*)0);
         __dec_obj25=litem_61->item,
@@ -5291,68 +5148,57 @@ struct tuple2$2char$phsType$ph* __result_obj__43;
 }
 
 void create_pico_version_header(){
-_Bool _conditional_value_X0;
 void* __right_value0 = (void*)0;
 void* __right_value1 = (void*)0;
 char* Value;
-_Bool _conditional_value_X1;
+_Bool _conditional_value_X0;
 int version_major;
 char* p;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int version_miner;
 char* p_62;
-_Bool _conditional_value_X5;
-_Bool _conditional_value_X6;
-_Bool _conditional_value_X7;
 int version_revision;
 char* p_63;
-_Bool _conditional_value_X8;
-_Bool _conditional_value_X9;
-_Bool _conditional_value_X10;
 void* __right_value2 = (void*)0;
 void* __right_value3 = (void*)0;
 char* version_string;
 int Value_64;
-_Bool _conditional_value_X11;
 void* __right_value4 = (void*)0;
-    if(({    (_conditional_value_X0=(getenv("PICO_SDK_PATH")));    _conditional_value_X0;    })) {
+    if(    getenv("PICO_SDK_PATH")    ) {
         Value=(char*)come_increment_ref_count(charp_read((((char*)(__right_value0=charp_operator_add(getenv("PICO_SDK_PATH"),"/pico_sdk_version.cmake"))))));
-        if(({        (_conditional_value_X1=(Value));        (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
-        _conditional_value_X1;        })) {
+        if(        ({(_conditional_value_X0=(Value));        (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+        _conditional_value_X0;})        ) {
             version_major=0;
             p=strstr(Value,"set(PICO_SDK_VERSION_MAJOR");
-            if(({            (_conditional_value_X2=(p));            _conditional_value_X2;            })) {
+            if(            p            ) {
                 p+=strlen("set(PICO_SDK_VERSION_MAJOR");
-                while(({                (_conditional_value_X3=(*p==32||*p==9));                _conditional_value_X3;                })) {
+                while(                *p==32||*p==9                ) {
                     p++;
                 }
-                while(({                (_conditional_value_X4=(xisdigit(*p)));                _conditional_value_X4;                })) {
+                while(                xisdigit(*p)                ) {
                     version_major=version_major*10+(*p-48);
                     p++;
                 }
             }
             version_miner=0;
             p_62=strstr(Value,"set(PICO_SDK_VERSION_MINOR");
-            if(({            (_conditional_value_X5=(p_62));            _conditional_value_X5;            })) {
+            if(            p_62            ) {
                 p_62+=strlen("set(PICO_SDK_VERSION_MINOR");
-                while(({                (_conditional_value_X6=(*p_62==32||*p_62==9));                _conditional_value_X6;                })) {
+                while(                *p_62==32||*p_62==9                ) {
                     p_62++;
                 }
-                while(({                (_conditional_value_X7=(xisdigit(*p_62)));                _conditional_value_X7;                })) {
+                while(                xisdigit(*p_62)                ) {
                     version_miner=version_miner*10+*p_62-48;
                     p_62++;
                 }
             }
             version_revision=0;
             p_63=strstr(Value,"set(PICO_SDK_VERSION_REVISION");
-            if(({            (_conditional_value_X8=(p_63));            _conditional_value_X8;            })) {
+            if(            p_63            ) {
                 p_63+=strlen("set(PICO_SDK_VERSION_REVISION");
-                while(({                (_conditional_value_X9=(*p_63==32||*p_63==9));                _conditional_value_X9;                })) {
+                while(                *p_63==32||*p_63==9                ) {
                     p_63++;
                 }
-                while(({                (_conditional_value_X10=(xisdigit(*p_63)));                _conditional_value_X10;                })) {
+                while(                xisdigit(*p_63)                ) {
                     version_revision=version_revision*10+*p_63-48;
                     p_63++;
                 }
@@ -5364,7 +5210,7 @@ void* __right_value4 = (void*)0;
             (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             (__right_value2 = come_decrement_ref_count(__right_value2, (void*)0, (void*)0, 1, 0, (void*)0));
             Value_64=system("mkdir -p pico");
-            if(({            (_conditional_value_X11=(!Value_64));            _conditional_value_X11;            })) {
+            if(            !Value_64            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 __right_value2 = (void*)0;
@@ -5389,7 +5235,6 @@ void* __right_value4 = (void*)0;
 }
 
 int come_main(int argc, char** argv){
-_Bool _conditional_value_X0;
 int start_num;
 void* __right_value0 = (void*)0;
 char* output_file_name_str;
@@ -5412,24 +5257,11 @@ _Bool pico_cpp;
 _Bool emb_cpp;
 _Bool gcc_compiler;
 int i;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
 char* ext_name;
-_Bool _conditional_value_X4;
 char* __dec_obj28;
-_Bool _conditional_value_X5;
-_Bool _conditional_value_X6;
-_Bool _conditional_value_X7;
-_Bool _conditional_value_X8;
-_Bool _conditional_value_X9;
-_Bool _conditional_value_X10;
-_Bool _conditional_value_X11;
 char* env;
 struct buffer* __dec_obj29;
 void* __right_value2 = (void*)0;
-_Bool _conditional_value_X12;
-_Bool _conditional_value_X13;
 char* env_65;
 struct buffer* __dec_obj30;
 void* __right_value3 = (void*)0;
@@ -5451,50 +5283,17 @@ void* __right_value18 = (void*)0;
 void* __right_value19 = (void*)0;
 void* __right_value20 = (void*)0;
 void* __right_value21 = (void*)0;
-_Bool _conditional_value_X14;
-_Bool _conditional_value_X15;
-_Bool _conditional_value_X16;
-_Bool _conditional_value_X17;
-_Bool _conditional_value_X18;
-_Bool _conditional_value_X19;
-_Bool _conditional_value_X20;
-_Bool _conditional_value_X21;
-_Bool _conditional_value_X22;
-_Bool _conditional_value_X23;
-_Bool _conditional_value_X24;
-_Bool _conditional_value_X25;
-_Bool _conditional_value_X26;
-_Bool _conditional_value_X27;
-_Bool _conditional_value_X28;
-_Bool _conditional_value_X29;
-_Bool _conditional_value_X30;
-_Bool _conditional_value_X31;
-_Bool _conditional_value_X32;
-_Bool _conditional_value_X33;
-_Bool _conditional_value_X34;
-_Bool _conditional_value_X35;
-_Bool _conditional_value_X36;
-_Bool _conditional_value_X37;
-_Bool _conditional_value_X38;
-_Bool _conditional_value_X39;
-_Bool _conditional_value_X40;
-_Bool _conditional_value_X41;
-_Bool _conditional_value_X42;
-_Bool _conditional_value_X43;
-_Bool _conditional_value_X44;
-_Bool _conditional_value_X45;
-_Bool _conditional_value_X46;
-_Bool _conditional_value_X47;
-_Bool _conditional_value_X48;
+_Bool _conditional_value_X0;
+_Bool _conditional_value_X1;
+_Bool _conditional_value_X2;
 int Value;
-_Bool _conditional_value_X49;
+_Bool _conditional_value_X3;
 _Bool __exception_result_var_b12;
 struct __sFILE* Value_66;
-_Bool _conditional_value_X50;
 _Bool __exception_result_var_b13;
 char* tmp_file;
 int Value_67;
-_Bool _conditional_value_X51;
+_Bool _conditional_value_X4;
 _Bool __exception_result_var_b14;
 struct sInfo info;
 char* __dec_obj31;
@@ -5521,37 +5320,17 @@ struct list$1char$ph* __dec_obj57;
 struct map$2char$phsClass$ph* __dec_obj58;
 char* __dec_obj59;
 _Bool Value_82;
-_Bool _conditional_value_X52;
 struct buffer* __dec_obj60;
 _Bool Value_83;
-_Bool _conditional_value_X53;
 _Bool Value_84;
-_Bool _conditional_value_X54;
-_Bool _conditional_value_X55;
 _Bool Value_85;
-_Bool _conditional_value_X56;
-_Bool _conditional_value_X57;
 _Bool Value_86;
-_Bool _conditional_value_X58;
-_Bool _conditional_value_X59;
 _Bool Value_87;
-_Bool _conditional_value_X60;
-_Bool _conditional_value_X61;
 _Bool Value_88;
-_Bool _conditional_value_X62;
-_Bool _conditional_value_X63;
 _Bool Value_89;
-_Bool _conditional_value_X64;
-_Bool _conditional_value_X65;
 _Bool Value_90;
-_Bool _conditional_value_X66;
-_Bool _conditional_value_X67;
-_Bool _conditional_value_X68;
 _Bool Value_91;
-_Bool _conditional_value_X69;
-_Bool _conditional_value_X70;
 _Bool Value_92;
-_Bool _conditional_value_X71;
 int start_num_93;
 char* output_file_name_str_94;
 struct buffer* clang_option_95;
@@ -5572,68 +5351,19 @@ _Bool pico_cpp_109;
 _Bool emb_cpp_110;
 _Bool gcc_compiler_111;
 int i_112;
-_Bool _conditional_value_X72;
-_Bool _conditional_value_X73;
-_Bool _conditional_value_X74;
 char* ext_name_113;
-_Bool _conditional_value_X75;
 char* __dec_obj61;
-_Bool _conditional_value_X76;
-_Bool _conditional_value_X77;
-_Bool _conditional_value_X78;
-_Bool _conditional_value_X79;
-_Bool _conditional_value_X80;
-_Bool _conditional_value_X81;
-_Bool _conditional_value_X82;
 char* env_114;
 struct buffer* __dec_obj62;
-_Bool _conditional_value_X83;
-_Bool _conditional_value_X84;
 char* env_115;
 struct buffer* __dec_obj63;
-_Bool _conditional_value_X85;
-_Bool _conditional_value_X86;
-_Bool _conditional_value_X87;
-_Bool _conditional_value_X88;
-_Bool _conditional_value_X89;
-_Bool _conditional_value_X90;
-_Bool _conditional_value_X91;
-_Bool _conditional_value_X92;
-_Bool _conditional_value_X93;
-_Bool _conditional_value_X94;
-_Bool _conditional_value_X95;
-_Bool _conditional_value_X96;
-_Bool _conditional_value_X97;
-_Bool _conditional_value_X98;
-_Bool _conditional_value_X99;
-_Bool _conditional_value_X100;
-_Bool _conditional_value_X101;
-_Bool _conditional_value_X102;
-_Bool _conditional_value_X103;
-_Bool _conditional_value_X104;
-_Bool _conditional_value_X105;
-_Bool _conditional_value_X106;
-_Bool _conditional_value_X107;
-_Bool _conditional_value_X108;
-_Bool _conditional_value_X109;
-_Bool _conditional_value_X110;
-_Bool _conditional_value_X111;
-_Bool _conditional_value_X112;
-_Bool _conditional_value_X113;
-_Bool _conditional_value_X114;
-_Bool _conditional_value_X115;
-_Bool _conditional_value_X116;
-_Bool _conditional_value_X117;
-_Bool _conditional_value_X118;
-_Bool _conditional_value_X119;
+_Bool _conditional_value_X5;
+_Bool _conditional_value_X6;
+_Bool _conditional_value_X7;
 struct list$1char$ph* o2_saved;
 char* it;
-_Bool _conditional_value_X120;
-_Bool _conditional_value_X121;
-_Bool _conditional_value_X122;
 struct sInfo info_116;
 struct __sFILE* Value_117;
-_Bool _conditional_value_X123;
 char* __dec_obj64;
 char* __dec_obj65;
 char* __dec_obj66;
@@ -5656,57 +5386,42 @@ struct list$1char$ph* __dec_obj81;
 struct list$1char$ph* __dec_obj82;
 struct map$2char$phsClass$ph* __dec_obj83;
 _Bool Value_119;
-_Bool _conditional_value_X124;
 struct buffer* __dec_obj84;
-_Bool _conditional_value_X125;
 char* __dec_obj85;
 char* __dec_obj86;
 _Bool Value_120;
-_Bool _conditional_value_X126;
 _Bool Value_121;
-_Bool _conditional_value_X127;
-_Bool _conditional_value_X128;
 _Bool Value_122;
-_Bool _conditional_value_X129;
 _Bool Value_123;
-_Bool _conditional_value_X130;
-_Bool _conditional_value_X131;
-_Bool _conditional_value_X132;
-_Bool _conditional_value_X133;
-_Bool _conditional_value_X134;
 struct sInfo info_124;
 char* __dec_obj87;
 char* __dec_obj88;
 char* __dec_obj89;
-_Bool _conditional_value_X135;
 char* __dec_obj90;
 char* __dec_obj91;
-_Bool _conditional_value_X136;
 _Bool Value_125;
-_Bool _conditional_value_X137;
-_Bool _conditional_value_X138;
 memset(&info, 0, sizeof(struct sInfo));
 memset(&info_116, 0, sizeof(struct sInfo));
 memset(&info_124, 0, sizeof(struct sInfo));
-    if(({    (_conditional_value_X0=(charp_operator_equals(argv[1],"header")&&argc>=3));    _conditional_value_X0;    })) {
+    if(    charp_operator_equals(argv[1],"header")&&argc>=3    ) {
         start_num=2;
         output_file_name_str=(char*)come_increment_ref_count(xsprintf("common.h"));
         __right_value0 = (void*)0;
-        clang_option=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 851, "struct buffer*"))));
+        clang_option=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 857, "struct buffer*"))));
         buffer_append_str(clang_option," -std=c99 ");
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
-        linker_option=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 853, "struct buffer*"))));
+        linker_option=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 859, "struct buffer*"))));
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
-        cpp_option=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 854, "struct buffer*"))));
+        cpp_option=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 860, "struct buffer*"))));
         buffer_append_str(cpp_option,"-U__GNUC__");
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
-        files=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 856, "struct list$1char$ph*"))));
+        files=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 862, "struct list$1char$ph*"))));
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
-        object_files=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 857, "struct list$1char$ph*"))));
+        object_files=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 863, "struct list$1char$ph*"))));
         output_object_file=(_Bool)0;
         output_cpp_file=(_Bool)0;
         output_source_file_flag=(_Bool)0;
@@ -5719,17 +5434,17 @@ memset(&info_124, 0, sizeof(struct sInfo));
         pico_cpp=(_Bool)0;
         emb_cpp=(_Bool)0;
         gcc_compiler=(_Bool)0;
-        for(        ({        (_conditional_value_X1=(i=start_num));        _conditional_value_X1;        });        ({        (_conditional_value_X2=(i<argc));        _conditional_value_X2;        });        ({        (_conditional_value_X3=(i++));        _conditional_value_X3;        })        ){
+        for(        i=start_num        ;        i<argc        ;        i++        ){
             __right_value0 = (void*)0;
             ext_name=(char*)come_increment_ref_count(xextname(argv[i]));
-            if(({            (_conditional_value_X4=(charp_operator_equals(argv[i],"-o")&&i+1<argc));            _conditional_value_X4;            })) {
+            if(            charp_operator_equals(argv[i],"-o")&&i+1<argc            ) {
                 __right_value0 = (void*)0;
                 __dec_obj28=output_file_name,
                 output_file_name=(char*)come_increment_ref_count(__builtin_string(argv[i+1]));
                 __dec_obj28 = come_decrement_ref_count(__dec_obj28, (void*)0, (void*)0, 0,0, (void*)0);
                 i++;
             }
-            else if(({            (_conditional_value_X5=(charp_operator_equals(argv[i],"-e")&&i+1<argc));            _conditional_value_X5;            })) {
+            else if(            charp_operator_equals(argv[i],"-e")&&i+1<argc            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(linker_option,((char*)(__right_value1=xsprintf("-e \%s",((char*)(__right_value0=charp_to_string(argv[i+1])))))));
@@ -5737,17 +5452,17 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 i++;
             }
-            else if(({            (_conditional_value_X6=(charp_operator_equals(argv[i],"-str")));            _conditional_value_X6;            })) {
+            else if(            charp_operator_equals(argv[i],"-str")            ) {
                 gComeStr=(_Bool)1;
             }
-            else if(({            (_conditional_value_X7=(charp_operator_equals(argv[i],"-pthread")));            _conditional_value_X7;            })) {
+            else if(            charp_operator_equals(argv[i],"-pthread")            ) {
                 gComePthread=(_Bool)1;
             }
-            else if(({            (_conditional_value_X8=(charp_operator_equals(argv[i],"-gcc")));            _conditional_value_X8;            })) {
+            else if(            charp_operator_equals(argv[i],"-gcc")            ) {
                 gcc_compiler=(_Bool)1;
                 CC="gcc";
             }
-            else if(({            (_conditional_value_X9=(charp_operator_equals(argv[i],"-riscv")));            _conditional_value_X9;            })) {
+            else if(            charp_operator_equals(argv[i],"-riscv")            ) {
                 gcc_compiler=(_Bool)1;
                 output_object_file_flag=(_Bool)0;
                 CC="riscv64-unknown-elf-gcc";
@@ -5759,7 +5474,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 gComeBareMetal=(_Bool)1;
             }
-            else if(({            (_conditional_value_X10=(charp_operator_equals(argv[i],"-bare")));            _conditional_value_X10;            })) {
+            else if(            charp_operator_equals(argv[i],"-bare")            ) {
                 output_source_file_flag=(_Bool)1;
                 gcc_compiler=(_Bool)1;
                 output_object_file_flag=(_Bool)0;
@@ -5773,7 +5488,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 buffer_append_str(clang_option,((char*)(__right_value0=xsprintf(" -nostdlib -ffreestanding "))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X11=(charp_operator_equals(argv[i],"-pico")));            _conditional_value_X11;            })) {
+            else if(            charp_operator_equals(argv[i],"-pico")            ) {
                 output_source_file_flag=(_Bool)1;
                 output_object_file_flag=(_Bool)0;
                 gComeOriginalSourcePosition=(_Bool)0;
@@ -5781,7 +5496,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 __dec_obj29=cpp_option,
-                cpp_option=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 915, "struct buffer*"))));
+                cpp_option=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 921, "struct buffer*"))));
                 come_call_finalizer(buffer_finalize, __dec_obj29,(void*)0, (void*)0, 0, 0, 0, (void*)0);
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
@@ -5792,13 +5507,13 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 create_pico_version_header();
                 pico_cpp=(_Bool)1;
             }
-            else if(({            (_conditional_value_X12=(charp_operator_equals(argv[i],"-emb")));            _conditional_value_X12;            })) {
+            else if(            charp_operator_equals(argv[i],"-emb")            ) {
                 output_source_file_flag=(_Bool)1;
                 output_object_file_flag=(_Bool)0;
                 gComeOriginalSourcePosition=(_Bool)0;
                 emb_cpp=(_Bool)1;
             }
-            else if(({            (_conditional_value_X13=(charp_operator_equals(argv[i],"-m5stack")));            _conditional_value_X13;            })) {
+            else if(            charp_operator_equals(argv[i],"-m5stack")            ) {
                 m5stack_cpp=(_Bool)1;
                 output_source_file_flag=(_Bool)1;
                 output_object_file_flag=(_Bool)0;
@@ -5807,7 +5522,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 __dec_obj30=cpp_option,
-                cpp_option=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 934, "struct buffer*"))));
+                cpp_option=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 940, "struct buffer*"))));
                 come_call_finalizer(buffer_finalize, __dec_obj30,(void*)0, (void*)0, 0, 0, 0, (void*)0);
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
@@ -5836,7 +5551,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value20 = come_decrement_ref_count(__right_value20, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value21 = come_decrement_ref_count(__right_value21, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X14=(i+1<argc&&charp_operator_equals(argv[i],"-target")));            _conditional_value_X14;            })) {
+            else if(            i+1<argc&&charp_operator_equals(argv[i],"-target")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(clang_option,((char*)(__right_value1=xsprintf("-target \%s",((char*)(__right_value0=charp_to_string(argv[i+1])))))));
@@ -5844,7 +5559,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 i++;
             }
-            else if(({            (_conditional_value_X15=(i+1<argc&&charp_operator_equals(argv[i],"-T")));            _conditional_value_X15;            })) {
+            else if(            i+1<argc&&charp_operator_equals(argv[i],"-T")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(clang_option,((char*)(__right_value1=xsprintf(" -T \%s ",((char*)(__right_value0=charp_to_string(argv[i+1])))))));
@@ -5852,81 +5567,81 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 i++;
             }
-            else if(({            (_conditional_value_X16=(charp_operator_equals(argv[i],"-net")));            _conditional_value_X16;            })) {
+            else if(            charp_operator_equals(argv[i],"-net")            ) {
                 gComeNet=(_Bool)1;
             }
-            else if(({            (_conditional_value_X17=(charp_operator_equals(argv[i],"-cg")));            _conditional_value_X17;            })) {
+            else if(            charp_operator_equals(argv[i],"-cg")            ) {
                 come_debug=(_Bool)1;
                 buffer_append_str(clang_option,"-g ");
             }
-            else if(({            (_conditional_value_X18=(charp_operator_equals(argv[i],"-cg2")));            _conditional_value_X18;            })) {
+            else if(            charp_operator_equals(argv[i],"-cg2")            ) {
                 buffer_append_str(clang_option," -fsanitize=address,undefined -g ");
                 buffer_append_str(linker_option," -fsanitize=address,undefined -g ");
             }
-            else if(({            (_conditional_value_X19=(charp_operator_equals(argv[i],"-C")));            _conditional_value_X19;            })) {
+            else if(            charp_operator_equals(argv[i],"-C")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X20=(charp_operator_equals(argv[i],"-M")));            _conditional_value_X20;            })) {
+            else if(            charp_operator_equals(argv[i],"-M")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X21=(charp_operator_equals(argv[i],"-MM")));            _conditional_value_X21;            })) {
+            else if(            charp_operator_equals(argv[i],"-MM")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X22=(charp_operator_equals(argv[i],"-dM")));            _conditional_value_X22;            })) {
+            else if(            charp_operator_equals(argv[i],"-dM")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X23=(charp_operator_equals(argv[i],"-dD")));            _conditional_value_X23;            })) {
+            else if(            charp_operator_equals(argv[i],"-dD")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X24=(charp_operator_equals(argv[i],"-H")));            _conditional_value_X24;            })) {
+            else if(            charp_operator_equals(argv[i],"-H")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X25=(charp_operator_equals(argv[i],"-P")));            _conditional_value_X25;            })) {
+            else if(            charp_operator_equals(argv[i],"-P")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X26=(charp_operator_equals(argv[i],"-nostdinc")));            _conditional_value_X26;            })) {
+            else if(            charp_operator_equals(argv[i],"-nostdinc")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X27=(charp_operator_equals(argv[i],"-CC")));            _conditional_value_X27;            })) {
+            else if(            charp_operator_equals(argv[i],"-CC")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X28=(i+1<argc&&charp_operator_equals(argv[i],"-target")));            _conditional_value_X28;            })) {
+            else if(            i+1<argc&&charp_operator_equals(argv[i],"-target")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(clang_option,((char*)(__right_value1=xsprintf("-target \%s",((char*)(__right_value0=charp_to_string(argv[i+1])))))));
@@ -5934,7 +5649,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 i++;
             }
-            else if(({            (_conditional_value_X29=(i+1<argc&&charp_operator_equals(argv[i],"-include")));            _conditional_value_X29;            })) {
+            else if(            i+1<argc&&charp_operator_equals(argv[i],"-include")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option,((char*)(__right_value1=xsprintf("-iclude \%s",((char*)(__right_value0=charp_to_string(argv[i+1])))))));
@@ -5942,7 +5657,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 i++;
             }
-            else if(({            (_conditional_value_X30=(i+1<argc&&charp_operator_equals(argv[i],"-isystem")));            _conditional_value_X30;            })) {
+            else if(            i+1<argc&&charp_operator_equals(argv[i],"-isystem")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option,((char*)(__right_value1=xsprintf("-isystem \%s",((char*)(__right_value0=charp_to_string(argv[i+1])))))));
@@ -5955,7 +5670,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 i++;
             }
-            else if(({            (_conditional_value_X31=(i+1<argc&&charp_operator_equals(argv[i],"-T")));            _conditional_value_X31;            })) {
+            else if(            i+1<argc&&charp_operator_equals(argv[i],"-T")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(clang_option,((char*)(__right_value1=xsprintf(" -T \%s ",((char*)(__right_value0=charp_to_string(argv[i+1])))))));
@@ -5963,15 +5678,15 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 i++;
             }
-            else if(({            (_conditional_value_X32=(charp_operator_equals(argv[i],"-common-header")));            _conditional_value_X32;            })) {
+            else if(            charp_operator_equals(argv[i],"-common-header")            ) {
                 gCommonHeader=(_Bool)1;
             }
-            else if(({            (_conditional_value_X33=(charp_operator_equals(argv[i],"-original-position")));            _conditional_value_X33;            })) {
+            else if(            charp_operator_equals(argv[i],"-original-position")            ) {
                 gComeOriginalSourcePosition=(_Bool)0;
             }
-            else if(({            __right_value0 = (void*)0,             __right_value1 = (void*)0,             (_conditional_value_X34=(string_operator_equals(((char*)(__right_value1=charp_operator_load_range_element(argv[i],0,2))),"-O")));            (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+            else if(            __right_value0 = (void*)0,             __right_value1 = (void*)0,             ({(_conditional_value_X0=(string_operator_equals(((char*)(__right_value1=charp_operator_load_range_element(argv[i],0,2))),"-O")));            (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
             (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
-            _conditional_value_X34;            })) {
+            _conditional_value_X0;})            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(clang_option,((char*)(__right_value1=xsprintf(" \%s ",((char*)(__right_value0=charp_to_string(argv[i])))))));
@@ -5979,9 +5694,9 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 come_debug=(_Bool)0;
             }
-            else if(({            __right_value0 = (void*)0,             __right_value1 = (void*)0,             (_conditional_value_X35=(string_operator_equals(((char*)(__right_value1=charp_operator_load_range_element(argv[i],0,2))),"-D")));            (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+            else if(            __right_value0 = (void*)0,             __right_value1 = (void*)0,             ({(_conditional_value_X1=(string_operator_equals(((char*)(__right_value1=charp_operator_load_range_element(argv[i],0,2))),"-D")));            (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
             (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
-            _conditional_value_X35;            })) {
+            _conditional_value_X1;})            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option,((char*)(__right_value1=xsprintf(" \%s ",((char*)(__right_value0=charp_to_string(argv[i])))))));
@@ -5993,9 +5708,9 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            __right_value0 = (void*)0,             __right_value1 = (void*)0,             (_conditional_value_X36=(string_operator_equals(((char*)(__right_value1=charp_operator_load_range_element(argv[i],0,2))),"-U")));            (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+            else if(            __right_value0 = (void*)0,             __right_value1 = (void*)0,             ({(_conditional_value_X2=(string_operator_equals(((char*)(__right_value1=charp_operator_load_range_element(argv[i],0,2))),"-U")));            (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
             (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
-            _conditional_value_X36;            })) {
+            _conditional_value_X2;})            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option,((char*)(__right_value1=xsprintf(" \%s ",((char*)(__right_value0=charp_to_string(argv[i])))))));
@@ -6007,15 +5722,15 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X37=(charp_operator_equals(argv[i],"-g")));            _conditional_value_X37;            })) {
+            else if(            charp_operator_equals(argv[i],"-g")            ) {
                 buffer_append_str(clang_option,"-g ");
             }
-            else if(({            (_conditional_value_X38=(charp_operator_equals(argv[i],"-v")));            _conditional_value_X38;            })) {
+            else if(            charp_operator_equals(argv[i],"-v")            ) {
                 buffer_append_str(clang_option,"-v ");
                 buffer_append_str(cpp_option,"-v ");
                 verbose=(_Bool)1;
             }
-            else if(({            (_conditional_value_X39=(strlen(argv[i])>=2&&memcmp(argv[i],"-I",strlen("-I"))==0));            _conditional_value_X39;            })) {
+            else if(            strlen(argv[i])>=2&&memcmp(argv[i],"-I",strlen("-I"))==0            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 __right_value2 = (void*)0;
@@ -6024,39 +5739,39 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value2 = come_decrement_ref_count(__right_value2, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X40=(charp_operator_equals(argv[i],"-gdwarf-4")));            _conditional_value_X40;            })) {
+            else if(            charp_operator_equals(argv[i],"-gdwarf-4")            ) {
                 buffer_append_str(clang_option,"-gdwarf-4 ");
             }
-            else if(({            (_conditional_value_X41=(charp_operator_equals(argv[i],"-S")));            _conditional_value_X41;            })) {
+            else if(            charp_operator_equals(argv[i],"-S")            ) {
                 output_source_file_flag=(_Bool)1;
                 output_object_file_flag=(_Bool)0;
                 gComeOriginalSourcePosition=(_Bool)0;
             }
-            else if(({            (_conditional_value_X42=(charp_operator_equals(argv[i],"-s")));            _conditional_value_X42;            })) {
+            else if(            charp_operator_equals(argv[i],"-s")            ) {
                 output_source_file_flag=(_Bool)1;
                 output_object_file_flag=(_Bool)1;
                 gComeOriginalSourcePosition=(_Bool)0;
             }
-            else if(({            (_conditional_value_X43=(charp_operator_equals(argv[i],"-c")));            _conditional_value_X43;            })) {
+            else if(            charp_operator_equals(argv[i],"-c")            ) {
                 output_object_file=(_Bool)1;
             }
-            else if(({            (_conditional_value_X44=(charp_operator_equals(argv[i],"-E")));            _conditional_value_X44;            })) {
+            else if(            charp_operator_equals(argv[i],"-E")            ) {
                 output_cpp_file=(_Bool)1;
             }
-            else if(({            (_conditional_value_X45=(argv[i][0]==45));            _conditional_value_X45;            })) {
+            else if(            argv[i][0]==45            ) {
                 __right_value0 = (void*)0;
                 buffer_append_str(clang_option,((char*)(__right_value0=charp_operator_add(argv[i]," "))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X46=(strlen(argv[i])>2&&memcmp(argv[i]+strlen(argv[i])-2,".o",2)==0));            _conditional_value_X46;            })) {
+            else if(            strlen(argv[i])>2&&memcmp(argv[i]+strlen(argv[i])-2,".o",2)==0            ) {
                 __right_value0 = (void*)0;
                 list$1char$ph_push_back(object_files,(char*)come_increment_ref_count(__builtin_string(argv[i])));
             }
-            else if(({            (_conditional_value_X47=(strlen(argv[i])>2&&memcmp(argv[i]+strlen(argv[i])-2,".a",2)==0));            _conditional_value_X47;            })) {
+            else if(            strlen(argv[i])>2&&memcmp(argv[i]+strlen(argv[i])-2,".a",2)==0            ) {
                 __right_value0 = (void*)0;
                 list$1char$ph_push_back(object_files,(char*)come_increment_ref_count(__builtin_string(argv[i])));
             }
-            else if(({            (_conditional_value_X48=(string_operator_equals(ext_name,"c")));            _conditional_value_X48;            })) {
+            else if(            string_operator_equals(ext_name,"c")            ) {
                 __right_value0 = (void*)0;
                 list$1char$ph_push_back(files,(char*)come_increment_ref_count(__builtin_string(argv[i])));
             }
@@ -6073,18 +5788,18 @@ memset(&info_124, 0, sizeof(struct sInfo));
         gComeMalloc=come_malloc;
         __right_value0 = (void*)0;
         Value=system(((char*)(__right_value0=xsprintf("%s %s",RM,output_file_name))));
-        if(({        (_conditional_value_X49=(Value<0));        (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
-        _conditional_value_X49;        })) {
-            (come_push_stackframe("02transpile.c", 1085, 11),__exception_result_var_b12=die("rm"), come_pop_stackframe(), __exception_result_var_b12);
+        if(        ({(_conditional_value_X3=(Value<0));        (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+        _conditional_value_X3;})        ) {
+            (come_push_stackframe("02transpile.c", 1091, 11),__exception_result_var_b12=die("rm"), come_pop_stackframe(), __exception_result_var_b12);
         }
         else {
         }
         Value_66=fopen(output_file_name,"w");
-        if(({        (_conditional_value_X50=(Value_66));        _conditional_value_X50;        })) {
+        if(        Value_66        ) {
             fclose(Value_66);
         }
         else {
-            (come_push_stackframe("02transpile.c", 1092, 12),__exception_result_var_b13=die("fopen"), come_pop_stackframe(), __exception_result_var_b13);
+            (come_push_stackframe("02transpile.c", 1098, 12),__exception_result_var_b13=die("fopen"), come_pop_stackframe(), __exception_result_var_b13);
         }
         __right_value0 = (void*)0;
         tmp_file=(char*)come_increment_ref_count(__builtin_string("tmp-common-header.c"));
@@ -6093,12 +5808,12 @@ memset(&info_124, 0, sizeof(struct sInfo));
         __right_value2 = (void*)0;
         __right_value3 = (void*)0;
         Value_67=system(((char*)(__right_value3=xsprintf("cat \%s > \%s",((char*)(__right_value1=string_to_string(((char*)(__right_value0=list$1char$ph_join(files," ")))))),((char*)(__right_value2=string_to_string(tmp_file)))))));
-        if(({        (_conditional_value_X51=(Value_67<0));        (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+        if(        ({(_conditional_value_X4=(Value_67<0));        (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
         (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
         (__right_value2 = come_decrement_ref_count(__right_value2, (void*)0, (void*)0, 1, 0, (void*)0));
         (__right_value3 = come_decrement_ref_count(__right_value3, (void*)0, (void*)0, 1, 0, (void*)0));
-        _conditional_value_X51;        })) {
-            (come_push_stackframe("02transpile.c", 1098, 13),__exception_result_var_b14=die("cat"), come_pop_stackframe(), __exception_result_var_b14);
+        _conditional_value_X4;})        ) {
+            (come_push_stackframe("02transpile.c", 1104, 13),__exception_result_var_b14=die("cat"), come_pop_stackframe(), __exception_result_var_b14);
         }
         else {
         }
@@ -6129,86 +5844,86 @@ memset(&info_124, 0, sizeof(struct sInfo));
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj37=info.funcs,
-        info.funcs=(struct map$2char$phsFun$ph*)come_increment_ref_count(map$2char$phsFun$ph_initialize((struct map$2char$phsFun$ph*)come_increment_ref_count((struct map$2char$phsFun$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsFun$ph)*(1), "02transpile.c", 1113, "struct map$2char$phsFun$ph*"))));
+        info.funcs=(struct map$2char$phsFun$ph*)come_increment_ref_count(map$2char$phsFun$ph_initialize((struct map$2char$phsFun$ph*)come_increment_ref_count((struct map$2char$phsFun$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsFun$ph)*(1), "02transpile.c", 1119, "struct map$2char$phsFun$ph*"))));
         come_call_finalizer(map$2char$phsFun$ph_finalize, __dec_obj37,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj38=info.uniq_funcs,
-        info.uniq_funcs=(struct map$2char$phsFun$ph*)come_increment_ref_count(map$2char$phsFun$ph_initialize((struct map$2char$phsFun$ph*)come_increment_ref_count((struct map$2char$phsFun$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsFun$ph)*(1), "02transpile.c", 1114, "struct map$2char$phsFun$ph*"))));
+        info.uniq_funcs=(struct map$2char$phsFun$ph*)come_increment_ref_count(map$2char$phsFun$ph_initialize((struct map$2char$phsFun$ph*)come_increment_ref_count((struct map$2char$phsFun$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsFun$ph)*(1), "02transpile.c", 1120, "struct map$2char$phsFun$ph*"))));
         come_call_finalizer(map$2char$phsFun$ph_finalize, __dec_obj38,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj40=info.struct_definition,
-        info.struct_definition=(struct map$2char$phbuffer$ph*)come_increment_ref_count(map$2char$phbuffer$ph_initialize((struct map$2char$phbuffer$ph*)come_increment_ref_count((struct map$2char$phbuffer$ph*)come_calloc_v2(1, sizeof(struct map$2char$phbuffer$ph)*(1), "02transpile.c", 1115, "struct map$2char$phbuffer$ph*"))));
+        info.struct_definition=(struct map$2char$phbuffer$ph*)come_increment_ref_count(map$2char$phbuffer$ph_initialize((struct map$2char$phbuffer$ph*)come_increment_ref_count((struct map$2char$phbuffer$ph*)come_calloc_v2(1, sizeof(struct map$2char$phbuffer$ph)*(1), "02transpile.c", 1121, "struct map$2char$phbuffer$ph*"))));
         come_call_finalizer(map$2char$phbuffer$ph_finalize, __dec_obj40,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj42=info.uniq_definition,
-        info.uniq_definition=(struct map$2char$phchar$ph*)come_increment_ref_count(map$2char$phchar$ph_initialize((struct map$2char$phchar$ph*)come_increment_ref_count((struct map$2char$phchar$ph*)come_calloc_v2(1, sizeof(struct map$2char$phchar$ph)*(1), "02transpile.c", 1116, "struct map$2char$phchar$ph*"))));
+        info.uniq_definition=(struct map$2char$phchar$ph*)come_increment_ref_count(map$2char$phchar$ph_initialize((struct map$2char$phchar$ph*)come_increment_ref_count((struct map$2char$phchar$ph*)come_calloc_v2(1, sizeof(struct map$2char$phchar$ph)*(1), "02transpile.c", 1122, "struct map$2char$phchar$ph*"))));
         come_call_finalizer(map$2char$phchar$ph_finalize, __dec_obj42,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj43=info.previous_struct_definition,
-        info.previous_struct_definition=(struct map$2char$phbuffer$ph*)come_increment_ref_count(map$2char$phbuffer$ph_initialize((struct map$2char$phbuffer$ph*)come_increment_ref_count((struct map$2char$phbuffer$ph*)come_calloc_v2(1, sizeof(struct map$2char$phbuffer$ph)*(1), "02transpile.c", 1117, "struct map$2char$phbuffer$ph*"))));
+        info.previous_struct_definition=(struct map$2char$phbuffer$ph*)come_increment_ref_count(map$2char$phbuffer$ph_initialize((struct map$2char$phbuffer$ph*)come_increment_ref_count((struct map$2char$phbuffer$ph*)come_calloc_v2(1, sizeof(struct map$2char$phbuffer$ph)*(1), "02transpile.c", 1123, "struct map$2char$phbuffer$ph*"))));
         come_call_finalizer(map$2char$phbuffer$ph_finalize, __dec_obj43,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj45=info.generics_funcs,
-        info.generics_funcs=(struct map$2char$phsGenericsFun$ph*)come_increment_ref_count(map$2char$phsGenericsFun$ph_initialize((struct map$2char$phsGenericsFun$ph*)come_increment_ref_count((struct map$2char$phsGenericsFun$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsGenericsFun$ph)*(1), "02transpile.c", 1118, "struct map$2char$phsGenericsFun$ph*"))));
+        info.generics_funcs=(struct map$2char$phsGenericsFun$ph*)come_increment_ref_count(map$2char$phsGenericsFun$ph_initialize((struct map$2char$phsGenericsFun$ph*)come_increment_ref_count((struct map$2char$phsGenericsFun$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsGenericsFun$ph)*(1), "02transpile.c", 1124, "struct map$2char$phsGenericsFun$ph*"))));
         come_call_finalizer(map$2char$phsGenericsFun$ph_finalize, __dec_obj45,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj47=info.classes,
-        info.classes=(struct map$2char$phsClass$ph*)come_increment_ref_count(map$2char$phsClass$ph_initialize((struct map$2char$phsClass$ph*)come_increment_ref_count((struct map$2char$phsClass$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsClass$ph)*(1), "02transpile.c", 1119, "struct map$2char$phsClass$ph*"))));
+        info.classes=(struct map$2char$phsClass$ph*)come_increment_ref_count(map$2char$phsClass$ph_initialize((struct map$2char$phsClass$ph*)come_increment_ref_count((struct map$2char$phsClass$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsClass$ph)*(1), "02transpile.c", 1125, "struct map$2char$phsClass$ph*"))));
         come_call_finalizer(map$2char$phsClass$ph_finalize, __dec_obj47,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj49=info.modules,
-        info.modules=(struct map$2char$phsClassModule$ph*)come_increment_ref_count(map$2char$phsClassModule$ph_initialize((struct map$2char$phsClassModule$ph*)come_increment_ref_count((struct map$2char$phsClassModule$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsClassModule$ph)*(1), "02transpile.c", 1120, "struct map$2char$phsClassModule$ph*"))));
+        info.modules=(struct map$2char$phsClassModule$ph*)come_increment_ref_count(map$2char$phsClassModule$ph_initialize((struct map$2char$phsClassModule$ph*)come_increment_ref_count((struct map$2char$phsClassModule$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsClassModule$ph)*(1), "02transpile.c", 1126, "struct map$2char$phsClassModule$ph*"))));
         come_call_finalizer(map$2char$phsClassModule$ph_finalize, __dec_obj49,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj51=info.types,
-        info.types=(struct map$2char$phsType$ph*)come_increment_ref_count(map$2char$phsType$ph_initialize((struct map$2char$phsType$ph*)come_increment_ref_count((struct map$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsType$ph)*(1), "02transpile.c", 1121, "struct map$2char$phsType$ph*"))));
+        info.types=(struct map$2char$phsType$ph*)come_increment_ref_count(map$2char$phsType$ph_initialize((struct map$2char$phsType$ph*)come_increment_ref_count((struct map$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsType$ph)*(1), "02transpile.c", 1127, "struct map$2char$phsType$ph*"))));
         come_call_finalizer(map$2char$phsType$ph_finalize, __dec_obj51,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj52=info.module,
-        info.module=(struct sModule*)come_increment_ref_count(sModule_initialize((struct sModule*)come_increment_ref_count((struct sModule*)come_calloc_v2(1, sizeof(struct sModule)*(1), "02transpile.c", 1122, "struct sModule*"))));
+        info.module=(struct sModule*)come_increment_ref_count(sModule_initialize((struct sModule*)come_increment_ref_count((struct sModule*)come_calloc_v2(1, sizeof(struct sModule)*(1), "02transpile.c", 1128, "struct sModule*"))));
         come_call_finalizer(sModule_finalize, __dec_obj52,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj53=info.right_value_objects,
-        info.right_value_objects=(struct list$1sRightValueObject$ph*)come_increment_ref_count(list$1sRightValueObject$ph_initialize((struct list$1sRightValueObject$ph*)come_increment_ref_count((struct list$1sRightValueObject$ph*)come_calloc_v2(1, sizeof(struct list$1sRightValueObject$ph)*(1), "02transpile.c", 1123, "struct list$1sRightValueObject$ph*"))));
+        info.right_value_objects=(struct list$1sRightValueObject$ph*)come_increment_ref_count(list$1sRightValueObject$ph_initialize((struct list$1sRightValueObject$ph*)come_increment_ref_count((struct list$1sRightValueObject$ph*)come_calloc_v2(1, sizeof(struct list$1sRightValueObject$ph)*(1), "02transpile.c", 1129, "struct list$1sRightValueObject$ph*"))));
         come_call_finalizer(list$1sRightValueObject$ph_finalize, __dec_obj53,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj54=info.stack,
-        info.stack=(struct list$1CVALUE$ph*)come_increment_ref_count(list$1CVALUE$ph_initialize((struct list$1CVALUE$ph*)come_increment_ref_count((struct list$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list$1CVALUE$ph)*(1), "02transpile.c", 1124, "struct list$1CVALUE$ph*"))));
+        info.stack=(struct list$1CVALUE$ph*)come_increment_ref_count(list$1CVALUE$ph_initialize((struct list$1CVALUE$ph*)come_increment_ref_count((struct list$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list$1CVALUE$ph)*(1), "02transpile.c", 1130, "struct list$1CVALUE$ph*"))));
         come_call_finalizer(list$1CVALUE$ph_finalize, __dec_obj54,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj55=info.gv_table,
-        info.gv_table=(struct sVarTable*)come_increment_ref_count(sVarTable_initialize((struct sVarTable*)come_increment_ref_count((struct sVarTable*)come_calloc_v2(1, sizeof(struct sVarTable)*(1), "02transpile.c", 1125, "struct sVarTable*")),(_Bool)1,((void*)0)));
+        info.gv_table=(struct sVarTable*)come_increment_ref_count(sVarTable_initialize((struct sVarTable*)come_increment_ref_count((struct sVarTable*)come_calloc_v2(1, sizeof(struct sVarTable)*(1), "02transpile.c", 1131, "struct sVarTable*")),(_Bool)1,((void*)0)));
         come_call_finalizer(sVarTable_finalize, __dec_obj55,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
-        lv_table=(struct sVarTable*)come_increment_ref_count(sVarTable_initialize((struct sVarTable*)come_increment_ref_count((struct sVarTable*)come_calloc_v2(1, sizeof(struct sVarTable)*(1), "02transpile.c", 1126, "struct sVarTable*")),(_Bool)0,((void*)0)));
+        lv_table=(struct sVarTable*)come_increment_ref_count(sVarTable_initialize((struct sVarTable*)come_increment_ref_count((struct sVarTable*)come_calloc_v2(1, sizeof(struct sVarTable)*(1), "02transpile.c", 1132, "struct sVarTable*")),(_Bool)0,((void*)0)));
         info.lv_table=lv_table;
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj56=info.generics_type_names,
-        info.generics_type_names=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 1128, "struct list$1char$ph*"))));
+        info.generics_type_names=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 1134, "struct list$1char$ph*"))));
         come_call_finalizer(list$1char$ph_finalize, __dec_obj56,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj57=info.method_generics_type_names,
-        info.method_generics_type_names=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 1129, "struct list$1char$ph*"))));
+        info.method_generics_type_names=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 1135, "struct list$1char$ph*"))));
         come_call_finalizer(list$1char$ph_finalize, __dec_obj57,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
         __dec_obj58=info.generics_classes,
-        info.generics_classes=(struct map$2char$phsClass$ph*)come_increment_ref_count(map$2char$phsClass$ph_initialize((struct map$2char$phsClass$ph*)come_increment_ref_count((struct map$2char$phsClass$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsClass$ph)*(1), "02transpile.c", 1130, "struct map$2char$phsClass$ph*"))));
+        info.generics_classes=(struct map$2char$phsClass$ph*)come_increment_ref_count(map$2char$phsClass$ph_initialize((struct map$2char$phsClass$ph*)come_increment_ref_count((struct map$2char$phsClass$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsClass$ph)*(1), "02transpile.c", 1136, "struct map$2char$phsClass$ph*"))));
         come_call_finalizer(map$2char$phsClass$ph_finalize, __dec_obj58,(void*)0, (void*)0, 0, 0, 0, (void*)0);
         info.verbose=verbose;
         info.output_header_file=(_Bool)1;
@@ -6222,7 +5937,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
         init_classes(&info);
         clear_tmp_file(&info);
         Value_82=cpp(&info);
-        if(({        (_conditional_value_X52=(!Value_82));        _conditional_value_X52;        })) {
+        if(        !Value_82        ) {
             printf("transpile failed\n");
             __right_value0 = (void*)0;
             system(((char*)(__right_value0=xsprintf("%s %s*",RM,tmp_file))));
@@ -6242,10 +5957,10 @@ memset(&info_124, 0, sizeof(struct sInfo));
         info.p=info.source->buf;
         info.head=info.source->buf;
         Value_83=output_cpp_file;
-        if(({        (_conditional_value_X53=(!Value_83));        _conditional_value_X53;        })) {
+        if(        !Value_83        ) {
             transpile(&info);
             Value_84=output_header_file(&info);
-            if(({            (_conditional_value_X54=(!Value_84));            _conditional_value_X54;            })) {
+            if(            !Value_84            ) {
                 printf("output source file failed\n");
                 __right_value0 = (void*)0;
                 system(((char*)(__right_value0=xsprintf("%s %s*",RM,tmp_file))));
@@ -6271,66 +5986,66 @@ memset(&info_124, 0, sizeof(struct sInfo));
         come_call_finalizer(sInfo_finalize, (&info), (void*)0, (void*)0, 1, 0, 0, (void*)0);
         come_call_finalizer(sVarTable_finalize, lv_table, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    else if(({    (_conditional_value_X55=(charp_operator_equals(argv[1],"new")&&argc==3));    _conditional_value_X55;    })) {
+    else if(    charp_operator_equals(argv[1],"new")&&argc==3    ) {
         Value_85=new_project(argc,argv);
-        if(({        (_conditional_value_X56=(!Value_85));        _conditional_value_X56;        })) {
+        if(        !Value_85        ) {
             return (_Bool)0;
         }
         else {
         }
     }
-    else if(({    (_conditional_value_X57=(charp_operator_equals(argv[1],"run")&&argc==2));    _conditional_value_X57;    })) {
+    else if(    charp_operator_equals(argv[1],"run")&&argc==2    ) {
         Value_86=run_project(argc,argv);
-        if(({        (_conditional_value_X58=(!Value_86));        _conditional_value_X58;        })) {
+        if(        !Value_86        ) {
             return (_Bool)0;
         }
         else {
         }
     }
-    else if(({    (_conditional_value_X59=(charp_operator_equals(argv[1],"header")&&argc==2));    _conditional_value_X59;    })) {
+    else if(    charp_operator_equals(argv[1],"header")&&argc==2    ) {
         Value_87=make_header_project(argc,argv);
-        if(({        (_conditional_value_X60=(!Value_87));        _conditional_value_X60;        })) {
+        if(        !Value_87        ) {
             return (_Bool)0;
         }
         else {
         }
     }
-    else if(({    (_conditional_value_X61=(charp_operator_equals(argv[1],"compile")&&argc==2));    _conditional_value_X61;    })) {
+    else if(    charp_operator_equals(argv[1],"compile")&&argc==2    ) {
         Value_88=compile_project(argc,argv);
-        if(({        (_conditional_value_X62=(!Value_88));        _conditional_value_X62;        })) {
+        if(        !Value_88        ) {
             return (_Bool)0;
         }
         else {
         }
     }
-    else if(({    (_conditional_value_X63=(charp_operator_equals(argv[1],"debug")&&argc==2));    _conditional_value_X63;    })) {
+    else if(    charp_operator_equals(argv[1],"debug")&&argc==2    ) {
         Value_89=debug_run_project(argc,argv);
-        if(({        (_conditional_value_X64=(!Value_89));        _conditional_value_X64;        })) {
+        if(        !Value_89        ) {
             return (_Bool)0;
         }
         else {
         }
     }
-    else if(({    (_conditional_value_X65=(charp_operator_equals(argv[1],"clean")&&argc==2));    _conditional_value_X65;    })) {
+    else if(    charp_operator_equals(argv[1],"clean")&&argc==2    ) {
         Value_90=clean_project(argc,argv);
-        if(({        (_conditional_value_X66=(!Value_90));        _conditional_value_X66;        })) {
+        if(        !Value_90        ) {
             return (_Bool)0;
         }
         else {
         }
     }
-    else if(({    (_conditional_value_X67=(charp_operator_equals(argv[1],"install")&&argc>=2));    _conditional_value_X67;    })) {
-        if(({        (_conditional_value_X68=(argc==2));        _conditional_value_X68;        })) {
+    else if(    charp_operator_equals(argv[1],"install")&&argc>=2    ) {
+        if(        argc==2        ) {
             Value_91=install_project(argc,argv,"/usr/local");
-            if(({            (_conditional_value_X69=(!Value_91));            _conditional_value_X69;            })) {
+            if(            !Value_91            ) {
                 return (_Bool)0;
             }
             else {
             }
         }
-        else if(({        (_conditional_value_X70=(argc>=3));        _conditional_value_X70;        })) {
+        else if(        argc>=3        ) {
             Value_92=install_project(argc,argv,argv[2]);
-            if(({            (_conditional_value_X71=(!Value_92));            _conditional_value_X71;            })) {
+            if(            !Value_92            ) {
                 return (_Bool)0;
             }
             else {
@@ -6342,21 +6057,21 @@ memset(&info_124, 0, sizeof(struct sInfo));
         output_file_name_str_94=((void*)0);
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
-        clang_option_95=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 851, "struct buffer*"))));
+        clang_option_95=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 857, "struct buffer*"))));
         buffer_append_str(clang_option_95," -std=c99 ");
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
-        linker_option_96=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 853, "struct buffer*"))));
+        linker_option_96=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 859, "struct buffer*"))));
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
-        cpp_option_97=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 854, "struct buffer*"))));
+        cpp_option_97=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 860, "struct buffer*"))));
         buffer_append_str(cpp_option_97,"-U__GNUC__");
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
-        files_98=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 856, "struct list$1char$ph*"))));
+        files_98=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 862, "struct list$1char$ph*"))));
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
-        object_files_99=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 857, "struct list$1char$ph*"))));
+        object_files_99=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 863, "struct list$1char$ph*"))));
         output_object_file_100=(_Bool)0;
         output_cpp_file_101=(_Bool)0;
         output_source_file_flag_102=(_Bool)0;
@@ -6369,17 +6084,17 @@ memset(&info_124, 0, sizeof(struct sInfo));
         pico_cpp_109=(_Bool)0;
         emb_cpp_110=(_Bool)0;
         gcc_compiler_111=(_Bool)0;
-        for(        ({        (_conditional_value_X72=(i_112=start_num_93));        _conditional_value_X72;        });        ({        (_conditional_value_X73=(i_112<argc));        _conditional_value_X73;        });        ({        (_conditional_value_X74=(i_112++));        _conditional_value_X74;        })        ){
+        for(        i_112=start_num_93        ;        i_112<argc        ;        i_112++        ){
             __right_value0 = (void*)0;
             ext_name_113=(char*)come_increment_ref_count(xextname(argv[i_112]));
-            if(({            (_conditional_value_X75=(charp_operator_equals(argv[i_112],"-o")&&i_112+1<argc));            _conditional_value_X75;            })) {
+            if(            charp_operator_equals(argv[i_112],"-o")&&i_112+1<argc            ) {
                 __right_value0 = (void*)0;
                 __dec_obj61=output_file_name_104,
                 output_file_name_104=(char*)come_increment_ref_count(__builtin_string(argv[i_112+1]));
                 __dec_obj61 = come_decrement_ref_count(__dec_obj61, (void*)0, (void*)0, 0,0, (void*)0);
                 i_112++;
             }
-            else if(({            (_conditional_value_X76=(charp_operator_equals(argv[i_112],"-e")&&i_112+1<argc));            _conditional_value_X76;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-e")&&i_112+1<argc            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(linker_option_96,((char*)(__right_value1=xsprintf("-e \%s",((char*)(__right_value0=charp_to_string(argv[i_112+1])))))));
@@ -6387,17 +6102,17 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 i_112++;
             }
-            else if(({            (_conditional_value_X77=(charp_operator_equals(argv[i_112],"-str")));            _conditional_value_X77;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-str")            ) {
                 gComeStr=(_Bool)1;
             }
-            else if(({            (_conditional_value_X78=(charp_operator_equals(argv[i_112],"-pthread")));            _conditional_value_X78;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-pthread")            ) {
                 gComePthread=(_Bool)1;
             }
-            else if(({            (_conditional_value_X79=(charp_operator_equals(argv[i_112],"-gcc")));            _conditional_value_X79;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-gcc")            ) {
                 gcc_compiler_111=(_Bool)1;
                 CC="gcc";
             }
-            else if(({            (_conditional_value_X80=(charp_operator_equals(argv[i_112],"-riscv")));            _conditional_value_X80;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-riscv")            ) {
                 gcc_compiler_111=(_Bool)1;
                 output_object_file_flag_103=(_Bool)0;
                 CC="riscv64-unknown-elf-gcc";
@@ -6409,7 +6124,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 gComeBareMetal=(_Bool)1;
             }
-            else if(({            (_conditional_value_X81=(charp_operator_equals(argv[i_112],"-bare")));            _conditional_value_X81;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-bare")            ) {
                 output_source_file_flag_102=(_Bool)1;
                 gcc_compiler_111=(_Bool)1;
                 output_object_file_flag_103=(_Bool)0;
@@ -6423,7 +6138,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 buffer_append_str(clang_option_95,((char*)(__right_value0=xsprintf(" -nostdlib -ffreestanding "))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X82=(charp_operator_equals(argv[i_112],"-pico")));            _conditional_value_X82;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-pico")            ) {
                 output_source_file_flag_102=(_Bool)1;
                 output_object_file_flag_103=(_Bool)0;
                 gComeOriginalSourcePosition=(_Bool)0;
@@ -6431,7 +6146,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 __dec_obj62=cpp_option_97,
-                cpp_option_97=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 915, "struct buffer*"))));
+                cpp_option_97=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 921, "struct buffer*"))));
                 come_call_finalizer(buffer_finalize, __dec_obj62,(void*)0, (void*)0, 0, 0, 0, (void*)0);
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
@@ -6443,13 +6158,13 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 create_pico_version_header();
                 pico_cpp_109=(_Bool)1;
             }
-            else if(({            (_conditional_value_X83=(charp_operator_equals(argv[i_112],"-emb")));            _conditional_value_X83;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-emb")            ) {
                 output_source_file_flag_102=(_Bool)1;
                 output_object_file_flag_103=(_Bool)0;
                 gComeOriginalSourcePosition=(_Bool)0;
                 emb_cpp_110=(_Bool)1;
             }
-            else if(({            (_conditional_value_X84=(charp_operator_equals(argv[i_112],"-m5stack")));            _conditional_value_X84;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-m5stack")            ) {
                 m5stack_cpp_108=(_Bool)1;
                 output_source_file_flag_102=(_Bool)1;
                 output_object_file_flag_103=(_Bool)0;
@@ -6458,7 +6173,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 __dec_obj63=cpp_option_97,
-                cpp_option_97=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 934, "struct buffer*"))));
+                cpp_option_97=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "02transpile.c", 940, "struct buffer*"))));
                 come_call_finalizer(buffer_finalize, __dec_obj63,(void*)0, (void*)0, 0, 0, 0, (void*)0);
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
@@ -6506,7 +6221,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value20 = come_decrement_ref_count(__right_value20, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value21 = come_decrement_ref_count(__right_value21, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X85=(i_112+1<argc&&charp_operator_equals(argv[i_112],"-target")));            _conditional_value_X85;            })) {
+            else if(            i_112+1<argc&&charp_operator_equals(argv[i_112],"-target")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(clang_option_95,((char*)(__right_value1=xsprintf("-target \%s",((char*)(__right_value0=charp_to_string(argv[i_112+1])))))));
@@ -6514,7 +6229,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 i_112++;
             }
-            else if(({            (_conditional_value_X86=(i_112+1<argc&&charp_operator_equals(argv[i_112],"-T")));            _conditional_value_X86;            })) {
+            else if(            i_112+1<argc&&charp_operator_equals(argv[i_112],"-T")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(clang_option_95,((char*)(__right_value1=xsprintf(" -T \%s ",((char*)(__right_value0=charp_to_string(argv[i_112+1])))))));
@@ -6522,81 +6237,81 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 i_112++;
             }
-            else if(({            (_conditional_value_X87=(charp_operator_equals(argv[i_112],"-net")));            _conditional_value_X87;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-net")            ) {
                 gComeNet=(_Bool)1;
             }
-            else if(({            (_conditional_value_X88=(charp_operator_equals(argv[i_112],"-cg")));            _conditional_value_X88;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-cg")            ) {
                 come_debug_106=(_Bool)1;
                 buffer_append_str(clang_option_95,"-g ");
             }
-            else if(({            (_conditional_value_X89=(charp_operator_equals(argv[i_112],"-cg2")));            _conditional_value_X89;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-cg2")            ) {
                 buffer_append_str(clang_option_95," -fsanitize=address,undefined -g ");
                 buffer_append_str(linker_option_96," -fsanitize=address,undefined -g ");
             }
-            else if(({            (_conditional_value_X90=(charp_operator_equals(argv[i_112],"-C")));            _conditional_value_X90;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-C")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option_97,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i_112])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X91=(charp_operator_equals(argv[i_112],"-M")));            _conditional_value_X91;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-M")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option_97,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i_112])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X92=(charp_operator_equals(argv[i_112],"-MM")));            _conditional_value_X92;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-MM")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option_97,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i_112])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X93=(charp_operator_equals(argv[i_112],"-dM")));            _conditional_value_X93;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-dM")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option_97,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i_112])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X94=(charp_operator_equals(argv[i_112],"-dD")));            _conditional_value_X94;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-dD")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option_97,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i_112])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X95=(charp_operator_equals(argv[i_112],"-H")));            _conditional_value_X95;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-H")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option_97,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i_112])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X96=(charp_operator_equals(argv[i_112],"-P")));            _conditional_value_X96;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-P")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option_97,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i_112])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X97=(charp_operator_equals(argv[i_112],"-nostdinc")));            _conditional_value_X97;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-nostdinc")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option_97,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i_112])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X98=(charp_operator_equals(argv[i_112],"-CC")));            _conditional_value_X98;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-CC")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option_97,((char*)(__right_value1=xsprintf("\%s ",((char*)(__right_value0=charp_to_string(argv[i_112])))))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X99=(i_112+1<argc&&charp_operator_equals(argv[i_112],"-target")));            _conditional_value_X99;            })) {
+            else if(            i_112+1<argc&&charp_operator_equals(argv[i_112],"-target")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(clang_option_95,((char*)(__right_value1=xsprintf("-target \%s",((char*)(__right_value0=charp_to_string(argv[i_112+1])))))));
@@ -6604,7 +6319,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 i_112++;
             }
-            else if(({            (_conditional_value_X100=(i_112+1<argc&&charp_operator_equals(argv[i_112],"-include")));            _conditional_value_X100;            })) {
+            else if(            i_112+1<argc&&charp_operator_equals(argv[i_112],"-include")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option_97,((char*)(__right_value1=xsprintf("-iclude \%s",((char*)(__right_value0=charp_to_string(argv[i_112+1])))))));
@@ -6612,7 +6327,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 i_112++;
             }
-            else if(({            (_conditional_value_X101=(i_112+1<argc&&charp_operator_equals(argv[i_112],"-isystem")));            _conditional_value_X101;            })) {
+            else if(            i_112+1<argc&&charp_operator_equals(argv[i_112],"-isystem")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option_97,((char*)(__right_value1=xsprintf("-isystem \%s",((char*)(__right_value0=charp_to_string(argv[i_112+1])))))));
@@ -6625,7 +6340,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 i_112++;
             }
-            else if(({            (_conditional_value_X102=(i_112+1<argc&&charp_operator_equals(argv[i_112],"-T")));            _conditional_value_X102;            })) {
+            else if(            i_112+1<argc&&charp_operator_equals(argv[i_112],"-T")            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(clang_option_95,((char*)(__right_value1=xsprintf(" -T \%s ",((char*)(__right_value0=charp_to_string(argv[i_112+1])))))));
@@ -6633,15 +6348,15 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 i_112++;
             }
-            else if(({            (_conditional_value_X103=(charp_operator_equals(argv[i_112],"-common-header")));            _conditional_value_X103;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-common-header")            ) {
                 gCommonHeader=(_Bool)1;
             }
-            else if(({            (_conditional_value_X104=(charp_operator_equals(argv[i_112],"-original-position")));            _conditional_value_X104;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-original-position")            ) {
                 gComeOriginalSourcePosition=(_Bool)0;
             }
-            else if(({            __right_value0 = (void*)0,             __right_value1 = (void*)0,             (_conditional_value_X105=(string_operator_equals(((char*)(__right_value1=charp_operator_load_range_element(argv[i_112],0,2))),"-O")));            (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+            else if(            __right_value0 = (void*)0,             __right_value1 = (void*)0,             ({(_conditional_value_X5=(string_operator_equals(((char*)(__right_value1=charp_operator_load_range_element(argv[i_112],0,2))),"-O")));            (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
             (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
-            _conditional_value_X105;            })) {
+            _conditional_value_X5;})            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(clang_option_95,((char*)(__right_value1=xsprintf(" \%s ",((char*)(__right_value0=charp_to_string(argv[i_112])))))));
@@ -6649,9 +6364,9 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 come_debug_106=(_Bool)0;
             }
-            else if(({            __right_value0 = (void*)0,             __right_value1 = (void*)0,             (_conditional_value_X106=(string_operator_equals(((char*)(__right_value1=charp_operator_load_range_element(argv[i_112],0,2))),"-D")));            (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+            else if(            __right_value0 = (void*)0,             __right_value1 = (void*)0,             ({(_conditional_value_X6=(string_operator_equals(((char*)(__right_value1=charp_operator_load_range_element(argv[i_112],0,2))),"-D")));            (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
             (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
-            _conditional_value_X106;            })) {
+            _conditional_value_X6;})            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option_97,((char*)(__right_value1=xsprintf(" \%s ",((char*)(__right_value0=charp_to_string(argv[i_112])))))));
@@ -6663,9 +6378,9 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            __right_value0 = (void*)0,             __right_value1 = (void*)0,             (_conditional_value_X107=(string_operator_equals(((char*)(__right_value1=charp_operator_load_range_element(argv[i_112],0,2))),"-U")));            (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+            else if(            __right_value0 = (void*)0,             __right_value1 = (void*)0,             ({(_conditional_value_X7=(string_operator_equals(((char*)(__right_value1=charp_operator_load_range_element(argv[i_112],0,2))),"-U")));            (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
             (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
-            _conditional_value_X107;            })) {
+            _conditional_value_X7;})            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 buffer_append_str(cpp_option_97,((char*)(__right_value1=xsprintf(" \%s ",((char*)(__right_value0=charp_to_string(argv[i_112])))))));
@@ -6677,15 +6392,15 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X108=(charp_operator_equals(argv[i_112],"-g")));            _conditional_value_X108;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-g")            ) {
                 buffer_append_str(clang_option_95,"-g ");
             }
-            else if(({            (_conditional_value_X109=(charp_operator_equals(argv[i_112],"-v")));            _conditional_value_X109;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-v")            ) {
                 buffer_append_str(clang_option_95,"-v ");
                 buffer_append_str(cpp_option_97,"-v ");
                 verbose_105=(_Bool)1;
             }
-            else if(({            (_conditional_value_X110=(strlen(argv[i_112])>=2&&memcmp(argv[i_112],"-I",strlen("-I"))==0));            _conditional_value_X110;            })) {
+            else if(            strlen(argv[i_112])>=2&&memcmp(argv[i_112],"-I",strlen("-I"))==0            ) {
                 __right_value0 = (void*)0;
                 __right_value1 = (void*)0;
                 __right_value2 = (void*)0;
@@ -6694,39 +6409,39 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value2 = come_decrement_ref_count(__right_value2, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X111=(charp_operator_equals(argv[i_112],"-gdwarf-4")));            _conditional_value_X111;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-gdwarf-4")            ) {
                 buffer_append_str(clang_option_95,"-gdwarf-4 ");
             }
-            else if(({            (_conditional_value_X112=(charp_operator_equals(argv[i_112],"-S")));            _conditional_value_X112;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-S")            ) {
                 output_source_file_flag_102=(_Bool)1;
                 output_object_file_flag_103=(_Bool)0;
                 gComeOriginalSourcePosition=(_Bool)0;
             }
-            else if(({            (_conditional_value_X113=(charp_operator_equals(argv[i_112],"-s")));            _conditional_value_X113;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-s")            ) {
                 output_source_file_flag_102=(_Bool)1;
                 output_object_file_flag_103=(_Bool)1;
                 gComeOriginalSourcePosition=(_Bool)0;
             }
-            else if(({            (_conditional_value_X114=(charp_operator_equals(argv[i_112],"-c")));            _conditional_value_X114;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-c")            ) {
                 output_object_file_100=(_Bool)1;
             }
-            else if(({            (_conditional_value_X115=(charp_operator_equals(argv[i_112],"-E")));            _conditional_value_X115;            })) {
+            else if(            charp_operator_equals(argv[i_112],"-E")            ) {
                 output_cpp_file_101=(_Bool)1;
             }
-            else if(({            (_conditional_value_X116=(argv[i_112][0]==45));            _conditional_value_X116;            })) {
+            else if(            argv[i_112][0]==45            ) {
                 __right_value0 = (void*)0;
                 buffer_append_str(clang_option_95,((char*)(__right_value0=charp_operator_add(argv[i_112]," "))));
                 (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
             }
-            else if(({            (_conditional_value_X117=(strlen(argv[i_112])>2&&memcmp(argv[i_112]+strlen(argv[i_112])-2,".o",2)==0));            _conditional_value_X117;            })) {
+            else if(            strlen(argv[i_112])>2&&memcmp(argv[i_112]+strlen(argv[i_112])-2,".o",2)==0            ) {
                 __right_value0 = (void*)0;
                 list$1char$ph_push_back(object_files_99,(char*)come_increment_ref_count(__builtin_string(argv[i_112])));
             }
-            else if(({            (_conditional_value_X118=(strlen(argv[i_112])>2&&memcmp(argv[i_112]+strlen(argv[i_112])-2,".a",2)==0));            _conditional_value_X118;            })) {
+            else if(            strlen(argv[i_112])>2&&memcmp(argv[i_112]+strlen(argv[i_112])-2,".a",2)==0            ) {
                 __right_value0 = (void*)0;
                 list$1char$ph_push_back(object_files_99,(char*)come_increment_ref_count(__builtin_string(argv[i_112])));
             }
-            else if(({            (_conditional_value_X119=(string_operator_equals(ext_name_113,"c")));            _conditional_value_X119;            })) {
+            else if(            string_operator_equals(ext_name_113,"c")            ) {
                 __right_value0 = (void*)0;
                 list$1char$ph_push_back(files_98,(char*)come_increment_ref_count(__builtin_string(argv[i_112])));
             }
@@ -6741,10 +6456,10 @@ memset(&info_124, 0, sizeof(struct sInfo));
         gComeOriginalSourcePosition=(_Bool)0;
         gComeDebug=come_debug_106;
         gComeMalloc=come_malloc_107;
-        for(        ({        (_conditional_value_X120=(o2_saved=(struct list$1char$ph*)come_increment_ref_count(files_98),it=list$1char$ph_begin(o2_saved)));        _conditional_value_X120;        });        ({        (_conditional_value_X121=(!list$1char$ph_end(o2_saved)));        _conditional_value_X121;        });        ({        (_conditional_value_X122=(it=list$1char$ph_next(o2_saved)));        _conditional_value_X122;        })        ){
+        for(        o2_saved=(struct list$1char$ph*)come_increment_ref_count(files_98),it=list$1char$ph_begin(o2_saved)        ;        !list$1char$ph_end(o2_saved)        ;        it=list$1char$ph_next(o2_saved)        ){
             memset(&info_116,0,sizeof(struct sInfo));
             Value_117=fopen(it,"r");
-            if(({            (_conditional_value_X123=(Value_117));            _conditional_value_X123;            })) {
+            if(            Value_117            ) {
                 fclose(Value_117);
             }
             else {
@@ -6773,86 +6488,86 @@ memset(&info_124, 0, sizeof(struct sInfo));
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj68=info_116.funcs,
-            info_116.funcs=(struct map$2char$phsFun$ph*)come_increment_ref_count(map$2char$phsFun$ph_initialize((struct map$2char$phsFun$ph*)come_increment_ref_count((struct map$2char$phsFun$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsFun$ph)*(1), "02transpile.c", 1237, "struct map$2char$phsFun$ph*"))));
+            info_116.funcs=(struct map$2char$phsFun$ph*)come_increment_ref_count(map$2char$phsFun$ph_initialize((struct map$2char$phsFun$ph*)come_increment_ref_count((struct map$2char$phsFun$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsFun$ph)*(1), "02transpile.c", 1243, "struct map$2char$phsFun$ph*"))));
             come_call_finalizer(map$2char$phsFun$ph_finalize, __dec_obj68,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj69=info_116.uniq_funcs,
-            info_116.uniq_funcs=(struct map$2char$phsFun$ph*)come_increment_ref_count(map$2char$phsFun$ph_initialize((struct map$2char$phsFun$ph*)come_increment_ref_count((struct map$2char$phsFun$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsFun$ph)*(1), "02transpile.c", 1238, "struct map$2char$phsFun$ph*"))));
+            info_116.uniq_funcs=(struct map$2char$phsFun$ph*)come_increment_ref_count(map$2char$phsFun$ph_initialize((struct map$2char$phsFun$ph*)come_increment_ref_count((struct map$2char$phsFun$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsFun$ph)*(1), "02transpile.c", 1244, "struct map$2char$phsFun$ph*"))));
             come_call_finalizer(map$2char$phsFun$ph_finalize, __dec_obj69,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj70=info_116.struct_definition,
-            info_116.struct_definition=(struct map$2char$phbuffer$ph*)come_increment_ref_count(map$2char$phbuffer$ph_initialize((struct map$2char$phbuffer$ph*)come_increment_ref_count((struct map$2char$phbuffer$ph*)come_calloc_v2(1, sizeof(struct map$2char$phbuffer$ph)*(1), "02transpile.c", 1239, "struct map$2char$phbuffer$ph*"))));
+            info_116.struct_definition=(struct map$2char$phbuffer$ph*)come_increment_ref_count(map$2char$phbuffer$ph_initialize((struct map$2char$phbuffer$ph*)come_increment_ref_count((struct map$2char$phbuffer$ph*)come_calloc_v2(1, sizeof(struct map$2char$phbuffer$ph)*(1), "02transpile.c", 1245, "struct map$2char$phbuffer$ph*"))));
             come_call_finalizer(map$2char$phbuffer$ph_finalize, __dec_obj70,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj71=info_116.uniq_definition,
-            info_116.uniq_definition=(struct map$2char$phchar$ph*)come_increment_ref_count(map$2char$phchar$ph_initialize((struct map$2char$phchar$ph*)come_increment_ref_count((struct map$2char$phchar$ph*)come_calloc_v2(1, sizeof(struct map$2char$phchar$ph)*(1), "02transpile.c", 1240, "struct map$2char$phchar$ph*"))));
+            info_116.uniq_definition=(struct map$2char$phchar$ph*)come_increment_ref_count(map$2char$phchar$ph_initialize((struct map$2char$phchar$ph*)come_increment_ref_count((struct map$2char$phchar$ph*)come_calloc_v2(1, sizeof(struct map$2char$phchar$ph)*(1), "02transpile.c", 1246, "struct map$2char$phchar$ph*"))));
             come_call_finalizer(map$2char$phchar$ph_finalize, __dec_obj71,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj72=info_116.previous_struct_definition,
-            info_116.previous_struct_definition=(struct map$2char$phbuffer$ph*)come_increment_ref_count(map$2char$phbuffer$ph_initialize((struct map$2char$phbuffer$ph*)come_increment_ref_count((struct map$2char$phbuffer$ph*)come_calloc_v2(1, sizeof(struct map$2char$phbuffer$ph)*(1), "02transpile.c", 1241, "struct map$2char$phbuffer$ph*"))));
+            info_116.previous_struct_definition=(struct map$2char$phbuffer$ph*)come_increment_ref_count(map$2char$phbuffer$ph_initialize((struct map$2char$phbuffer$ph*)come_increment_ref_count((struct map$2char$phbuffer$ph*)come_calloc_v2(1, sizeof(struct map$2char$phbuffer$ph)*(1), "02transpile.c", 1247, "struct map$2char$phbuffer$ph*"))));
             come_call_finalizer(map$2char$phbuffer$ph_finalize, __dec_obj72,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj73=info_116.generics_funcs,
-            info_116.generics_funcs=(struct map$2char$phsGenericsFun$ph*)come_increment_ref_count(map$2char$phsGenericsFun$ph_initialize((struct map$2char$phsGenericsFun$ph*)come_increment_ref_count((struct map$2char$phsGenericsFun$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsGenericsFun$ph)*(1), "02transpile.c", 1242, "struct map$2char$phsGenericsFun$ph*"))));
+            info_116.generics_funcs=(struct map$2char$phsGenericsFun$ph*)come_increment_ref_count(map$2char$phsGenericsFun$ph_initialize((struct map$2char$phsGenericsFun$ph*)come_increment_ref_count((struct map$2char$phsGenericsFun$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsGenericsFun$ph)*(1), "02transpile.c", 1248, "struct map$2char$phsGenericsFun$ph*"))));
             come_call_finalizer(map$2char$phsGenericsFun$ph_finalize, __dec_obj73,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj74=info_116.classes,
-            info_116.classes=(struct map$2char$phsClass$ph*)come_increment_ref_count(map$2char$phsClass$ph_initialize((struct map$2char$phsClass$ph*)come_increment_ref_count((struct map$2char$phsClass$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsClass$ph)*(1), "02transpile.c", 1243, "struct map$2char$phsClass$ph*"))));
+            info_116.classes=(struct map$2char$phsClass$ph*)come_increment_ref_count(map$2char$phsClass$ph_initialize((struct map$2char$phsClass$ph*)come_increment_ref_count((struct map$2char$phsClass$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsClass$ph)*(1), "02transpile.c", 1249, "struct map$2char$phsClass$ph*"))));
             come_call_finalizer(map$2char$phsClass$ph_finalize, __dec_obj74,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj75=info_116.modules,
-            info_116.modules=(struct map$2char$phsClassModule$ph*)come_increment_ref_count(map$2char$phsClassModule$ph_initialize((struct map$2char$phsClassModule$ph*)come_increment_ref_count((struct map$2char$phsClassModule$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsClassModule$ph)*(1), "02transpile.c", 1244, "struct map$2char$phsClassModule$ph*"))));
+            info_116.modules=(struct map$2char$phsClassModule$ph*)come_increment_ref_count(map$2char$phsClassModule$ph_initialize((struct map$2char$phsClassModule$ph*)come_increment_ref_count((struct map$2char$phsClassModule$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsClassModule$ph)*(1), "02transpile.c", 1250, "struct map$2char$phsClassModule$ph*"))));
             come_call_finalizer(map$2char$phsClassModule$ph_finalize, __dec_obj75,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj76=info_116.types,
-            info_116.types=(struct map$2char$phsType$ph*)come_increment_ref_count(map$2char$phsType$ph_initialize((struct map$2char$phsType$ph*)come_increment_ref_count((struct map$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsType$ph)*(1), "02transpile.c", 1245, "struct map$2char$phsType$ph*"))));
+            info_116.types=(struct map$2char$phsType$ph*)come_increment_ref_count(map$2char$phsType$ph_initialize((struct map$2char$phsType$ph*)come_increment_ref_count((struct map$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsType$ph)*(1), "02transpile.c", 1251, "struct map$2char$phsType$ph*"))));
             come_call_finalizer(map$2char$phsType$ph_finalize, __dec_obj76,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj77=info_116.module,
-            info_116.module=(struct sModule*)come_increment_ref_count(sModule_initialize((struct sModule*)come_increment_ref_count((struct sModule*)come_calloc_v2(1, sizeof(struct sModule)*(1), "02transpile.c", 1246, "struct sModule*"))));
+            info_116.module=(struct sModule*)come_increment_ref_count(sModule_initialize((struct sModule*)come_increment_ref_count((struct sModule*)come_calloc_v2(1, sizeof(struct sModule)*(1), "02transpile.c", 1252, "struct sModule*"))));
             come_call_finalizer(sModule_finalize, __dec_obj77,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj78=info_116.right_value_objects,
-            info_116.right_value_objects=(struct list$1sRightValueObject$ph*)come_increment_ref_count(list$1sRightValueObject$ph_initialize((struct list$1sRightValueObject$ph*)come_increment_ref_count((struct list$1sRightValueObject$ph*)come_calloc_v2(1, sizeof(struct list$1sRightValueObject$ph)*(1), "02transpile.c", 1247, "struct list$1sRightValueObject$ph*"))));
+            info_116.right_value_objects=(struct list$1sRightValueObject$ph*)come_increment_ref_count(list$1sRightValueObject$ph_initialize((struct list$1sRightValueObject$ph*)come_increment_ref_count((struct list$1sRightValueObject$ph*)come_calloc_v2(1, sizeof(struct list$1sRightValueObject$ph)*(1), "02transpile.c", 1253, "struct list$1sRightValueObject$ph*"))));
             come_call_finalizer(list$1sRightValueObject$ph_finalize, __dec_obj78,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj79=info_116.stack,
-            info_116.stack=(struct list$1CVALUE$ph*)come_increment_ref_count(list$1CVALUE$ph_initialize((struct list$1CVALUE$ph*)come_increment_ref_count((struct list$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list$1CVALUE$ph)*(1), "02transpile.c", 1248, "struct list$1CVALUE$ph*"))));
+            info_116.stack=(struct list$1CVALUE$ph*)come_increment_ref_count(list$1CVALUE$ph_initialize((struct list$1CVALUE$ph*)come_increment_ref_count((struct list$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list$1CVALUE$ph)*(1), "02transpile.c", 1254, "struct list$1CVALUE$ph*"))));
             come_call_finalizer(list$1CVALUE$ph_finalize, __dec_obj79,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj80=info_116.gv_table,
-            info_116.gv_table=(struct sVarTable*)come_increment_ref_count(sVarTable_initialize((struct sVarTable*)come_increment_ref_count((struct sVarTable*)come_calloc_v2(1, sizeof(struct sVarTable)*(1), "02transpile.c", 1249, "struct sVarTable*")),(_Bool)1,((void*)0)));
+            info_116.gv_table=(struct sVarTable*)come_increment_ref_count(sVarTable_initialize((struct sVarTable*)come_increment_ref_count((struct sVarTable*)come_calloc_v2(1, sizeof(struct sVarTable)*(1), "02transpile.c", 1255, "struct sVarTable*")),(_Bool)1,((void*)0)));
             come_call_finalizer(sVarTable_finalize, __dec_obj80,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
-            lv_table_118=(struct sVarTable*)come_increment_ref_count(sVarTable_initialize((struct sVarTable*)come_increment_ref_count((struct sVarTable*)come_calloc_v2(1, sizeof(struct sVarTable)*(1), "02transpile.c", 1250, "struct sVarTable*")),(_Bool)0,((void*)0)));
+            lv_table_118=(struct sVarTable*)come_increment_ref_count(sVarTable_initialize((struct sVarTable*)come_increment_ref_count((struct sVarTable*)come_calloc_v2(1, sizeof(struct sVarTable)*(1), "02transpile.c", 1256, "struct sVarTable*")),(_Bool)0,((void*)0)));
             info_116.lv_table=lv_table_118;
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj81=info_116.generics_type_names,
-            info_116.generics_type_names=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 1252, "struct list$1char$ph*"))));
+            info_116.generics_type_names=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 1258, "struct list$1char$ph*"))));
             come_call_finalizer(list$1char$ph_finalize, __dec_obj81,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj82=info_116.method_generics_type_names,
-            info_116.method_generics_type_names=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 1253, "struct list$1char$ph*"))));
+            info_116.method_generics_type_names=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "02transpile.c", 1259, "struct list$1char$ph*"))));
             come_call_finalizer(list$1char$ph_finalize, __dec_obj82,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj83=info_116.generics_classes,
-            info_116.generics_classes=(struct map$2char$phsClass$ph*)come_increment_ref_count(map$2char$phsClass$ph_initialize((struct map$2char$phsClass$ph*)come_increment_ref_count((struct map$2char$phsClass$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsClass$ph)*(1), "02transpile.c", 1254, "struct map$2char$phsClass$ph*"))));
+            info_116.generics_classes=(struct map$2char$phsClass$ph*)come_increment_ref_count(map$2char$phsClass$ph_initialize((struct map$2char$phsClass$ph*)come_increment_ref_count((struct map$2char$phsClass$ph*)come_calloc_v2(1, sizeof(struct map$2char$phsClass$ph)*(1), "02transpile.c", 1260, "struct map$2char$phsClass$ph*"))));
             come_call_finalizer(map$2char$phsClass$ph_finalize, __dec_obj83,(void*)0, (void*)0, 0, 0, 0, (void*)0);
             info_116.verbose=verbose_105;
             info_116.m5stack_cpp=m5stack_cpp_108;
@@ -6862,7 +6577,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
             init_classes(&info_116);
             clear_tmp_file(&info_116);
             Value_119=cpp(&info_116);
-            if(({            (_conditional_value_X124=(!Value_119));            _conditional_value_X124;            })) {
+            if(            !Value_119            ) {
                 printf("transpile failed\n");
                 exit(2);
             }
@@ -6878,7 +6593,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
             (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
             info_116.p=info_116.source->buf;
             info_116.head=info_116.source->buf;
-            if(({            (_conditional_value_X125=(output_file_name_104));            _conditional_value_X125;            })) {
+            if(            output_file_name_104            ) {
                 __right_value0 = (void*)0;
                 __dec_obj85=info_116.output_file_name,
                 info_116.output_file_name=(char*)come_increment_ref_count(__builtin_string(output_file_name_104));
@@ -6890,23 +6605,23 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 __dec_obj86 = come_decrement_ref_count(__dec_obj86, (void*)0, (void*)0, 0,0, (void*)0);
             }
             Value_120=output_cpp_file_101;
-            if(({            (_conditional_value_X126=(!Value_120));            _conditional_value_X126;            })) {
+            if(            !Value_120            ) {
                 transpile(&info_116);
                 Value_121=output_source_file(&info_116);
-                if(({                (_conditional_value_X127=(!Value_121));                _conditional_value_X127;                })) {
+                if(                !Value_121                ) {
                     printf("output source file faield\n");
                     exit(2);
                 }
                 else {
                 }
-                if(({                (_conditional_value_X128=(info_116.err_num>0));                _conditional_value_X128;                })) {
+                if(                info_116.err_num>0                ) {
                     printf("transpile error. err num %d\n",info_116.err_num);
                     exit(2);
                 }
                 Value_122=output_object_file_flag_103;
-                if(({                (_conditional_value_X129=(Value_122));                _conditional_value_X129;                })) {
+                if(                Value_122                ) {
                     Value_123=compile(&info_116,output_object_file_100,object_files_99);
-                    if(({                    (_conditional_value_X130=(!Value_123));                    _conditional_value_X130;                    })) {
+                    if(                    !Value_123                    ) {
                         printf("compile faield\n");
                         exit(27);
                     }
@@ -6918,11 +6633,11 @@ memset(&info_124, 0, sizeof(struct sInfo));
             }
             else {
             }
-            if(({            (_conditional_value_X131=(output_cpp_file_101));            _conditional_value_X131;            })) {
+            if(            output_cpp_file_101            ) {
             }
-            else if(({            (_conditional_value_X132=(info_116.err_num>0));            _conditional_value_X132;            })) {
+            else if(            info_116.err_num>0            ) {
             }
-            else if(({            (_conditional_value_X133=(output_source_file_flag_102));            _conditional_value_X133;            })) {
+            else if(            output_source_file_flag_102            ) {
                 clear_tmp_file_without_object_file_and_ccfile(&info_116);
             }
             else {
@@ -6932,12 +6647,12 @@ memset(&info_124, 0, sizeof(struct sInfo));
             come_call_finalizer(sVarTable_finalize, lv_table_118, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
         come_call_finalizer(list$1char$ph$p_finalize, o2_saved, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        if(({        (_conditional_value_X134=(!output_object_file_100&&!output_cpp_file_101&&(list$1char$ph_length(files_98)>0||list$1char$ph_length(object_files_99)>0)));        _conditional_value_X134;        })) {
+        if(        !output_object_file_100&&!output_cpp_file_101&&(list$1char$ph_length(files_98)>0||list$1char$ph_length(object_files_99)>0)        ) {
             memset(&info_124,0,sizeof(struct sInfo));
             __right_value0 = (void*)0;
             __right_value1 = (void*)0;
             __dec_obj87=info_124.sname,
-            info_124.sname=(char*)come_increment_ref_count((char*)come_memdup(((char*)(__right_value0=list$1char$ph_operator_load_element(files_98,0))), "02transpile.c", 1325, "char*"));
+            info_124.sname=(char*)come_increment_ref_count((char*)come_memdup(((char*)(__right_value0=list$1char$ph_operator_load_element(files_98,0))), "02transpile.c", 1331, "char*"));
             __dec_obj87 = come_decrement_ref_count(__dec_obj87, (void*)0, (void*)0, 0,0, (void*)0);
             (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
             __right_value0 = (void*)0;
@@ -6949,7 +6664,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
             info_124.linker_option=(char*)come_increment_ref_count(buffer_to_string(linker_option_96));
             __dec_obj89 = come_decrement_ref_count(__dec_obj89, (void*)0, (void*)0, 0,0, (void*)0);
             info_124.verbose=verbose_105;
-            if(({            (_conditional_value_X135=(output_file_name_104));            _conditional_value_X135;            })) {
+            if(            output_file_name_104            ) {
                 __right_value0 = (void*)0;
                 __dec_obj90=info_124.output_file_name,
                 info_124.output_file_name=(char*)come_increment_ref_count(__builtin_string(output_file_name_104));
@@ -6960,16 +6675,16 @@ memset(&info_124, 0, sizeof(struct sInfo));
                 info_124.output_file_name=((void*)0);
                 __dec_obj91 = come_decrement_ref_count(__dec_obj91, (void*)0, (void*)0, 0,0, (void*)0);
             }
-            if(({            (_conditional_value_X136=(output_object_file_flag_103));            _conditional_value_X136;            })) {
+            if(            output_object_file_flag_103            ) {
                 Value_125=linker(&info_124,object_files_99);
-                if(({                (_conditional_value_X137=(!Value_125));                _conditional_value_X137;                })) {
+                if(                !Value_125                ) {
                     printf("linker faield\n");
                     exit(13);
                 }
                 else {
                 }
             }
-            if(({            (_conditional_value_X138=(!output_cpp_file_101&&!output_source_file_flag_102));            _conditional_value_X138;            })) {
+            if(            !output_cpp_file_101&&!output_source_file_flag_102            ) {
                 clear_tmp_file(&info_124);
             }
             come_call_finalizer(sInfo_finalize, (&info_124), (void*)0, (void*)0, 1, 0, 0, (void*)0);
@@ -7002,16 +6717,12 @@ void* __right_value1 = (void*)0;
 struct buffer* buf;
 int n;
 char* it;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
 char* __result_obj__45;
-    buf=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 7250, "struct buffer*"))));
+    buf=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 7043, "struct buffer*"))));
     n=0;
-    for(    ({    (_conditional_value_X0=(it=list$1char$ph_begin(self)));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(!list$1char$ph_end(self)));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(it=list$1char$ph_next(self)));    _conditional_value_X2;    })    ){
+    for(    it=list$1char$ph_begin(self)    ;    !list$1char$ph_end(self)    ;    it=list$1char$ph_next(self)    ){
         buffer_append_str(buf,it);
-        if(({        (_conditional_value_X3=(n<list$1char$ph_length(self)-1));        _conditional_value_X3;        })) {
+        if(        n<list$1char$ph_length(self)-1        ) {
             buffer_append_str(buf,sep);
         }
         n++;
@@ -7025,8 +6736,7 @@ char* __result_obj__45;
 }
 
 static int list$1char$ph_length(struct list$1char$ph* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self==((void*)0)));    _conditional_value_X0;    })) {
+    if(    self==((void*)0)    ) {
         return 0;
     }
     return self->len;
@@ -7035,25 +6745,22 @@ _Bool _conditional_value_X0;
 static struct map$2char$phsFun$ph* map$2char$phsFun$ph_initialize(struct map$2char$phsFun$ph* self){
 void* __right_value0 = (void*)0;
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
 void* __right_value1 = (void*)0;
 struct list$1char$ph* __dec_obj36;
 struct map$2char$phsFun$ph* __result_obj__47;
-    self->keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7288, "char**"))));
+    self->keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7081, "char**"))));
     __right_value0 = (void*)0;
-    self->items=(struct sFun**)come_increment_ref_count(((struct sFun**)(__right_value0=(struct sFun**)come_calloc_v2(1, sizeof(struct sFun*)*(1*(128)), "/usr/local/include/comelang.h", 7289, "struct sFun**"))));
+    self->items=(struct sFun**)come_increment_ref_count(((struct sFun**)(__right_value0=(struct sFun**)come_calloc_v2(1, sizeof(struct sFun*)*(1*(128)), "/usr/local/include/comelang.h", 7082, "struct sFun**"))));
     __right_value0 = (void*)0;
-    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 7290, "_Bool*"))));
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<128));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
+    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 7083, "_Bool*"))));
+    for(    i=0    ;    i<128    ;    i++    ){
         self->item_existance[i]=(_Bool)0;
     }
     self->size=128;
     self->len=0;
     __right_value0 = (void*)0;
     __dec_obj36=self->key_list,
-    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 7300, "struct list$1char$p*"))));
+    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 7093, "struct list$1char$p*"))));
     come_call_finalizer(list$1char$ph_finalize, __dec_obj36,(void*)0, (void*)0, 0, 0, 0, (void*)0);
     self->it=0;
     __result_obj__47 = (struct map$2char$phsFun$ph*)come_increment_ref_count(self);
@@ -7075,10 +6782,9 @@ struct list$1char$p* __result_obj__46;
 
 static void list$1char$p$p_finalize(struct list$1char$p* self){
 struct list_item$1char$p* it;
-_Bool _conditional_value_X0;
 struct list_item$1char$p* prev_it;
     it=self->head;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
+    while(    it!=((void*)0)    ) {
         prev_it=it;
         it=it->next;
         come_call_finalizer(list_item$1char$p$p_finalize, prev_it, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -7090,10 +6796,9 @@ static void list_item$1char$p$p_finalize(struct list_item$1char$p* self){
 
 static void list$1char$ph_finalize(struct list$1char$ph* self){
 struct list_item$1char$ph* it;
-_Bool _conditional_value_X0;
 struct list_item$1char$ph* prev_it;
     it=self->head;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
+    while(    it!=((void*)0)    ) {
         prev_it=it;
         it=it->next;
         come_call_finalizer(list_item$1char$ph$p_finalize, prev_it, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -7102,23 +6807,18 @@ struct list_item$1char$ph* prev_it;
 
 static void map$2char$phsFun$ph$p_finalize(struct map$2char$phsFun$ph* self){
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int i_68;
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i=0    ;    i<self->size    ;    i++    ){
+        if(        self->item_existance[i]        ) {
+            if(            1            ) {
                 come_call_finalizer(sFun_finalize, self->items[i], (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    ({    (_conditional_value_X0=(i_68=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_68<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_68++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i_68]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i_68=0    ;    i_68<self->size    ;    i_68++    ){
+        if(        self->item_existance[i_68]        ) {
+            if(            1            ) {
                 (self->keys[i_68] = come_decrement_ref_count(self->keys[i_68], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
@@ -7129,63 +6829,61 @@ int i_68;
 }
 
 static void sFun_finalize(struct sFun* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mName!=((void*)0)    ) {
         (self->mName = come_decrement_ref_count(self->mName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mResultType!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mResultType!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->mResultType, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mParamTypes!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mParamTypes!=((void*)0)    ) {
         come_call_finalizer(list$1sType$ph$p_finalize, self->mParamTypes, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mParamNames!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mParamNames!=((void*)0)    ) {
         come_call_finalizer(list$1char$ph$p_finalize, self->mParamNames, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mParamDefaultParametors!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mParamDefaultParametors!=((void*)0)    ) {
         come_call_finalizer(list$1char$ph$p_finalize, self->mParamDefaultParametors, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mLambdaType!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mLambdaType!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->mLambdaType, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mAllVar!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mAllVar!=((void*)0)    ) {
         come_call_finalizer(list$1sVar$ph$p_finalize, self->mAllVar, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mBlock!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mBlock!=((void*)0)    ) {
         come_call_finalizer(sBlock_finalize, self->mBlock, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mTextBlock!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mTextBlock!=((void*)0)    ) {
         (self->mTextBlock = come_decrement_ref_count(self->mTextBlock, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mTextBlockSName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mTextBlockSName!=((void*)0)    ) {
         (self->mTextBlockSName = come_decrement_ref_count(self->mTextBlockSName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mSource!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mSource!=((void*)0)    ) {
         come_call_finalizer(buffer_finalize, self->mSource, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mSourceHead!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mSourceHead!=((void*)0)    ) {
         come_call_finalizer(buffer_finalize, self->mSourceHead, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mSourceHead2!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mSourceHead2!=((void*)0)    ) {
         come_call_finalizer(buffer_finalize, self->mSourceHead2, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mSourceDefer!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mSourceDefer!=((void*)0)    ) {
         come_call_finalizer(buffer_finalize, self->mSourceDefer, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mAttribute!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mAttribute!=((void*)0)    ) {
         (self->mAttribute = come_decrement_ref_count(self->mAttribute, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mFunAttribute!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mFunAttribute!=((void*)0)    ) {
         (self->mFunAttribute = come_decrement_ref_count(self->mFunAttribute, (void*)0, (void*)0, 0, 0, (void*)0));
     }
 }
 
 static void list$1sVar$ph$p_finalize(struct list$1sVar$ph* self){
 struct list_item$1sVar$ph* it;
-_Bool _conditional_value_X0;
 struct list_item$1sVar$ph* prev_it;
     it=self->head;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
+    while(    it!=((void*)0)    ) {
         prev_it=it;
         it=it->next;
         come_call_finalizer(list_item$1sVar$ph$p_finalize, prev_it, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -7193,57 +6891,49 @@ struct list_item$1sVar$ph* prev_it;
 }
 
 static void list_item$1sVar$ph$p_finalize(struct list_item$1sVar$ph* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->item!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->item!=((void*)0)    ) {
         come_call_finalizer(sVar_finalize, self->item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
 }
 
 static void sVar_finalize(struct sVar* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mName!=((void*)0)    ) {
         (self->mName = come_decrement_ref_count(self->mName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mCValueName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mCValueName!=((void*)0)    ) {
         (self->mCValueName = come_decrement_ref_count(self->mCValueName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mType!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mType!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->mType, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mFunName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mFunName!=((void*)0)    ) {
         (self->mFunName = come_decrement_ref_count(self->mFunName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
 }
 
 static void sBlock_finalize(struct sBlock* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mNodes!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mNodes!=((void*)0)    ) {
         come_call_finalizer(list$1sNode$ph$p_finalize, self->mNodes, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mVarTable!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mVarTable!=((void*)0)    ) {
         come_call_finalizer(sVarTable_finalize, self->mVarTable, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
 }
 
 static void map$2char$phsFun$ph_finalize(struct map$2char$phsFun$ph* self){
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int i_69;
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i=0    ;    i<self->size    ;    i++    ){
+        if(        self->item_existance[i]        ) {
+            if(            1            ) {
                 come_call_finalizer(sFun_finalize, self->items[i], (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    ({    (_conditional_value_X0=(i_69=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_69<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_69++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i_69]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i_69=0    ;    i_69<self->size    ;    i_69++    ){
+        if(        self->item_existance[i_69]        ) {
+            if(            1            ) {
                 (self->keys[i_69] = come_decrement_ref_count(self->keys[i_69], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
@@ -7256,25 +6946,22 @@ int i_69;
 static struct map$2char$phbuffer$ph* map$2char$phbuffer$ph_initialize(struct map$2char$phbuffer$ph* self){
 void* __right_value0 = (void*)0;
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
 void* __right_value1 = (void*)0;
 struct list$1char$ph* __dec_obj39;
 struct map$2char$phbuffer$ph* __result_obj__48;
-    self->keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7288, "char**"))));
+    self->keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7081, "char**"))));
     __right_value0 = (void*)0;
-    self->items=(struct buffer**)come_increment_ref_count(((struct buffer**)(__right_value0=(struct buffer**)come_calloc_v2(1, sizeof(struct buffer*)*(1*(128)), "/usr/local/include/comelang.h", 7289, "struct buffer**"))));
+    self->items=(struct buffer**)come_increment_ref_count(((struct buffer**)(__right_value0=(struct buffer**)come_calloc_v2(1, sizeof(struct buffer*)*(1*(128)), "/usr/local/include/comelang.h", 7082, "struct buffer**"))));
     __right_value0 = (void*)0;
-    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 7290, "_Bool*"))));
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<128));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
+    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 7083, "_Bool*"))));
+    for(    i=0    ;    i<128    ;    i++    ){
         self->item_existance[i]=(_Bool)0;
     }
     self->size=128;
     self->len=0;
     __right_value0 = (void*)0;
     __dec_obj39=self->key_list,
-    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 7300, "struct list$1char$p*"))));
+    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 7093, "struct list$1char$p*"))));
     come_call_finalizer(list$1char$ph_finalize, __dec_obj39,(void*)0, (void*)0, 0, 0, 0, (void*)0);
     self->it=0;
     __result_obj__48 = (struct map$2char$phbuffer$ph*)come_increment_ref_count(self);
@@ -7285,23 +6972,18 @@ struct map$2char$phbuffer$ph* __result_obj__48;
 
 static void map$2char$phbuffer$ph$p_finalize(struct map$2char$phbuffer$ph* self){
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int i_70;
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i=0    ;    i<self->size    ;    i++    ){
+        if(        self->item_existance[i]        ) {
+            if(            1            ) {
                 come_call_finalizer(buffer_finalize, self->items[i], (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    ({    (_conditional_value_X0=(i_70=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_70<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_70++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i_70]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i_70=0    ;    i_70<self->size    ;    i_70++    ){
+        if(        self->item_existance[i_70]        ) {
+            if(            1            ) {
                 (self->keys[i_70] = come_decrement_ref_count(self->keys[i_70], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
@@ -7313,23 +6995,18 @@ int i_70;
 
 static void map$2char$phbuffer$ph_finalize(struct map$2char$phbuffer$ph* self){
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int i_71;
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i=0    ;    i<self->size    ;    i++    ){
+        if(        self->item_existance[i]        ) {
+            if(            1            ) {
                 come_call_finalizer(buffer_finalize, self->items[i], (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    ({    (_conditional_value_X0=(i_71=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_71<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_71++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i_71]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i_71=0    ;    i_71<self->size    ;    i_71++    ){
+        if(        self->item_existance[i_71]        ) {
+            if(            1            ) {
                 (self->keys[i_71] = come_decrement_ref_count(self->keys[i_71], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
@@ -7342,25 +7019,22 @@ int i_71;
 static struct map$2char$phchar$ph* map$2char$phchar$ph_initialize(struct map$2char$phchar$ph* self){
 void* __right_value0 = (void*)0;
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
 void* __right_value1 = (void*)0;
 struct list$1char$ph* __dec_obj41;
 struct map$2char$phchar$ph* __result_obj__49;
-    self->keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7288, "char**"))));
+    self->keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7081, "char**"))));
     __right_value0 = (void*)0;
-    self->items=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7289, "char**"))));
+    self->items=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7082, "char**"))));
     __right_value0 = (void*)0;
-    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 7290, "_Bool*"))));
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<128));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
+    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 7083, "_Bool*"))));
+    for(    i=0    ;    i<128    ;    i++    ){
         self->item_existance[i]=(_Bool)0;
     }
     self->size=128;
     self->len=0;
     __right_value0 = (void*)0;
     __dec_obj41=self->key_list,
-    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 7300, "struct list$1char$p*"))));
+    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 7093, "struct list$1char$p*"))));
     come_call_finalizer(list$1char$ph_finalize, __dec_obj41,(void*)0, (void*)0, 0, 0, 0, (void*)0);
     self->it=0;
     __result_obj__49 = (struct map$2char$phchar$ph*)come_increment_ref_count(self);
@@ -7371,23 +7045,18 @@ struct map$2char$phchar$ph* __result_obj__49;
 
 static void map$2char$phchar$ph$p_finalize(struct map$2char$phchar$ph* self){
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int i_72;
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i=0    ;    i<self->size    ;    i++    ){
+        if(        self->item_existance[i]        ) {
+            if(            1            ) {
                 (self->items[i] = come_decrement_ref_count(self->items[i], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    ({    (_conditional_value_X0=(i_72=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_72<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_72++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i_72]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i_72=0    ;    i_72<self->size    ;    i_72++    ){
+        if(        self->item_existance[i_72]        ) {
+            if(            1            ) {
                 (self->keys[i_72] = come_decrement_ref_count(self->keys[i_72], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
@@ -7399,23 +7068,18 @@ int i_72;
 
 static void map$2char$phchar$ph_finalize(struct map$2char$phchar$ph* self){
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int i_73;
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i=0    ;    i<self->size    ;    i++    ){
+        if(        self->item_existance[i]        ) {
+            if(            1            ) {
                 (self->items[i] = come_decrement_ref_count(self->items[i], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    ({    (_conditional_value_X0=(i_73=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_73<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_73++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i_73]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i_73=0    ;    i_73<self->size    ;    i_73++    ){
+        if(        self->item_existance[i_73]        ) {
+            if(            1            ) {
                 (self->keys[i_73] = come_decrement_ref_count(self->keys[i_73], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
@@ -7428,25 +7092,22 @@ int i_73;
 static struct map$2char$phsGenericsFun$ph* map$2char$phsGenericsFun$ph_initialize(struct map$2char$phsGenericsFun$ph* self){
 void* __right_value0 = (void*)0;
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
 void* __right_value1 = (void*)0;
 struct list$1char$ph* __dec_obj44;
 struct map$2char$phsGenericsFun$ph* __result_obj__50;
-    self->keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7288, "char**"))));
+    self->keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7081, "char**"))));
     __right_value0 = (void*)0;
-    self->items=(struct sGenericsFun**)come_increment_ref_count(((struct sGenericsFun**)(__right_value0=(struct sGenericsFun**)come_calloc_v2(1, sizeof(struct sGenericsFun*)*(1*(128)), "/usr/local/include/comelang.h", 7289, "struct sGenericsFun**"))));
+    self->items=(struct sGenericsFun**)come_increment_ref_count(((struct sGenericsFun**)(__right_value0=(struct sGenericsFun**)come_calloc_v2(1, sizeof(struct sGenericsFun*)*(1*(128)), "/usr/local/include/comelang.h", 7082, "struct sGenericsFun**"))));
     __right_value0 = (void*)0;
-    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 7290, "_Bool*"))));
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<128));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
+    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 7083, "_Bool*"))));
+    for(    i=0    ;    i<128    ;    i++    ){
         self->item_existance[i]=(_Bool)0;
     }
     self->size=128;
     self->len=0;
     __right_value0 = (void*)0;
     __dec_obj44=self->key_list,
-    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 7300, "struct list$1char$p*"))));
+    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 7093, "struct list$1char$p*"))));
     come_call_finalizer(list$1char$ph_finalize, __dec_obj44,(void*)0, (void*)0, 0, 0, 0, (void*)0);
     self->it=0;
     __result_obj__50 = (struct map$2char$phsGenericsFun$ph*)come_increment_ref_count(self);
@@ -7457,23 +7118,18 @@ struct map$2char$phsGenericsFun$ph* __result_obj__50;
 
 static void map$2char$phsGenericsFun$ph$p_finalize(struct map$2char$phsGenericsFun$ph* self){
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int i_74;
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i=0    ;    i<self->size    ;    i++    ){
+        if(        self->item_existance[i]        ) {
+            if(            1            ) {
                 come_call_finalizer(sGenericsFun_finalize, self->items[i], (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    ({    (_conditional_value_X0=(i_74=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_74<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_74++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i_74]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i_74=0    ;    i_74<self->size    ;    i_74++    ){
+        if(        self->item_existance[i_74]        ) {
+            if(            1            ) {
                 (self->keys[i_74] = come_decrement_ref_count(self->keys[i_74], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
@@ -7484,58 +7140,52 @@ int i_74;
 }
 
 static void sGenericsFun_finalize(struct sGenericsFun* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mImplType!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mImplType!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->mImplType, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mGenericsTypeNames!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mGenericsTypeNames!=((void*)0)    ) {
         come_call_finalizer(list$1char$ph$p_finalize, self->mGenericsTypeNames, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mMethodGenericsTypeNames!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mMethodGenericsTypeNames!=((void*)0)    ) {
         come_call_finalizer(list$1char$ph$p_finalize, self->mMethodGenericsTypeNames, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mName!=((void*)0)    ) {
         (self->mName = come_decrement_ref_count(self->mName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mResultType!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mResultType!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->mResultType, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mParamTypes!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mParamTypes!=((void*)0)    ) {
         come_call_finalizer(list$1sType$ph$p_finalize, self->mParamTypes, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mParamNames!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mParamNames!=((void*)0)    ) {
         come_call_finalizer(list$1char$ph$p_finalize, self->mParamNames, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mParamDefaultParametors!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mParamDefaultParametors!=((void*)0)    ) {
         come_call_finalizer(list$1char$ph$p_finalize, self->mParamDefaultParametors, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mBlock!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mBlock!=((void*)0)    ) {
         (self->mBlock = come_decrement_ref_count(self->mBlock, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mGenericsSName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mGenericsSName!=((void*)0)    ) {
         (self->mGenericsSName = come_decrement_ref_count(self->mGenericsSName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
 }
 
 static void map$2char$phsGenericsFun$ph_finalize(struct map$2char$phsGenericsFun$ph* self){
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int i_75;
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i=0    ;    i<self->size    ;    i++    ){
+        if(        self->item_existance[i]        ) {
+            if(            1            ) {
                 come_call_finalizer(sGenericsFun_finalize, self->items[i], (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    ({    (_conditional_value_X0=(i_75=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_75<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_75++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i_75]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i_75=0    ;    i_75<self->size    ;    i_75++    ){
+        if(        self->item_existance[i_75]        ) {
+            if(            1            ) {
                 (self->keys[i_75] = come_decrement_ref_count(self->keys[i_75], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
@@ -7548,25 +7198,22 @@ int i_75;
 static struct map$2char$phsClass$ph* map$2char$phsClass$ph_initialize(struct map$2char$phsClass$ph* self){
 void* __right_value0 = (void*)0;
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
 void* __right_value1 = (void*)0;
 struct list$1char$ph* __dec_obj46;
 struct map$2char$phsClass$ph* __result_obj__51;
-    self->keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7288, "char**"))));
+    self->keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7081, "char**"))));
     __right_value0 = (void*)0;
-    self->items=(struct sClass**)come_increment_ref_count(((struct sClass**)(__right_value0=(struct sClass**)come_calloc_v2(1, sizeof(struct sClass*)*(1*(128)), "/usr/local/include/comelang.h", 7289, "struct sClass**"))));
+    self->items=(struct sClass**)come_increment_ref_count(((struct sClass**)(__right_value0=(struct sClass**)come_calloc_v2(1, sizeof(struct sClass*)*(1*(128)), "/usr/local/include/comelang.h", 7082, "struct sClass**"))));
     __right_value0 = (void*)0;
-    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 7290, "_Bool*"))));
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<128));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
+    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 7083, "_Bool*"))));
+    for(    i=0    ;    i<128    ;    i++    ){
         self->item_existance[i]=(_Bool)0;
     }
     self->size=128;
     self->len=0;
     __right_value0 = (void*)0;
     __dec_obj46=self->key_list,
-    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 7300, "struct list$1char$p*"))));
+    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 7093, "struct list$1char$p*"))));
     come_call_finalizer(list$1char$ph_finalize, __dec_obj46,(void*)0, (void*)0, 0, 0, 0, (void*)0);
     self->it=0;
     __result_obj__51 = (struct map$2char$phsClass$ph*)come_increment_ref_count(self);
@@ -7577,23 +7224,18 @@ struct map$2char$phsClass$ph* __result_obj__51;
 
 static void map$2char$phsClass$ph$p_finalize(struct map$2char$phsClass$ph* self){
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int i_76;
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i=0    ;    i<self->size    ;    i++    ){
+        if(        self->item_existance[i]        ) {
+            if(            1            ) {
                 come_call_finalizer(sClass_finalize, self->items[i], (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    ({    (_conditional_value_X0=(i_76=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_76<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_76++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i_76]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i_76=0    ;    i_76<self->size    ;    i_76++    ){
+        if(        self->item_existance[i_76]        ) {
+            if(            1            ) {
                 (self->keys[i_76] = come_decrement_ref_count(self->keys[i_76], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
@@ -7605,23 +7247,18 @@ int i_76;
 
 static void map$2char$phsClass$ph_finalize(struct map$2char$phsClass$ph* self){
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int i_77;
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i=0    ;    i<self->size    ;    i++    ){
+        if(        self->item_existance[i]        ) {
+            if(            1            ) {
                 come_call_finalizer(sClass_finalize, self->items[i], (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    ({    (_conditional_value_X0=(i_77=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_77<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_77++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i_77]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i_77=0    ;    i_77<self->size    ;    i_77++    ){
+        if(        self->item_existance[i_77]        ) {
+            if(            1            ) {
                 (self->keys[i_77] = come_decrement_ref_count(self->keys[i_77], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
@@ -7634,25 +7271,22 @@ int i_77;
 static struct map$2char$phsClassModule$ph* map$2char$phsClassModule$ph_initialize(struct map$2char$phsClassModule$ph* self){
 void* __right_value0 = (void*)0;
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
 void* __right_value1 = (void*)0;
 struct list$1char$ph* __dec_obj48;
 struct map$2char$phsClassModule$ph* __result_obj__52;
-    self->keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7288, "char**"))));
+    self->keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7081, "char**"))));
     __right_value0 = (void*)0;
-    self->items=(struct sClassModule**)come_increment_ref_count(((struct sClassModule**)(__right_value0=(struct sClassModule**)come_calloc_v2(1, sizeof(struct sClassModule*)*(1*(128)), "/usr/local/include/comelang.h", 7289, "struct sClassModule**"))));
+    self->items=(struct sClassModule**)come_increment_ref_count(((struct sClassModule**)(__right_value0=(struct sClassModule**)come_calloc_v2(1, sizeof(struct sClassModule*)*(1*(128)), "/usr/local/include/comelang.h", 7082, "struct sClassModule**"))));
     __right_value0 = (void*)0;
-    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 7290, "_Bool*"))));
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<128));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
+    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 7083, "_Bool*"))));
+    for(    i=0    ;    i<128    ;    i++    ){
         self->item_existance[i]=(_Bool)0;
     }
     self->size=128;
     self->len=0;
     __right_value0 = (void*)0;
     __dec_obj48=self->key_list,
-    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 7300, "struct list$1char$p*"))));
+    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 7093, "struct list$1char$p*"))));
     come_call_finalizer(list$1char$ph_finalize, __dec_obj48,(void*)0, (void*)0, 0, 0, 0, (void*)0);
     self->it=0;
     __result_obj__52 = (struct map$2char$phsClassModule$ph*)come_increment_ref_count(self);
@@ -7663,23 +7297,18 @@ struct map$2char$phsClassModule$ph* __result_obj__52;
 
 static void map$2char$phsClassModule$ph$p_finalize(struct map$2char$phsClassModule$ph* self){
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int i_78;
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i=0    ;    i<self->size    ;    i++    ){
+        if(        self->item_existance[i]        ) {
+            if(            1            ) {
                 come_call_finalizer(sClassModule_finalize, self->items[i], (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    ({    (_conditional_value_X0=(i_78=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_78<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_78++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i_78]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i_78=0    ;    i_78<self->size    ;    i_78++    ){
+        if(        self->item_existance[i_78]        ) {
+            if(            1            ) {
                 (self->keys[i_78] = come_decrement_ref_count(self->keys[i_78], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
@@ -7690,40 +7319,34 @@ int i_78;
 }
 
 static void sClassModule_finalize(struct sClassModule* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mName!=((void*)0)    ) {
         (self->mName = come_decrement_ref_count(self->mName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mText!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mText!=((void*)0)    ) {
         (self->mText = come_decrement_ref_count(self->mText, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mParams!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mParams!=((void*)0)    ) {
         come_call_finalizer(list$1char$ph$p_finalize, self->mParams, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mSName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mSName!=((void*)0)    ) {
         (self->mSName = come_decrement_ref_count(self->mSName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
 }
 
 static void map$2char$phsClassModule$ph_finalize(struct map$2char$phsClassModule$ph* self){
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int i_79;
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i=0    ;    i<self->size    ;    i++    ){
+        if(        self->item_existance[i]        ) {
+            if(            1            ) {
                 come_call_finalizer(sClassModule_finalize, self->items[i], (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    ({    (_conditional_value_X0=(i_79=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_79<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_79++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i_79]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i_79=0    ;    i_79<self->size    ;    i_79++    ){
+        if(        self->item_existance[i_79]        ) {
+            if(            1            ) {
                 (self->keys[i_79] = come_decrement_ref_count(self->keys[i_79], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
@@ -7736,25 +7359,22 @@ int i_79;
 static struct map$2char$phsType$ph* map$2char$phsType$ph_initialize(struct map$2char$phsType$ph* self){
 void* __right_value0 = (void*)0;
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
 void* __right_value1 = (void*)0;
 struct list$1char$ph* __dec_obj50;
 struct map$2char$phsType$ph* __result_obj__53;
-    self->keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7288, "char**"))));
+    self->keys=(char**)come_increment_ref_count(((char**)(__right_value0=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 7081, "char**"))));
     __right_value0 = (void*)0;
-    self->items=(struct sType**)come_increment_ref_count(((struct sType**)(__right_value0=(struct sType**)come_calloc_v2(1, sizeof(struct sType*)*(1*(128)), "/usr/local/include/comelang.h", 7289, "struct sType**"))));
+    self->items=(struct sType**)come_increment_ref_count(((struct sType**)(__right_value0=(struct sType**)come_calloc_v2(1, sizeof(struct sType*)*(1*(128)), "/usr/local/include/comelang.h", 7082, "struct sType**"))));
     __right_value0 = (void*)0;
-    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 7290, "_Bool*"))));
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<128));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
+    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value0=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 7083, "_Bool*"))));
+    for(    i=0    ;    i<128    ;    i++    ){
         self->item_existance[i]=(_Bool)0;
     }
     self->size=128;
     self->len=0;
     __right_value0 = (void*)0;
     __dec_obj50=self->key_list,
-    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 7300, "struct list$1char$p*"))));
+    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 7093, "struct list$1char$p*"))));
     come_call_finalizer(list$1char$ph_finalize, __dec_obj50,(void*)0, (void*)0, 0, 0, 0, (void*)0);
     self->it=0;
     __result_obj__53 = (struct map$2char$phsType$ph*)come_increment_ref_count(self);
@@ -7765,23 +7385,18 @@ struct map$2char$phsType$ph* __result_obj__53;
 
 static void map$2char$phsType$ph$p_finalize(struct map$2char$phsType$ph* self){
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int i_80;
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i=0    ;    i<self->size    ;    i++    ){
+        if(        self->item_existance[i]        ) {
+            if(            1            ) {
                 come_call_finalizer(sType_finalize, self->items[i], (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    ({    (_conditional_value_X0=(i_80=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_80<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_80++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i_80]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i_80=0    ;    i_80<self->size    ;    i_80++    ){
+        if(        self->item_existance[i_80]        ) {
+            if(            1            ) {
                 (self->keys[i_80] = come_decrement_ref_count(self->keys[i_80], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
@@ -7793,23 +7408,18 @@ int i_80;
 
 static void map$2char$phsType$ph_finalize(struct map$2char$phsType$ph* self){
 int i;
-_Bool _conditional_value_X0;
-_Bool _conditional_value_X1;
-_Bool _conditional_value_X2;
-_Bool _conditional_value_X3;
-_Bool _conditional_value_X4;
 int i_81;
-    for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i=0    ;    i<self->size    ;    i++    ){
+        if(        self->item_existance[i]        ) {
+            if(            1            ) {
                 come_call_finalizer(sType_finalize, self->items[i], (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    ({    (_conditional_value_X0=(i_81=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i_81<self->size));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i_81++));    _conditional_value_X2;    })    ){
-        if(({        (_conditional_value_X3=(self->item_existance[i_81]));        _conditional_value_X3;        })) {
-            if(({            (_conditional_value_X4=(1));            _conditional_value_X4;            })) {
+    for(    i_81=0    ;    i_81<self->size    ;    i_81++    ){
+        if(        self->item_existance[i_81]        ) {
+            if(            1            ) {
                 (self->keys[i_81] = come_decrement_ref_count(self->keys[i_81], (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
@@ -7820,23 +7430,22 @@ int i_81;
 }
 
 static void sModule_finalize(struct sModule* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mSourceHead!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mSourceHead!=((void*)0)    ) {
         come_call_finalizer(buffer_finalize, self->mSourceHead, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mSource!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mSource!=((void*)0)    ) {
         come_call_finalizer(buffer_finalize, self->mSource, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mLastCode!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mLastCode!=((void*)0)    ) {
         (self->mLastCode = come_decrement_ref_count(self->mLastCode, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mLastCode2!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mLastCode2!=((void*)0)    ) {
         (self->mLastCode2 = come_decrement_ref_count(self->mLastCode2, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mHeader!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mHeader!=((void*)0)    ) {
         come_call_finalizer(map$2char$phchar$ph$p_finalize, self->mHeader, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mHeaderStructs!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mHeaderStructs!=((void*)0)    ) {
         come_call_finalizer(map$2char$phchar$ph$p_finalize, self->mHeaderStructs, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
 }
@@ -7854,10 +7463,9 @@ struct list$1sRightValueObject$ph* __result_obj__54;
 
 static void list$1sRightValueObject$ph$p_finalize(struct list$1sRightValueObject$ph* self){
 struct list_item$1sRightValueObject$ph* it;
-_Bool _conditional_value_X0;
 struct list_item$1sRightValueObject$ph* prev_it;
     it=self->head;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
+    while(    it!=((void*)0)    ) {
         prev_it=it;
         it=it->next;
         come_call_finalizer(list_item$1sRightValueObject$ph$p_finalize, prev_it, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -7865,37 +7473,34 @@ struct list_item$1sRightValueObject$ph* prev_it;
 }
 
 static void list_item$1sRightValueObject$ph$p_finalize(struct list_item$1sRightValueObject$ph* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->item!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->item!=((void*)0)    ) {
         come_call_finalizer(sRightValueObject_finalize, self->item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
 }
 
 static void sRightValueObject_finalize(struct sRightValueObject* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mType!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mType!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->mType, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mVarName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mVarName!=((void*)0)    ) {
         (self->mVarName = come_decrement_ref_count(self->mVarName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mFunName!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mFunName!=((void*)0)    ) {
         (self->mFunName = come_decrement_ref_count(self->mFunName, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mObjType!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mObjType!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->mObjType, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->mObjValue!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->mObjValue!=((void*)0)    ) {
         (self->mObjValue = come_decrement_ref_count(self->mObjValue, (void*)0, (void*)0, 0, 0, (void*)0));
     }
 }
 
 static void list$1sRightValueObject$ph_finalize(struct list$1sRightValueObject$ph* self){
 struct list_item$1sRightValueObject$ph* it;
-_Bool _conditional_value_X0;
 struct list_item$1sRightValueObject$ph* prev_it;
     it=self->head;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
+    while(    it!=((void*)0)    ) {
         prev_it=it;
         it=it->next;
         come_call_finalizer(list_item$1sRightValueObject$ph$p_finalize, prev_it, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -7915,10 +7520,9 @@ struct list$1CVALUE$ph* __result_obj__55;
 
 static void list$1CVALUE$ph$p_finalize(struct list$1CVALUE$ph* self){
 struct list_item$1CVALUE$ph* it;
-_Bool _conditional_value_X0;
 struct list_item$1CVALUE$ph* prev_it;
     it=self->head;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
+    while(    it!=((void*)0)    ) {
         prev_it=it;
         it=it->next;
         come_call_finalizer(list_item$1CVALUE$ph$p_finalize, prev_it, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -7926,18 +7530,16 @@ struct list_item$1CVALUE$ph* prev_it;
 }
 
 static void list_item$1CVALUE$ph$p_finalize(struct list_item$1CVALUE$ph* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->item!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->item!=((void*)0)    ) {
         come_call_finalizer(CVALUE_finalize, self->item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
 }
 
 static void list$1CVALUE$ph_finalize(struct list$1CVALUE$ph* self){
 struct list_item$1CVALUE$ph* it;
-_Bool _conditional_value_X0;
 struct list_item$1CVALUE$ph* prev_it;
     it=self->head;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
+    while(    it!=((void*)0)    ) {
         prev_it=it;
         it=it->next;
         come_call_finalizer(list_item$1CVALUE$ph$p_finalize, prev_it, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -7945,130 +7547,127 @@ struct list_item$1CVALUE$ph* prev_it;
 }
 
 static void sInfo_finalize(struct sInfo* self){
-_Bool _conditional_value_X0;
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->source!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->source!=((void*)0)    ) {
         come_call_finalizer(buffer_finalize, self->source, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->sname!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->sname!=((void*)0)    ) {
         (self->sname = come_decrement_ref_count(self->sname, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->sname_at_head!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->sname_at_head!=((void*)0)    ) {
         (self->sname_at_head = come_decrement_ref_count(self->sname_at_head, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->base_sname!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->base_sname!=((void*)0)    ) {
         (self->base_sname = come_decrement_ref_count(self->base_sname, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->clang_option!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->clang_option!=((void*)0)    ) {
         (self->clang_option = come_decrement_ref_count(self->clang_option, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->cpp_option!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->cpp_option!=((void*)0)    ) {
         (self->cpp_option = come_decrement_ref_count(self->cpp_option, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->linker_option!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->linker_option!=((void*)0)    ) {
         (self->linker_option = come_decrement_ref_count(self->linker_option, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->funcs!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->funcs!=((void*)0)    ) {
         come_call_finalizer(map$2char$phsFun$ph$p_finalize, self->funcs, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->uniq_funcs!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->uniq_funcs!=((void*)0)    ) {
         come_call_finalizer(map$2char$phsFun$ph$p_finalize, self->uniq_funcs, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->generics_funcs!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->generics_funcs!=((void*)0)    ) {
         come_call_finalizer(map$2char$phsGenericsFun$ph$p_finalize, self->generics_funcs, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->classes!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->classes!=((void*)0)    ) {
         come_call_finalizer(map$2char$phsClass$ph$p_finalize, self->classes, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->modules!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->modules!=((void*)0)    ) {
         come_call_finalizer(map$2char$phsClassModule$ph$p_finalize, self->modules, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->types!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->types!=((void*)0)    ) {
         come_call_finalizer(map$2char$phsType$ph$p_finalize, self->types, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->generics_classes!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->generics_classes!=((void*)0)    ) {
         come_call_finalizer(map$2char$phsClass$ph$p_finalize, self->generics_classes, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->struct_definition!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->struct_definition!=((void*)0)    ) {
         come_call_finalizer(map$2char$phbuffer$ph$p_finalize, self->struct_definition, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->previous_struct_definition!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->previous_struct_definition!=((void*)0)    ) {
         come_call_finalizer(map$2char$phbuffer$ph$p_finalize, self->previous_struct_definition, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->module!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->module!=((void*)0)    ) {
         come_call_finalizer(sModule_finalize, self->module, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->type!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->type!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->type, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->right_value_objects!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->right_value_objects!=((void*)0)    ) {
         come_call_finalizer(list$1sRightValueObject$ph$p_finalize, self->right_value_objects, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->generics_type!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->generics_type!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->generics_type, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->method_generics_types!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->method_generics_types!=((void*)0)    ) {
         come_call_finalizer(list$1sType$ph$p_finalize, self->method_generics_types, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->stack!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->stack!=((void*)0)    ) {
         come_call_finalizer(list$1CVALUE$ph$p_finalize, self->stack, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->come_function_result_type!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->come_function_result_type!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->come_function_result_type, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->come_method_block_function_result_type!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->come_method_block_function_result_type!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->come_method_block_function_result_type, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->gv_table!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->gv_table!=((void*)0)    ) {
         come_call_finalizer(sVarTable_finalize, self->gv_table, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->generics_type_names!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->generics_type_names!=((void*)0)    ) {
         come_call_finalizer(list$1char$ph$p_finalize, self->generics_type_names, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->method_generics_type_names!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->method_generics_type_names!=((void*)0)    ) {
         come_call_finalizer(list$1char$ph$p_finalize, self->method_generics_type_names, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->impl_type!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->impl_type!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->impl_type, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->class_type!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->class_type!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->class_type, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->output_file_name!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->output_file_name!=((void*)0)    ) {
         (self->output_file_name = come_decrement_ref_count(self->output_file_name, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->function_result_type!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->function_result_type!=((void*)0)    ) {
         come_call_finalizer(sType_finalize, self->function_result_type, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->module_params!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->module_params!=((void*)0)    ) {
         come_call_finalizer(map$2char$phchar$ph$p_finalize, self->module_params, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->if_result_var_name!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->if_result_var_name!=((void*)0)    ) {
         (self->if_result_var_name = come_decrement_ref_count(self->if_result_var_name, (void*)0, (void*)0, 0, 0, (void*)0));
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->match_it_var!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->match_it_var!=((void*)0)    ) {
         come_call_finalizer(list$1sVar$ph$p_finalize, self->match_it_var, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    if(({    (_conditional_value_X0=(self!=((void*)0)&&self->uniq_definition!=((void*)0)));    _conditional_value_X0;    })) {
+    if(    self!=((void*)0)&&self->uniq_definition!=((void*)0)    ) {
         come_call_finalizer(map$2char$phchar$ph$p_finalize, self->uniq_definition, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
 }
 
 static char* list$1char$ph$p_operator_load_element(struct list$1char$ph* self, int position){
-_Bool _conditional_value_X0;
 struct list_item$1char$ph* it;
 int i;
-_Bool _conditional_value_X1;
 char* __result_obj__56;
 char* default_value;
 char* __result_obj__57;
 default_value = (void*)0;
-    if(({    (_conditional_value_X0=(position<0));    _conditional_value_X0;    })) {
+    if(    position<0    ) {
         position+=self->len;
     }
     it=self->head;
     i=0;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
-        if(({        (_conditional_value_X1=(position==i));        _conditional_value_X1;        })) {
+    while(    it!=((void*)0)    ) {
+        if(        position==i        ) {
             __result_obj__56 = (char*)come_increment_ref_count(it->item);
             (__result_obj__56 = come_decrement_ref_count(__result_obj__56, (void*)0, (void*)0, 0, 1, (void*)0));
             return __result_obj__56;
@@ -8084,21 +7683,19 @@ default_value = (void*)0;
 }
 
 static char* list$1char$ph_operator_load_element(struct list$1char$ph* self, int position){
-_Bool _conditional_value_X0;
 struct list_item$1char$ph* it;
 int i;
-_Bool _conditional_value_X1;
 char* __result_obj__58;
 char* default_value;
 char* __result_obj__59;
 default_value = (void*)0;
-    if(({    (_conditional_value_X0=(position<0));    _conditional_value_X0;    })) {
+    if(    position<0    ) {
         position+=self->len;
     }
     it=self->head;
     i=0;
-    while(({    (_conditional_value_X0=(it!=((void*)0)));    _conditional_value_X0;    })) {
-        if(({        (_conditional_value_X1=(position==i));        _conditional_value_X1;        })) {
+    while(    it!=((void*)0)    ) {
+        if(        position==i        ) {
             __result_obj__58 = (char*)come_increment_ref_count(it->item);
             (__result_obj__58 = come_decrement_ref_count(__result_obj__58, (void*)0, (void*)0, 0, 1, (void*)0));
             return __result_obj__58;

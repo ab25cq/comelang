@@ -47,28 +47,29 @@ bool node_compile(sNode* node, sInfo* info=info)
     return result;
 }
 
-bool node_conditional_compile(sNode* node, sInfo* info=info)
+bool transpile_conditional_with_free_right_object_value(sNode* node, sInfo* info=info)
 {
     bool in_conditional = info->in_conditional;
     info->in_conditional = true;
-    node_compile(node).if {
+    node_compile(node).elif {
         info->in_conditional = in_conditional;
         return true;
     }
     info->in_conditional = in_conditional;
     
-    return false;
-}
-
-void transpile_conditional_with_free_right_object_value(CVALUE*% conditional_value, sInfo* info=info)
-{
+    bool existance_right_value_object = existance_free_right_value_objects(info);
+    
+    CVALUE*% conditional_value = get_value_from_stack(-1, info);
+    
     add_last_code_to_source(info);
     
     bool already_defined = info->num_conditional < info->max_conditional;
     
     int num_conditional = info->num_conditional;
     
-    if(already_defined) {
+    if(!existance_right_value_object) {
+    }
+    else if(already_defined) {
         info->num_conditional++;
     }
     else {
@@ -79,12 +80,17 @@ void transpile_conditional_with_free_right_object_value(CVALUE*% conditional_val
         info->max_conditional = info->num_conditional;
     }
     
-    if(conditional_value.c_value !== "") {
-        add_come_code(info, "(_conditional_value_X%d=(%s));", num_conditional, conditional_value.c_value);
+    if(existance_right_value_object) {
+        if(conditional_value.c_value !== "") {
+            add_come_code(info, "({(_conditional_value_X%d=(%s));", num_conditional, conditional_value.c_value);
+        }
+        free_right_value_objects(info, comma:false);
+        if(conditional_value.c_value !== "") {
+            add_come_code(info, "_conditional_value_X%d;})", num_conditional);
+        }
     }
-    free_right_value_objects(info, comma:false);
-    if(conditional_value.c_value !== "") {
-        add_come_code(info, "_conditional_value_X%d;", num_conditional);
+    else {
+        add_come_code(info, "%s", conditional_value.c_value);
     }
 }
 
