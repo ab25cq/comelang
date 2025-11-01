@@ -85,6 +85,32 @@ class sStaticAssert extends sNodeBase {
     }
 };
 
+class sUndefNode extends sNodeBase {
+    new(string str, sInfo* info=info) {
+        self.super();
+        
+        string self.str = str;
+    }
+
+    string kind()
+    {
+        return string("sUndefNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        string str = self.str;
+        
+        info.struct_definition.remove(str);
+        info.funcs.remove(str);
+        info.generics_funcs.remove(str);
+        info.modules.remove(str);
+        info.types.remove(str);
+        
+        return true;
+    }
+};
+
 sNode*% static_assert_node(sNode*% exp, sNode*% exp2, sInfo* info=info)
 {
     return new sStaticAssert(exp, exp2, info) implements sNode;
@@ -249,7 +275,8 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91
         
         string contents = block_text.substring(1, p - (block_text + strlen(block_text))-1);
         
-        add_come_code(info, "%s\n", contents);
+        //add_come_code(info, "%s\n", contents);
+        info.previous_struct_definition.insert(s"header", contents.to_buffer());
         
         return new sHeaderNode(contents, info) implements sNode;
     }
@@ -317,6 +344,16 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91
         expected_next_character(')');
         
         return new sStaticAssert(exp, exp2, info) implements sNode;
+    }
+    else if(buf === "undef") {
+        string word = parse_word();
+        
+        if(*info->p == ';') {
+            info->p++;
+            skip_spaces_and_lf();
+        }
+        
+        return new sUndefNode(word, info) implements sNode;
     }
     
     return inherit(buf, head, head_sline, info);

@@ -525,7 +525,7 @@ class sMethodCallNode extends sNodeBase
             }
         }
         
-        if(calling_dynamic_method) {
+        if(klass->mProtocol && calling_dynamic_method) {
             sType*% result_type = clone lambda_type->mResultType;
             result_type->mStatic = false;
             

@@ -299,13 +299,15 @@ class sStoreNode extends sNodeBase
                 || left_type->mConstant || left_type->mRegister) 
             {
                 sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
-                add_come_code(info, "%s=%s;\n", make_define_var(left_type, var_->mCValueName), right_value.c_value);
-                
                 CVALUE*% come_value = new CVALUE();
-                come_value.c_value = string("");
+                
+                come_value.c_value = xsprintf("%s=%s", make_define_var(left_type, var_->mCValueName), right_value.c_value);
+                come_value.type = clone left_type;
+                come_value.var = var_;
+                
                 info.stack.push_back(come_value);
                 
-                transpiler_clear_last_code(info);
+                add_come_last_code(info, "%s", come_value.c_value);
             }
             else if(left_type->mChannel && new_channel) {
                 add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));

@@ -6,7 +6,7 @@ struct sData
 
 int main(int argc, char** argv)
 {
-    struct sData` data;
+    int a[3] = { 1, 2, 3 };
     
     return 0;
 }
