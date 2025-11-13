@@ -1266,28 +1266,33 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91
         
         parse_sharp();
         
-        if(parsecmp("elif")) {
-            (void)parse_word();
-            
-            if(*info->p == '(') {
-                info->p++;
-                skip_spaces_and_lf();
-            }
-            
-            string refrection_condtional = refrection_expression();
-            
-            if(*info->p == ')') {
-                info->p++;
-                skip_spaces_and_lf();
-            }
-            
-            if(!match_ && refrection_condtional === "true") {
-                expected_next_character('{');
-                transpile_toplevel(block:true);
-                match_ = true;
+        while(1) {
+            if(parsecmp("elif")) {
+                (void)parse_word();
+                
+                if(*info->p == '(') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                }
+                
+                string refrection_condtional = refrection_expression();
+                
+                if(*info->p == ')') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                }
+                
+                if(!match_ && refrection_condtional === "true") {
+                    expected_next_character('{');
+                    transpile_toplevel(block:true);
+                    match_ = true;
+                }
+                else {
+                    skip_block();
+                }
             }
             else {
-                skip_block();
+                break;
             }
         }
         

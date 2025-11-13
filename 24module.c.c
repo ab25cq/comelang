@@ -6745,31 +6745,36 @@ struct sNode* __result_obj__195;
             (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
         }
         parse_sharp_v5(info);
-        if(        parsecmp("elif",info)        ) {
-            __right_value0 = (void*)0;
-            (void)((char*)(__right_value0=parse_word(info)));
-            (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
-            if(            *info->p==40            ) {
-                info->p++;
-                skip_spaces_and_lf(info);
-            }
-            __right_value0 = (void*)0;
-            refrection_condtional_96=(char*)come_increment_ref_count(refrection_expression(info));
-            if(            *info->p==41            ) {
-                info->p++;
-                skip_spaces_and_lf(info);
-            }
-            if(            !match_&&string_operator_equals(refrection_condtional_96,"true")            ) {
-                expected_next_character(123,info);
-                transpile_toplevel((_Bool)1,info);
-                match_=(_Bool)1;
+        while(        1        ) {
+            if(            parsecmp("elif",info)            ) {
+                __right_value0 = (void*)0;
+                (void)((char*)(__right_value0=parse_word(info)));
+                (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+                if(                *info->p==40                ) {
+                    info->p++;
+                    skip_spaces_and_lf(info);
+                }
+                __right_value0 = (void*)0;
+                refrection_condtional_96=(char*)come_increment_ref_count(refrection_expression(info));
+                if(                *info->p==41                ) {
+                    info->p++;
+                    skip_spaces_and_lf(info);
+                }
+                if(                !match_&&string_operator_equals(refrection_condtional_96,"true")                ) {
+                    expected_next_character(123,info);
+                    transpile_toplevel((_Bool)1,info);
+                    match_=(_Bool)1;
+                }
+                else {
+                    __right_value0 = (void*)0;
+                    ((char*)(__right_value0=skip_block(info,(_Bool)0)));
+                    (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+                }
+                (refrection_condtional_96 = come_decrement_ref_count(refrection_condtional_96, (void*)0, (void*)0, 0, 0, (void*)0));
             }
             else {
-                __right_value0 = (void*)0;
-                ((char*)(__right_value0=skip_block(info,(_Bool)0)));
-                (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+                break;
             }
-            (refrection_condtional_96 = come_decrement_ref_count(refrection_condtional_96, (void*)0, (void*)0, 0, 0, (void*)0));
         }
         if(        parsecmp("else",info)        ) {
             __right_value0 = (void*)0;
@@ -6787,8 +6792,8 @@ struct sNode* __result_obj__195;
         }
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
-        _inf_value7=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "24module.c", 1306, "struct sNode");
-        _inf_obj_value7=(struct sNothingNode*)come_increment_ref_count(((struct sNothingNode*)(__right_value1=sNothingNode_initialize((struct sNothingNode*)come_increment_ref_count((struct sNothingNode*)come_calloc_v2(1, sizeof(struct sNothingNode)*(1), "24module.c", 1306, "struct sNothingNode*")),info))));
+        _inf_value7=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "24module.c", 1311, "struct sNode");
+        _inf_obj_value7=(struct sNothingNode*)come_increment_ref_count(((struct sNothingNode*)(__right_value1=sNothingNode_initialize((struct sNothingNode*)come_increment_ref_count((struct sNothingNode*)come_calloc_v2(1, sizeof(struct sNothingNode)*(1), "24module.c", 1311, "struct sNothingNode*")),info))));
         _inf_value7->_protocol_obj=_inf_obj_value7;
         _inf_value7->finalize=(void*)sNothingNode_finalize;
         _inf_value7->clone=(void*)sNothingNode_clone;

@@ -24,7 +24,12 @@ struct sData
     char* b;
 };
 
-if (num_fields(sData) == 2) {
+if(num_param_types(fun4) == 2) {
+    if(param_types(fun4, 0) == int) {
+        int a = 888;
+    }
+}
+elif (num_fields(sData) == 2) {
     if(field_types(sData, 0) == int) {
         int a = 7;
     }
