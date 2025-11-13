@@ -2336,6 +2336,7 @@ is_enum(ID)
 is_interface(ID)
 is_generics(ID)
 is_module(ID)
+undef(ID)
 ```
 
 ```
