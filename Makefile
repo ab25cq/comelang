@@ -343,6 +343,7 @@ install:
 	$(INSTALL) -m 755 ./neo-c "$(DESTDIR)/bin"
 	mkdir -p "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./neo-c.h "$(DESTDIR)/include"
+	$(INSTALL) -m 644 ./neo-c-libc.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./neo-c-net.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./neo-c-pthread.h "$(DESTDIR)/include"
 	mkdir -p "$(DESTDIR)/share/doc/neo-c"
