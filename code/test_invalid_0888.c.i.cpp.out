@@ -1,0 +1,1 @@
+clang: warning: -lang-c: 'linker' input unused [-Wunused-command-line-argument]
