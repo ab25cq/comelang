@@ -13,7 +13,7 @@ LIBS= -lutil -ldl -lm -lrt
 #########################################
 all: neo-c-sh
 
-SOURCES := $(wildcard [01]*.c)
+SOURCES := $(wildcard [012]*.c)
 SOURCES := $(filter-out %.c.c,$(SOURCES))
 
 neo-c.c.c: neo-c.c
