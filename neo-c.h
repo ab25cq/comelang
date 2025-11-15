@@ -1254,7 +1254,7 @@ impl list <T>
     bool end(list<T>* self) {
         return self == null || self.it == null;
     }
-    immutable list<T>* each(list<T>* self, void* parent, void (*block)(void*, T&,int,bool*)) 
+    immutable list<T>* each(list<T>* self, void* parent, void (*block)(void*, T,int,bool*)) 
     {
         list_item<T>* it = self.head;
         int i = 0;
@@ -1849,7 +1849,7 @@ impl list <T>
     list<T>*% sort(list<T>* self) {
         return self.merge_sort_with_lambda(int lambda(T& left, T& right) { return left.compare(right); });
     }
-    template<R> immutable list<R>*% map(list<T>* self, void* parent, R (*block)(void*, T&))
+    template<R> immutable list<R>*% map(list<T>* self, void* parent, R (*block)(void*, T))
     {
         auto result = new list<R>.initialize();
 
@@ -1897,7 +1897,7 @@ impl list <T>
 
         return result;
     }
-    immutable list<T>*% filter(list<T>* self, void* parent, bool (*block)(void*, T&))
+    immutable list<T>*% filter(list<T>* self, void* parent, bool (*block)(void*, T))
     {
         list<T>*% result = new list<T>();
 
